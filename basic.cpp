@@ -6,6 +6,9 @@
 int main( int argc, char* args[] ) { 
   SDL_Window *app_window;
   SDL_GLContext app_glcontext;
+  GLfloat r,g,b;  
+
+  int i;
 
   //Start SDL 
   SDL_Init( SDL_INIT_EVERYTHING ); 
@@ -18,11 +21,31 @@ int main( int argc, char* args[] ) {
   printf("GL Renderer: %s\n", glGetString(GL_RENDERER));
   printf("GL Vendor: %s\n", glGetString(GL_VENDOR));
 
-  glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-  SDL_GL_SwapWindow(app_window);
+  for(i=0;i<512;i++) {
+    if ( i >= 256 ) {
+      r = (512-i) / 256.0f; 
+    } else {
+      r = i / 256.0f; 
+    };
+    if ( i >= 256 ) {
+      g = (i-256) / 256.0f;
+    } else {
+      g = 0.0f;
+    };
+    if ( i >= 256 ) {
+      b = 0.0f;
+    } else {
+      b = (256-i) / 256.0f;
+    };
 
-  SDL_Delay(2000);
+    printf("[%i] R:%f G:%f B:%f\n",i,r,g,b);
+
+    glClearColor(r, g, b, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(app_window);
+
+    SDL_Delay(200);
+  }
  
   SDL_DestroyWindow(app_window);
 

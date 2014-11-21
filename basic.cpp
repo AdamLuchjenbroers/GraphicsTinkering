@@ -44,6 +44,7 @@ GLfloat *colour_for_time(int time) {
 int main( int argc, char* args[] ) { 
   SDL_Window *app_window;
   SDL_GLContext app_glcontext;
+  SDL_Event event;
   GLfloat *colour;
 
   int i;
@@ -64,8 +65,16 @@ int main( int argc, char* args[] ) {
 
     draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
     SDL_GL_SwapWindow(app_window);
+    
+    // Poll for events
+    while(SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT)  {
+         //Advance the counter, simple hack to quit app
+         i=512;
+      }
+    }
 
-    SDL_Delay(200);
+    SDL_Delay(100);
   }
  
   SDL_DestroyWindow(app_window);

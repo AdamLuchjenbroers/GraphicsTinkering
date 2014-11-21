@@ -3,10 +3,48 @@
 #include "SDL2/SDL.h" 
 #include "GL/gl.h"
 
+#define COLOUR_RED 0
+#define COLOUR_GREEN 1
+#define COLOUR_BLUE 2
+#define COLOUR_ALPHA 3
+
+void draw_colour(GLfloat r, GLfloat g, GLfloat b) {
+    printf("R:%f G:%f B:%f\n",r,g,b);
+
+    glClearColor(r, g, b, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+GLfloat *colour_for_time(int time) {
+    static GLfloat colour[4];
+
+    if ( time >= 256 ) {
+      colour[COLOUR_RED] = (512 - time) / 256.0f; 
+    } else {
+      colour[COLOUR_RED] = time / 256.0f; 
+    };
+
+    if ( time >= 256 ) {
+      colour[COLOUR_GREEN] = (time - 256) / 256.0f;
+    } else {
+      colour[COLOUR_GREEN] = 0.0f;
+    };
+    if ( time >= 256 ) {
+      colour[COLOUR_BLUE] = 0.0f;
+    } else {
+      colour[COLOUR_BLUE] = (256 - time) / 256.0f;
+    };
+ 
+    colour[COLOUR_ALPHA] = 1.0f;
+
+    return colour;  
+}
+
+
 int main( int argc, char* args[] ) { 
   SDL_Window *app_window;
   SDL_GLContext app_glcontext;
-  GLfloat r,g,b;  
+  GLfloat *colour;
 
   int i;
 
@@ -22,26 +60,9 @@ int main( int argc, char* args[] ) {
   printf("GL Vendor: %s\n", glGetString(GL_VENDOR));
 
   for(i=0;i<512;i++) {
-    if ( i >= 256 ) {
-      r = (512-i) / 256.0f; 
-    } else {
-      r = i / 256.0f; 
-    };
-    if ( i >= 256 ) {
-      g = (i-256) / 256.0f;
-    } else {
-      g = 0.0f;
-    };
-    if ( i >= 256 ) {
-      b = 0.0f;
-    } else {
-      b = (256-i) / 256.0f;
-    };
+    colour = colour_for_time(i);
 
-    printf("[%i] R:%f G:%f B:%f\n",i,r,g,b);
-
-    glClearColor(r, g, b, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
     SDL_GL_SwapWindow(app_window);
 
     SDL_Delay(200);

@@ -16,6 +16,7 @@ public:
 
 	bool appMain();
 	void appInit();
+	void appQuit();
 
 private:
 	DisplayInterface *display;
@@ -43,26 +44,31 @@ void BasicApp::appInit() {
 bool BasicApp::appMain() {
 	GLfloat *colour;
 
-	printf("%i\n", this->colourIndex);
-
 	if (this->colourIndex >= 512) {
 		// We're done, exit
 		return false;
 	}
 
     colour = colour_for_time(this->colourIndex);
+    this->colourIndex++;
 
     draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
+
     display->swapBuffers();
 
     display->mainLoop(*this);
-    SDL_Delay(100);
 
+    SDL_Delay(100);
     return true;
 }
 
+void BasicApp::appQuit() {
+	// Fast forward the colour cascade to the last index
+	this->colourIndex = 512;
+}
+
 void BasicApp::draw_colour(GLfloat r, GLfloat g, GLfloat b) {
-    printf("R:%f G:%f B:%f\n",r,g,b);
+    printf("[%i] R:%f G:%f B:%f\n", this->colourIndex, r, g, b);
 
     glClearColor(r, g, b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

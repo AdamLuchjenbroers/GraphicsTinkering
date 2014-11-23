@@ -3,6 +3,7 @@
 #include <errorhandling.h>
 #include <system/constants.h>
 #include <string>
+#include <stdlib.h>
 
 class EngineApplication {
 public:
@@ -12,6 +13,9 @@ public:
     virtual bool appMain() = 0;
     /** Called immediately after the display has been initialised to allow the application to perform any setup it may require. */
     virtual void appInit() = 0;
+
+    /** Called when an event is received requesting an application exit */
+    virtual void appQuit() { exit(0); };
 
     /**
         Called whenever the display window is resized.

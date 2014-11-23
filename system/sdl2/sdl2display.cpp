@@ -26,5 +26,12 @@ void SDLDisplay::close() {
 }
 
 void SDLDisplay::mainLoop(EngineApplication &app) {
-	//FIXME: Stub
+  SDL_Event event;
+
+
+  while(SDL_PollEvent(&event)) {
+    if (event.type == SDL_QUIT) {
+      app.appQuit();
+    };
+ }
 }

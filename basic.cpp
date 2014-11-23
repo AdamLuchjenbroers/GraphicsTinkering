@@ -1,5 +1,6 @@
 
-#include "display.h"
+#include "system/sdl2/sdl2display.h"
+#include "system/display.h"
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
@@ -40,7 +41,7 @@ GLfloat *colour_for_time(int time) {
 
 
 int main( int argc, char* args[] ) { 
-  SDLDisplay display = SDLDisplay("I'm a window", 300, 400);
+  DisplayInterface *display = new SDLDisplay("I'm a window", 300, 400);
   SDL_Event event;
   GLfloat *colour;
 
@@ -51,7 +52,7 @@ int main( int argc, char* args[] ) {
     colour = colour_for_time(i);
 
     draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
-    display.swapBuffers();   
+    display->swapBuffers();
  
     // Poll for events
     while(SDL_PollEvent(&event)) {
@@ -64,5 +65,6 @@ int main( int argc, char* args[] ) {
     SDL_Delay(100);
   }
  
-   return 0; 
+  delete display;
+  return 0;
 }

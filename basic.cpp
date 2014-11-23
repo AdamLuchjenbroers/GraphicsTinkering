@@ -1,20 +1,74 @@
 
 #include "system/sdl2/sdl2display.h"
 #include "system/display.h"
+#include "system/application.h"
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
 #define COLOUR_BLUE 2
 #define COLOUR_ALPHA 3
 
-void draw_colour(GLfloat r, GLfloat g, GLfloat b) {
+
+class BasicApp : public EngineApplication {
+public:
+	BasicApp();
+	~BasicApp();
+
+	bool appMain();
+	void appInit();
+
+private:
+	DisplayInterface *display;
+	int colourIndex;
+
+	void draw_colour(GLfloat r, GLfloat g, GLfloat b);
+	GLfloat *colour_for_time(int time);
+};
+
+BasicApp::BasicApp() {
+	this->display == NULL;
+	this->colourIndex = 0;
+}
+
+BasicApp::~BasicApp() {
+	if (this->display != NULL) {
+		delete this->display;
+	}
+}
+
+void BasicApp::appInit() {
+	this->display = new SDLDisplay("I'm a window", 300, 400);
+}
+
+bool BasicApp::appMain() {
+	GLfloat *colour;
+
+	printf("%i\n", this->colourIndex);
+
+	if (this->colourIndex >= 512) {
+		// We're done, exit
+		return false;
+	}
+
+    colour = colour_for_time(this->colourIndex);
+
+    draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
+    display->swapBuffers();
+
+    display->mainLoop(*this);
+    SDL_Delay(100);
+
+    return true;
+}
+
+void BasicApp::draw_colour(GLfloat r, GLfloat g, GLfloat b) {
     printf("R:%f G:%f B:%f\n",r,g,b);
 
     glClearColor(r, g, b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-GLfloat *colour_for_time(int time) {
+GLfloat *BasicApp::colour_for_time(int time) {
     static GLfloat colour[4];
 
     if ( time >= 256 ) {
@@ -41,30 +95,12 @@ GLfloat *colour_for_time(int time) {
 
 
 int main( int argc, char* args[] ) { 
-  DisplayInterface *display = new SDLDisplay("I'm a window", 300, 400);
-  SDL_Event event;
-  GLfloat *colour;
+  EngineApplication *thisApp = new BasicApp();
 
-  int i;
+  thisApp->appInit();
 
-
-  for(i=0;i<512;i++) {
-    colour = colour_for_time(i);
-
-    draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
-    display->swapBuffers();
+  while (thisApp->appMain()) { };
  
-    // Poll for events
-    while(SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT)  {
-         //Advance the counter, simple hack to quit app
-         i=512;
-      }
-    }
-
-    SDL_Delay(100);
-  }
- 
-  delete display;
+  delete thisApp;
   return 0;
 }

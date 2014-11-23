@@ -6,20 +6,19 @@
 
 class EngineApplication {
 public:
-    EngineApplication(const char *moduleName);
-    ~EngineApplication(); 
+	virtual ~EngineApplication() {};
 
     /** Main body of application code, called once per iteration of the main display loop */
-    bool appMain();
+    virtual bool appMain() = 0;
     /** Called immediately after the display has been initialised to allow the application to perform any setup it may require. */
-    void appInit();
+    virtual void appInit() = 0;
 
     /**
         Called whenever the display window is resized.
         @param newX The new width of the display window.
         @param newY The new height of the display window.
     */
-    void resizeWindow(int newX, int newY) {}
+    virtual void resizeWindow(int newX, int newY) {}
 
     /**
         Called whenever a key is pressed
@@ -28,7 +27,7 @@ public:
         @param press Boolean value, true if the key is being pressed, false if released.
         @param alpha The alphanumeric representation of the key pressed (0 if invalid)
     */
-    void keyEvent(Key key, unsigned int modmask, bool press, char alpha) {}
+    virtual void keyEvent(Key key, unsigned int modmask, bool press, char alpha) {}
 
     /**
         Called whenever a mouse button is pressed.
@@ -38,7 +37,7 @@ public:
         @param x X co-ordinate where this button was pressed.
         @param y Y co-ordinate where this button was pressed.
     */
-    void mouseButtonEvent(int button, unsigned int modmask, bool press, int x, int y);
+    virtual void mouseButtonEvent(int button, unsigned int modmask, bool press, int x, int y) {};
 
     /**
         Called whenever the mouse is moved.
@@ -46,7 +45,7 @@ public:
         @param x X co-ordinate where this button was pressed.
         @param y Y co-ordinate where this button was pressed.
     */
-    void mouseMovementEvent(unsigned int modmask, int x, int y, int oldX, int oldY);
+    virtual void mouseMovementEvent(unsigned int modmask, int x, int y, int oldX, int oldY) {};
 
 };
 

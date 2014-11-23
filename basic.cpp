@@ -1,7 +1,5 @@
 
-#include <stdio.h>
-#include "SDL2/SDL.h" 
-#include "GL/gl.h"
+#include "display.h"
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
@@ -42,30 +40,19 @@ GLfloat *colour_for_time(int time) {
 
 
 int main( int argc, char* args[] ) { 
-  SDL_Window *app_window;
-  SDL_GLContext app_glcontext;
+  SDLDisplay display = SDLDisplay("I'm a window", 300, 400);
   SDL_Event event;
   GLfloat *colour;
 
   int i;
 
-  //Start SDL 
-  SDL_Init( SDL_INIT_EVERYTHING ); 
-
-  app_window = SDL_CreateWindow("I'm a window", 50,50,200,200, SDL_WINDOW_OPENGL);
-  app_glcontext = SDL_GL_CreateContext(app_window);  
-  SDL_GL_MakeCurrent(app_window, app_glcontext);
-
-  printf("GL Version: %s\n",  glGetString(GL_VERSION));
-  printf("GL Renderer: %s\n", glGetString(GL_RENDERER));
-  printf("GL Vendor: %s\n", glGetString(GL_VENDOR));
 
   for(i=0;i<512;i++) {
     colour = colour_for_time(i);
 
     draw_colour(colour[COLOUR_RED], colour[COLOUR_GREEN], colour[COLOUR_BLUE]);
-    SDL_GL_SwapWindow(app_window);
-    
+    display.swapBuffers();   
+ 
     // Poll for events
     while(SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT)  {
@@ -77,8 +64,5 @@ int main( int argc, char* args[] ) {
     SDL_Delay(100);
   }
  
-  SDL_DestroyWindow(app_window);
-
-  //Quit SDL SDL_Quit(); 
    return 0; 
 }

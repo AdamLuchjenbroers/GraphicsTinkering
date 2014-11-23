@@ -3,14 +3,19 @@
 #include <stdio.h>
 #include "SDL2/SDL.h"
 #include "GL/gl.h"
+#include "system/display.h"
 
 
-class SDLDisplay {
+class SDLDisplay : public DisplayInterface {
   public: 
     SDLDisplay(const char *title, int width, int height);
     ~SDLDisplay();
 
-    void swapBuffers();
+    virtual void swapBuffers();
+    virtual void mainLoop(EngineApplication &app);
+    virtual void close();
+
+    void printRendererInfo();
 
   private:
     SDL_Window *app_window;

@@ -9,9 +9,7 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-
-#ifndef HGUARD_DISPLAY_H
-#define HGUARD_DISPLAY_H
+#pragma once
 
 #include <errorhandling.h>
 #include <system/application.h>
@@ -57,6 +55,3 @@ protected:
   Abstract root class for all display related errors. Individual implementations should define their own subclasses of this class.
 */
 class DisplayError: public Error {};
-
-
-#endif

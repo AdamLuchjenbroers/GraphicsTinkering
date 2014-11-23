@@ -9,7 +9,7 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-#include "glxdisplay.h"
+#include "system/glx/glxdisplay.h"
 
 static GLint glxDblAttribs[] = {GLX_RGBA, GLX_DOUBLEBUFFER, GLX_DEPTH_SIZE, 16, None};
 static GLint glxSglAttribs[] = {GLX_RGBA, GLX_DEPTH_SIZE, 16, None};

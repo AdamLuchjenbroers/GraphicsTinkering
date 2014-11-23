@@ -1,4 +1,4 @@
-#include "display.h"
+#include "sdl2display.h"
 
 SDLDisplay::SDLDisplay(const char *title, int width, int height) {
   //Start SDL 
@@ -14,9 +14,17 @@ SDLDisplay::SDLDisplay(const char *title, int width, int height) {
 }
  
 SDLDisplay::~SDLDisplay() {
-  SDL_DestroyWindow(this->app_window);
+  this->close();
 }
 
 void SDLDisplay::swapBuffers() {
   SDL_GL_SwapWindow(this->app_window);
+}
+
+void SDLDisplay::close() {
+  SDL_DestroyWindow(this->app_window);
+}
+
+void SDLDisplay::mainLoop(EngineApplication &app) {
+	//FIXME: Stub
 }

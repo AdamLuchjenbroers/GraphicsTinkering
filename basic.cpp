@@ -27,7 +27,7 @@ private:
 };
 
 BasicApp::BasicApp() {
-	this->display == NULL;
+	this->display = NULL;
 	this->colourIndex = 0;
 }
 

@@ -4,7 +4,7 @@ incs = -I./include
 
 opts = $(libs) $(defs) $(incs)
 
-all: system basic
+all: system basic cube
 
 clean:
 	rm -f build/* *.o
@@ -22,4 +22,11 @@ basic: basic.o system/sdl2display.o
 
 basic.o:
 	$(CC) $(incs) basic.cpp -c -o basic.o
+
+cube: basic.o system/sdl2display.o
+	$(CC) $(incs) cube.cpp system/sdl2display.o -o build/cube $(libs)
+	 	
+cube.o:
+	$(CC) $(incs) cube.cpp -c -o cube.o
+
 

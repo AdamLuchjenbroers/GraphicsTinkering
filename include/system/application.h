@@ -2,6 +2,7 @@
 
 #include <errorhandling.h>
 #include <system/constants.h>
+#include <system/display.h>
 #include <string>
 #include <stdlib.h>
 
@@ -50,7 +51,6 @@ public:
         @param y Y co-ordinate where this button was pressed.
     */
     virtual void mouseMovementEvent(unsigned int modmask, int x, int y, int oldX, int oldY) {};
-
 };
 
 /**

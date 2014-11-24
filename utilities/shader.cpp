@@ -4,35 +4,65 @@
 
 #include "shader.h"
 
-Shader::Shader(char *scriptfile) {
+Shader::Shader(char *scriptfile, GLenum shadertype) {
   std::ifstream script;
   std::string scriptline;
 
   script.open(scriptfile);
   while ( getline(script, scriptline) ) {
-    this->shader.push_back( scriptline );
+    this->shaderscript.push_back( scriptline );
   }
 
-  printf("Lines: %i\n", (int)this->shader.size());
-}
+  this->prepareSource();
+
+  this->shader = glCreateShader(shadertype);
+  glShaderSource(this->shader, this->shaderlines, this->shadersource, NULL);
+  glCompileShader(this->shader);
+
+};
 
 Shader::~Shader() {
-}
+};
 
 void Shader::printScript() {
-  std::list<std::string>::iterator line;
+  int line = 0;
 
-  line = this->shader.begin();
-
-  while ( line != this->shader.end() ) {
-    std::cout << *line << "\n";
+  while (line < this->shaderlines) {
+    std::cout << this->shadersource[line];
     line++;
-  }  
+  }
+};
+
+GLuint Shader::getShader() {
+  return this->shader;
 }
 
+void Shader::prepareSource() {
+  std::list<std::string>::iterator line;
+  char **sourceline;
+
+  this->shaderlines = this->shaderscript.size();
+  this->shadersource = new char*[this->shaderlines];
+
+  sourceline = this->shadersource;
+
+
+  line = this->shaderscript.begin();
+
+  while ( line != this->shaderscript.end() ) {
+	int length = line->size();
+    *sourceline = new char[length+2]; //Add space for newline and terminator.
+
+    snprintf(*sourceline, length+2, "%s\n", line->c_str());
+
+    line++;
+    sourceline++;
+  }
+};
+
 int main() {
-  Shader test = Shader("junk.sdr");
+  Shader test = Shader("junk.sdr", GL_VERTEX_SHADER);
   test.printScript();
 
   return 0;
-}
+};

@@ -36,7 +36,14 @@ SB6_Chapter2::SB6_Chapter2() {
    this->running = true;
 
    this->vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
+   printf("Vertex Shader Loaded\n------------\n");
+   this->vertex->printScript();
+   printf("------------\n");
+
    this->fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
+   printf("Fragment Shader Loaded\n------------\n");
+   this->fragment->printScript();
+   printf("------------\n");
 
    this->program = glCreateProgram();
    glAttachShader(this->program, this->vertex->getShader());

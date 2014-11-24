@@ -4,11 +4,11 @@
 
 #include "shader.h"
 
-Shader::Shader(char *scriptfile, GLenum shadertype) {
+Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   std::ifstream script;
   std::string scriptline;
 
-  script.open(scriptfile);
+  script.open(scriptfile.c_str());
   while ( getline(script, scriptline) ) {
     this->shaderscript.push_back( scriptline );
   }

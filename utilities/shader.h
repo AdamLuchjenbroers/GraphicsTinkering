@@ -8,7 +8,7 @@
 
 class Shader {
 public:
-  Shader(char *scriptfile, GLenum shadertype);
+  Shader(const std::string scriptfile, GLenum shadertype);
   ~Shader();
 
   void printScript();

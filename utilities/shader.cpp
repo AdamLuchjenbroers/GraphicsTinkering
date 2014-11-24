@@ -30,6 +30,13 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
 };
 
 Shader::~Shader() {
+  int i;
+
+  for(i=0;i<this->shaderlines;i++) {
+    delete this->shadersource[i];
+  }
+
+  delete this->shadersource;
 };
 
 void Shader::printScript() {
@@ -53,7 +60,6 @@ void Shader::prepareSource() {
   this->shadersource = new char*[this->shaderlines];
 
   sourceline = this->shadersource;
-
 
   line = this->shaderscript.begin();
 

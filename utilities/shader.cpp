@@ -16,6 +16,9 @@ Shader::Shader(char *scriptfile) {
   printf("Lines: %i\n", (int)this->shader.size());
 }
 
+Shader::~Shader() {
+}
+
 void Shader::printScript() {
   std::list<std::string>::iterator line;
 

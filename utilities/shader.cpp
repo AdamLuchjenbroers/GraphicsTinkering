@@ -60,9 +60,3 @@ void Shader::prepareSource() {
   }
 };
 
-int main() {
-  Shader test = Shader("junk.sdr", GL_VERTEX_SHADER);
-  test.printScript();
-
-  return 0;
-};

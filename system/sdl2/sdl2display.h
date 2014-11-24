@@ -1,5 +1,8 @@
 #pragma once
 
+
+#define GL_GLEXT_PROTOTYPES
+
 #include <stdio.h>
 #include "SDL2/SDL.h"
 #include "GL/glcorearb.h"

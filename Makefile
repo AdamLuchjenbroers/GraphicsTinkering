@@ -17,8 +17,8 @@ system:
 system/sdl2display.o: system/sdl2/sdl2display.cpp system/sdl2/sdl2display.h
 	cd ./system && $(MAKE) sdl2display.o
 	
-utilities/shader.o: utilities/shader.cpp utilities shader.h
-	$(CC) $(incs) utilities/shader.cpp -o utilities/shader.o $(libs)
+utilities/shader.o: utilities/shader.cpp utilities/shader.h
+	$(CC) $(incs) utilities/shader.cpp  -c -o utilities/shader.o
 
 basic: basic.o system/sdl2display.o
 	$(CC) $(incs) basic.o system/sdl2display.o -o build/basic $(libs) 
@@ -26,7 +26,7 @@ basic: basic.o system/sdl2display.o
 basic.o:
 	$(CC) $(incs) basic.cpp -c -o basic.o
 
-cube: basic.o system/sdl2display.o
+cube: cube.o system/sdl2display.o
 	$(CC) $(incs) cube.o system/sdl2display.o -o build/cube $(libs)
 	 	
 cube.o: cube.cpp
@@ -36,6 +36,6 @@ sb2.o : sb2.cpp
 	$(CC) $(incs) sb2.cpp -c -o sb2.o
 
 sb2: sb2.o utilities/shader.o system/sdl2display.o
-	$(CC) $(incs) sb2.o utilities/shader.o system/sdl2display.o -o build/cube $(libs)
+	$(CC) $(incs) sb2.o utilities/shader.o system/sdl2display.o -o build/sb2 $(libs)
 
 

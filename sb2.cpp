@@ -34,8 +34,8 @@ SB6_Chapter2::SB6_Chapter2() {
 	this->display = NULL;
 
 	this->program = glCreateProgram();
-	glAttachShader(this->program, this->vertex);
-    glAttachShader(this->program, this->fragment);
+	glAttachShader(this->program, this->vertex.getShader());
+    glAttachShader(this->program, this->fragment.getShader());
     glLinkProgram(this->program);
 
     glGenVertexArrays(1, &this->vertexarray);
@@ -69,13 +69,13 @@ bool SB6_Chapter2::appMain() {
 
 void SB6_Chapter2::appQuit() {
 	// Fast forward the colour cascade to the last index
-	this->colourIndex = 512;
+	//this->colourIndex = 512;
 }
 
 
 
 int main( int argc, char* args[] ) { 
-  EngineApplication *thisApp = new BasicApp();
+  EngineApplication *thisApp = new SB6_Chapter2();
 
   thisApp->appInit();
 

@@ -15,29 +15,32 @@
 
 class SB6_Chapter2 : public EngineApplication {
 public:
-	SB6_Chapter2();
-	~SB6_Chapter2();
+    SB6_Chapter2();
+    ~SB6_Chapter2();
 
-	bool appMain();
-	void appInit();
-	void appQuit();
+    bool appMain();
+    void appInit();
+    void appQuit();
 
 private:
-	DisplayInterface *display;
+    DisplayInterface *display;
 
     GLuint program, vertexarray;
-	Shader vertex = Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
-	Shader fragment = Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
+    Shader *vertex, *fragment;
 
-	bool running = true;
+    bool running;
 };
 
 SB6_Chapter2::SB6_Chapter2() {
    this->display = NULL;
+   this->running = true;
+
+   this->vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
+   this->fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
 
    this->program = glCreateProgram();
-   glAttachShader(this->program, this->vertex.getShader());
-   glAttachShader(this->program, this->fragment.getShader());
+   glAttachShader(this->program, this->vertex->getShader());
+   glAttachShader(this->program, this->fragment->getShader());
    glLinkProgram(this->program);
 
    glGenVertexArrays(1, &this->vertexarray);
@@ -48,6 +51,9 @@ SB6_Chapter2::~SB6_Chapter2() {
    if (this->display != NULL) {
        delete this->display;
    }
+
+   delete this->vertex;
+   delete this->fragment;
 }
 
 void SB6_Chapter2::appInit() {

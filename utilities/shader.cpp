@@ -14,6 +14,7 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
 
   if ( script.fail() ) {
     printf("FAILURE: Unable to open shader %s (%s)\n", scriptfile.c_str(), strerror(errno));
+    return;
   }
 
   while ( getline(script, scriptline) ) {

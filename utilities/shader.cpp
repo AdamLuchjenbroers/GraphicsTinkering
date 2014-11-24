@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <errno.h>
+#include <string.h>
 
 #include "shader.h"
 
@@ -9,6 +11,11 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   std::string scriptline;
 
   script.open(scriptfile.c_str());
+
+  if ( script.fail() ) {
+    printf("FAILURE: Unable to open shader %s (%s)\n", scriptfile.c_str(), strerror(errno));
+  }
+
   while ( getline(script, scriptline) ) {
     this->shaderscript.push_back( scriptline );
   }

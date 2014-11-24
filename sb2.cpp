@@ -33,21 +33,21 @@ private:
 };
 
 SB6_Chapter2::SB6_Chapter2() {
-	this->display = NULL;
+   this->display = NULL;
 
-	this->program = glCreateProgram();
-	glAttachShader(this->program, this->vertex.getShader());
-    glAttachShader(this->program, this->fragment.getShader());
-    glLinkProgram(this->program);
+   this->program = glCreateProgram();
+   glAttachShader(this->program, this->vertex.getShader());
+   glAttachShader(this->program, this->fragment.getShader());
+   glLinkProgram(this->program);
 
-    glGenVertexArrays(1, &this->vertexarray);
-    glBindVertexArray(this->vertexarray);
+   glGenVertexArrays(1, &this->vertexarray);
+   glBindVertexArray(this->vertexarray);
 }
 
 SB6_Chapter2::~SB6_Chapter2() {
-	if (this->display != NULL) {
-		delete this->display;
-	}
+   if (this->display != NULL) {
+       delete this->display;
+   }
 }
 
 void SB6_Chapter2::appInit() {
@@ -56,10 +56,12 @@ void SB6_Chapter2::appInit() {
 }
 
 bool SB6_Chapter2::appMain() {
-	GLfloat *colour;
+    
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(this->program);
-	glPointSize(40.0f);
+    glUseProgram(this->program);
+    glPointSize(40.0f);
     glDrawArrays(GL_POINTS, 0, 1);
 
     display->swapBuffers();

@@ -22,6 +22,8 @@ private:
 	DisplayInterface *display;
 	int colourIndex;
 
+	bool running = true;
+
 	void draw_colour(GLfloat r, GLfloat g, GLfloat b);
 	GLfloat *colour_for_time(int time);
 };
@@ -59,12 +61,11 @@ bool BasicApp::appMain() {
     display->mainLoop(*this);
 
     SDL_Delay(100);
-    return true;
+    return this->running;
 }
 
 void BasicApp::appQuit() {
-	// Fast forward the colour cascade to the last index
-	this->colourIndex = 512;
+	this->running = false;
 }
 
 void BasicApp::draw_colour(GLfloat r, GLfloat g, GLfloat b) {

@@ -28,6 +28,8 @@ private:
     GLuint program, vertexarray;
 	Shader vertex = Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
 	Shader fragment = Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
+
+	bool running = true;
 };
 
 SB6_Chapter2::SB6_Chapter2() {
@@ -57,6 +59,7 @@ bool SB6_Chapter2::appMain() {
 	GLfloat *colour;
 
 	glUseProgram(this->program);
+	glPointSize(40.0f);
     glDrawArrays(GL_POINTS, 0, 1);
 
     display->swapBuffers();
@@ -64,12 +67,11 @@ bool SB6_Chapter2::appMain() {
     display->mainLoop(*this);
 
     SDL_Delay(100);
-    return true;
+    return this->running;
 }
 
 void SB6_Chapter2::appQuit() {
-	// Fast forward the colour cascade to the last index
-	//this->colourIndex = 512;
+    this->running = false;
 }
 
 

@@ -5,10 +5,12 @@
 #include <string.h>
 
 #include "shader.h"
+#include <GL/glu.h>
 
 Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   std::ifstream script;
   std::string scriptline;
+  GLenum glerror;
 
   script.open(scriptfile.c_str());
 
@@ -25,7 +27,19 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
 
   this->shader = glCreateShader(shadertype);
   glShaderSource(this->shader, this->shaderlines, this->shadersource, NULL);
+  glerror = glGetError();
+  if (glerror != GL_NO_ERROR) {
+    printf("ERROR: Unable to load shader: %s\n", gluErrorString(glerror));
+    return;
+  } 
+
   glCompileShader(this->shader);
+  glerror = glGetError();
+  if (glerror != GL_NO_ERROR) {
+    printf("ERROR: Failed to compile %s: %s\n", scriptfile.c_str(), gluErrorString(glerror));
+  } else {
+    printf("INFO: Successfully compiled %s\n", scriptfile.c_str());
+  }
 
 };
 

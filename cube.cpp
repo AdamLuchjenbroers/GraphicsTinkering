@@ -17,7 +17,8 @@ public:
 
 private:
 	DisplayInterface *display;
-	int remainingRotations, currentAngle;
+	int remainingRotations;
+        float currentAngle;
 
 	void draw_colour(GLfloat r, GLfloat g, GLfloat b);
 	GLfloat *colour_for_time(int time);
@@ -48,15 +49,15 @@ bool CubeApp::appMain() {
 	// Clear colour buffer
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    //glLoadIdentity();
 
     // Setup Cube Position           // Move Into The Screen And Left
-    glRotatef(this->currentAngle,0.0f,1.0f,0.0f);
+    //glRotatef(this->currentAngle,0.0f,1.0f,0.0f);
 
-    glTranslatef(0.0f,0.0f,-6.0f);
+    //glTranslatef(0.0f,0.0f,-6.0f);
 
     printf("Angle: %f, (%i rotations remaining)\n", this->currentAngle, this->remainingRotations);
-    glBegin(GL_QUADS);
+    /*glBegin(GL_QUADS);
 
       glColor3f(1.0f, 1.0f, 1.0f);
       // Front Face
@@ -83,7 +84,7 @@ bool CubeApp::appMain() {
       glVertex3f(1.0f,-1.0f,-1.0f);
       glVertex3f(-1.0f,-1.0f,-1.0f);
       glVertex3f(-1.0f,-1.0f,1.0f);
-    glEnd();
+    glEnd();*/
 
     this->currentAngle += 1.0f;
     if (this->currentAngle >= 360.0f) {

@@ -7,7 +7,7 @@
 #include "system/application.h"
 #include "utilities/shader.h"
 
-#include <GL/glu.h>
+
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
@@ -36,17 +36,17 @@ private:
 SB6_Chapter2::SB6_Chapter2() {
    GLenum glerror;
 
-   this->display = NULL;
+   this->display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
    this->running = true;
 
    this->vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
    printf("Vertex Shader Loaded\n------------\n");
-   this->vertex->printScript();
+   this->vertex->printShader();
    printf("------------\n");
 
    this->fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
    printf("Fragment Shader Loaded\n------------\n");
-   this->fragment->printScript();
+   this->fragment->printShader();
    printf("------------\n");
 
    this->program = glCreateProgram();
@@ -71,7 +71,6 @@ SB6_Chapter2::~SB6_Chapter2() {
 }
 
 void SB6_Chapter2::appInit() {
-    this->display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
 }
 
 bool SB6_Chapter2::appMain() {

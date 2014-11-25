@@ -12,10 +12,12 @@ public:
   ~Shader();
 
   void printScript();
+  void printShader();
 
   GLuint getShader();
 private:
   void prepareSource();
+  void releaseSource();
 
   std::list<std::string> shaderscript;
   // OpenGL expects an array of chars

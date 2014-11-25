@@ -31,43 +31,50 @@ private:
     Shader *vertex, *fragment;
 
     bool running;
+
+    GLfloat pointsize;
+    bool ascending;
+
 };
 
 SB6_Chapter2::SB6_Chapter2() {
    GLenum glerror;
 
-   this->display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
-   this->running = true;
+   display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
+   running = true;
 
-   this->vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
+   vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
    printf("Vertex Shader Loaded\n------------\n");
-   this->vertex->printShader();
+   vertex->printShader();
    printf("------------\n");
 
-   this->fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
+   fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
    printf("Fragment Shader Loaded\n------------\n");
-   this->fragment->printShader();
+   fragment->printShader();
    printf("------------\n");
 
-   this->program = glCreateProgram();
-   glAttachShader(this->program, this->vertex->getShader());
-   glAttachShader(this->program, this->fragment->getShader());
-   glLinkProgram(this->program);
+   program = glCreateProgram();
+   glAttachShader(program, vertex->getShader());
+   glAttachShader(program, fragment->getShader());
+   glLinkProgram(program);
    glerror = glGetError();
    if (glerror != GL_NO_ERROR) {
      printf("ERROR: Unable to link rendering program: %s\n", gluErrorString(glerror));
    } 
 
-   glGenVertexArrays(1, &this->vertexarray);
+   glGenVertexArrays(1, &vertexarray);
+
+   pointsize = 10.0f;
+   ascending = true;
 }
 
 SB6_Chapter2::~SB6_Chapter2() {
-   if (this->display != NULL) {
-       delete this->display;
+   if (display != NULL) {
+       delete display;
    }
 
-   delete this->vertex;
-   delete this->fragment;
+   delete vertex;
+   delete fragment;
 }
 
 void SB6_Chapter2::appInit() {
@@ -79,9 +86,9 @@ bool SB6_Chapter2::appMain() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBindVertexArray(this->vertexarray);
-    glUseProgram(this->program);
-    glPointSize(40.0f);
+    glBindVertexArray(vertexarray);
+    glUseProgram(program);
+    glPointSize(pointsize);
 
     glDrawArrays(GL_POINTS, 0, 1);
    
@@ -93,12 +100,27 @@ bool SB6_Chapter2::appMain() {
 
     display->mainLoop(*this);
 
-    SDL_Delay(100);
-    return this->running;
+    SDL_Delay(10);
+
+    if (ascending) {
+        pointsize += 0.5f;
+
+        if (pointsize >= 64.0f) {
+            ascending = false;
+        }
+    } else {
+        pointsize -= 0.5f;
+
+        if (pointsize <= 0.5f) {
+            ascending = true;
+        }
+    }
+
+    return running;
 }
 
 void SB6_Chapter2::appQuit() {
-    this->running = false;
+    running = false;
 }
 
 

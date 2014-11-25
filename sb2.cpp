@@ -7,6 +7,8 @@
 #include "system/application.h"
 #include "utilities/shader.h"
 
+#include <GL/glu.h>
+
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
 #define COLOUR_BLUE 2
@@ -32,6 +34,8 @@ private:
 };
 
 SB6_Chapter2::SB6_Chapter2() {
+   GLenum glerror;
+
    this->display = NULL;
    this->running = true;
 
@@ -49,9 +53,12 @@ SB6_Chapter2::SB6_Chapter2() {
    glAttachShader(this->program, this->vertex->getShader());
    glAttachShader(this->program, this->fragment->getShader());
    glLinkProgram(this->program);
+   glerror = glGetError();
+   if (glerror != GL_NO_ERROR) {
+     printf("ERROR: Unable to link rendering program: %s\n", gluErrorString(glerror));
+   } 
 
    glGenVertexArrays(1, &this->vertexarray);
-   glBindVertexArray(this->vertexarray);
 }
 
 SB6_Chapter2::~SB6_Chapter2() {
@@ -64,19 +71,25 @@ SB6_Chapter2::~SB6_Chapter2() {
 }
 
 void SB6_Chapter2::appInit() {
-	this->display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
-
+    this->display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
 }
 
 bool SB6_Chapter2::appMain() {
+    GLenum glerror;
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glBindVertexArray(this->vertexarray);
     glUseProgram(this->program);
     glPointSize(40.0f);
-    glDrawArrays(GL_POINTS, 0, 1);
 
+    glDrawArrays(GL_POINTS, 0, 1);
+   
+    glerror = glGetError();
+    if (glerror != GL_NO_ERROR) {
+       printf("ERROR: Error encountered while drawing: %s\n", gluErrorString(glerror));
+    } 
     display->swapBuffers();
 
     display->mainLoop(*this);

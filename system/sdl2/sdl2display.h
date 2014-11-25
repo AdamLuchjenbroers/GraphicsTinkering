@@ -4,8 +4,9 @@
 #define GL_GLEXT_PROTOTYPES
 
 #include <stdio.h>
-#include "SDL2/SDL.h"
-#include "GL/glcorearb.h"
+#include <SDL2/SDL.h>
+#include <GL/glcorearb.h>
+#include <GL/glu.h>
 #include "system/display.h"
 
 

@@ -12,7 +12,7 @@ ifeq ($(display), windows)
   libs = -lopengl32 -lgdi32
   display = -DDISPLAY_WIN32
 else
-  libs = -lGL -lSDL2
+  libs = -lGL -lSDL2 -lGLU
   osdefs = -DDISPLAY_SDL2
 endif
 

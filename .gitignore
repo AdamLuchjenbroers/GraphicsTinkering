@@ -1,3 +1,8 @@
 *.o
 build/*
 include/GL
+
+#Eclipse CDT Files
+.cproject
+.project
+.settings

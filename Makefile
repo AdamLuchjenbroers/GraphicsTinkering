@@ -4,7 +4,7 @@ incs = -I./include
 
 opts = $(libs) $(defs) $(incs)
 
-all: system basic cube sb2 sb2_2
+all: system basic cube sb2 sb2_2 sb3_1 sb3_2
 
 clean:
 	rm -f build/* *.o
@@ -43,4 +43,16 @@ sb2_2.o : sb2_2.cpp
 
 sb2_2: sb2_2.o utilities/shader.o system/sdl2display.o
 	$(CC) $(incs) sb2_2.o utilities/shader.o system/sdl2display.o -o build/sb2_2 $(libs)
+	
+sb3_1.o : sb3_1.cpp
+	$(CC) $(incs) sb3_1.cpp -c -o sb3_1.o	
+
+sb3_1: sb3_1.o utilities/shader.o system/sdl2display.o
+	$(CC) $(incs) sb3_1.o utilities/shader.o system/sdl2display.o -o build/sb3_1 $(libs)
+	
+sb3_2.o : sb3_2.cpp
+	$(CC) $(incs) sb3_2.cpp -c -o sb3_2.o	
+
+sb3_2: sb3_2.o utilities/shader.o system/sdl2display.o
+	$(CC) $(incs) sb3_2.o utilities/shader.o system/sdl2display.o -o build/sb3_2 $(libs)
 

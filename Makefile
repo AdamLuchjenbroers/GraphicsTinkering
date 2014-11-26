@@ -19,6 +19,9 @@ system/sdl2display.o: system/sdl2/sdl2display.cpp system/sdl2/sdl2display.h
 	
 utilities/shader.o: utilities/shader.cpp utilities/shader.h
 	$(CC) $(incs) utilities/shader.cpp  -c -o utilities/shader.o
+	
+utilities/logger.o: utilities/shader.cpp utilities/shader.h
+	$(CC) $(incs) utilities/shader.cpp  -c -o utilities/logger.o
 
 basic: basic.o system/sdl2display.o
 	$(CC) $(incs) basic.o system/sdl2display.o -o build/basic $(libs) 
@@ -54,5 +57,11 @@ sb3_2.o : sb3_2.cpp
 	$(CC) $(incs) sb3_2.cpp -c -o sb3_2.o	
 
 sb3_2: sb3_2.o utilities/shader.o system/sdl2display.o
+	$(CC) $(incs) sb3_2.o utilities/shader.o system/sdl2display.o -o build/sb3_2 $(libs)
+	
+sb3_3: sb3_3.cpp
+	$(CC) $(incs) sb3_2.cpp -c -o sb3_2.o	
+
+sb3_3: sb3_3.o utilities/shader.o system/sdl2display.o utilities/logger.o
 	$(CC) $(incs) sb3_2.o utilities/shader.o system/sdl2display.o -o build/sb3_2 $(libs)
 

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "shader.h"
+#include "logger.h"
 #include <GL/glu.h>
 
 Shader::Shader(const std::string scriptfile, GLenum shadertype) {
@@ -19,7 +20,7 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   script.open(scriptfile.c_str());
 
   if ( script.fail() ) {
-    printf("FAILURE: Unable to open shader %s (%s)\n", scriptfile.c_str(), strerror(errno));
+    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to open shader source file %s (%s)\n", scriptfile.c_str(), strerror(errno));
     return;
   }
 
@@ -34,16 +35,16 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   glShaderSource(this->shader, this->shaderlines, this->shadersource, NULL);
   glerror = glGetError();
   if (glerror != GL_NO_ERROR) {
-    printf("ERROR: Unable to load shader: %s\n", gluErrorString(glerror));
+    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glShaderSource failed to load shader: %s\n", gluErrorString(glerror));
     return;
   } 
 
   glCompileShader(this->shader);
   glerror = glGetError();
   if (glerror != GL_NO_ERROR) {
-    printf("ERROR: Failed to compile %s: %s\n", scriptfile.c_str(), gluErrorString(glerror));
+    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\n", scriptfile.c_str(), gluErrorString(glerror));
   } else {
-    printf("INFO: Successfully compiled %s\n", scriptfile.c_str());
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader: %s\n", scriptfile.c_str());
 
     this->shaderscript.clear();
     this->releaseSource();
@@ -80,10 +81,13 @@ void Shader::printScript() {
       return;
   }
 
+
+  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "----------------");
   while (line < this->shaderlines) {
-    std::cout << this->shadersource[line];
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, shadersource[line]);
     line++;
   }
+  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "----------------");
 };
 
 
@@ -92,7 +96,7 @@ void Shader::printShader() {
 
   glGetShaderSource(this->shader, 1024, NULL, shadersource);
 
-  printf("Shader source:\n%s\n------------\n",shadersource);
+  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Shader source:\n%s\n------------\n",shadersource);
 };
 
 GLuint Shader::getShader() {

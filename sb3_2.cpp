@@ -6,7 +6,7 @@
 #include "system/display.h"
 #include "system/application.h"
 #include "utilities/shader.h"
-
+#include "utilities/logger.h"
 
 
 #define COLOUR_RED 0

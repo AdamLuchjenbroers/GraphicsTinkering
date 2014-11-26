@@ -1,7 +1,7 @@
 #include "logger.h"
 #include <cstdarg>
 
-void Logger::logprintf(Logger::Level loglevel, const char *format, ...) {
+void Logger::logprintf(Logger::Level loglevel, Logger::Channel logchannel, const char *format, ...) {
     va_list args;
 
     switch(loglevel) {
@@ -22,7 +22,7 @@ void Logger::logprintf(Logger::Level loglevel, const char *format, ...) {
     va_start(args, format);
     vprintf(format, args);
     va_end(args);
-}
+};
 
 int main() {
     Logger::logprintf(Logger::LOG_INFO, "Test message %i\n",1);

@@ -8,5 +8,9 @@ namespace Logger {
     ,   LOG_ERROR
     };
 
-  void logprintf(Level loglevel, const char *format, ...);
+    enum Channel {
+        LOG_SHADERS
+    };
+
+  void logprintf(Level loglevel, Channel logchannel, const char *format, ...);
 }

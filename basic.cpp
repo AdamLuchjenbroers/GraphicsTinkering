@@ -1,7 +1,5 @@
 
-#include "system/sdl2/sdl2display.h"
-#include "system/display.h"
-#include "system/application.h"
+#include "fw1/fw1.h"
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1

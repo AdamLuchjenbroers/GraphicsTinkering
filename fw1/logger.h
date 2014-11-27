@@ -10,6 +10,7 @@ namespace Logger {
 
     enum Channel {
         LOG_SHADERS
+    ,   LOG_APPLICATION
     };
 
   void logprintf(Level loglevel, Channel logchannel, const char *format, ...);

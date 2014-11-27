@@ -20,7 +20,7 @@ private:
 	DisplayInterface *display;
 	int colourIndex;
 
-	bool running = true;
+	bool running;
 
 	void draw_colour(GLfloat r, GLfloat g, GLfloat b);
 	GLfloat *colour_for_time(int time);
@@ -29,6 +29,7 @@ private:
 BasicApp::BasicApp() {
 	this->display = NULL;
 	this->colourIndex = 0;
+	this->running = true;
 }
 
 BasicApp::~BasicApp() {
@@ -67,7 +68,7 @@ void BasicApp::appQuit() {
 }
 
 void BasicApp::draw_colour(GLfloat r, GLfloat g, GLfloat b) {
-    printf("[%i] R:%f G:%f B:%f\n", this->colourIndex, r, g, b);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "[%i] R:%f G:%f B:%f\n", this->colourIndex, r, g, b);
 
     glClearColor(r, g, b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

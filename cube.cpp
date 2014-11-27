@@ -2,9 +2,7 @@
  * Primitive OpenGL program that generates a cube that rotates once
  */
 
-#include "system/sdl2/sdl2display.h"
-#include "system/display.h"
-#include "system/application.h"
+#include "fw1/fw1.h"
 
 class CubeApp : public EngineApplication {
 public:

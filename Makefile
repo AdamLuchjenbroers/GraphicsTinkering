@@ -32,8 +32,8 @@ basic: basic.o build/fw1.o
 basic.o:
 	$(CC) $(incs) basic.cpp -c -o basic.o
 
-cube: cube.o system/sdl2display.o
-	$(CC) $(incs) cube.o system/sdl2display.o -o build/cube $(libs)
+cube: cube.o build/fw1.o
+	$(CC) $(incs) cube.o build/fw1.o -o build/cube $(libs)
 	 	
 cube.o: cube.cpp
 	$(CC) $(incs) cube.cpp -c -o cube.o

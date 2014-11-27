@@ -2,10 +2,7 @@
  * Really basic shader from OpenGL SuperBible, chapter 2
  */
 
-#include "system/sdl2/sdl2display.h"
-#include "system/display.h"
-#include "system/application.h"
-#include "utilities/shader.h"
+#include "fw1/fw1.h"
 
 
 
@@ -44,14 +41,8 @@ SB6_Chapter2::SB6_Chapter2() {
    running = true;
 
    vertex = new Shader("shader/sb2_2-vertex.sdr", GL_VERTEX_SHADER);
-   printf("Vertex Shader Loaded\n------------\n");
-   vertex->printShader();
-   printf("------------\n");
 
    fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
-   printf("Fragment Shader Loaded\n------------\n");
-   fragment->printShader();
-   printf("------------\n");
 
    program = glCreateProgram();
    glAttachShader(program, vertex->getShader());
@@ -59,7 +50,7 @@ SB6_Chapter2::SB6_Chapter2() {
    glLinkProgram(program);
    glerror = glGetError();
    if (glerror != GL_NO_ERROR) {
-     printf("ERROR: Unable to link rendering program: %s\n", gluErrorString(glerror));
+     Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
    } 
 
    glGenVertexArrays(1, &vertexarray);

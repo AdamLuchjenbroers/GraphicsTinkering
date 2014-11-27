@@ -41,14 +41,14 @@ cube.o: cube.cpp
 sb2.o : sb2.cpp
 	$(CC) $(incs) sb2.cpp -c -o sb2.o
 
-sb2: sb2.o utilities/shader.o system/sdl2display.o
-	$(CC) $(incs) sb2.o utilities/shader.o system/sdl2display.o -o build/sb2 $(libs)
+sb2: sb2.o build/fw1.o
+	$(CC) $(incs) sb2.o build/fw1.o -o build/sb2 $(libs)
 	
 sb2_2.o : sb2_2.cpp
 	$(CC) $(incs) sb2_2.cpp -c -o sb2_2.o	
 
-sb2_2: sb2_2.o utilities/shader.o system/sdl2display.o
-	$(CC) $(incs) sb2_2.o utilities/shader.o system/sdl2display.o -o build/sb2_2 $(libs)
+sb2_2: sb2_2.o build/fw1.o
+	$(CC) $(incs) sb2_2.o build/fw1.o -o build/sb2_2 $(libs)
 	
 sb3_1.o : sb3_1.cpp
 	$(CC) $(incs) sb3_1.cpp -c -o sb3_1.o	

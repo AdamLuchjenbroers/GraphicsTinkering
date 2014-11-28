@@ -4,21 +4,14 @@ incs = -I./include
 
 opts = $(libs) $(defs) $(incs)
 
-all: system basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3
+all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3
 
 clean:
 	rm -f build/* *.o
 	cd ./system && $(MAKE) clean
-	
-system:
-	cd ./system && $(MAKE)
 
 build/fw1.o:
 	cd ./fw1 && $(MAKE)
-
-#Hack to fix compilation logic
-system/sdl2display.o: system/sdl2/sdl2display.cpp system/sdl2/sdl2display.h
-	cd ./system && $(MAKE) sdl2display.o
 
 basic: basic.o build/fw1.o
 	$(CC) $(incs) basic.o build/fw1.o -o build/basic $(libs) 

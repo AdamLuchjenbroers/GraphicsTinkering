@@ -13,6 +13,12 @@ clean:
 build/fw1.o:
 	cd ./fw1 && $(MAKE)
 
+tests/fw1.o:
+	cd ./fw1 && $(MAKE) tests
+
+tests: tests.cpp fw1/tests.h tests/fw1.o
+	$(CC) $(incs) tests.cpp tests/fw1.o -o build/tests -lcppunit $(libs)
+
 basic: basic.o build/fw1.o
 	$(CC) $(incs) basic.o build/fw1.o -o build/basic $(libs) 
 

@@ -125,3 +125,10 @@ void Shader::prepareSource() {
   }
 };
 
+/*
+ * 
+ */
+
+Shader *ShaderLib::getShader(const char *name, GLuint stage) {
+  //TODO: Implement lookup based on supported OpenGL version
+}

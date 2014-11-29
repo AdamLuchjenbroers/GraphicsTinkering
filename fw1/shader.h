@@ -26,3 +26,7 @@ private:
 
   GLuint shader;
 };
+
+namespace ShaderLib {
+     Shader *getShader(const char *name, GLuint stage);
+};

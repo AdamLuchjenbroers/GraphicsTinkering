@@ -17,25 +17,25 @@ void GLVersionComparisonTest::tearDown() {
 }
 
 void GLVersionComparisonTest::testLessThan() {
-    CPPUNIT_ASSERT ( GLVersion(4,0) < GLVersion(4,1) );
-    CPPUNIT_ASSERT ( GLVersion(3,1) < GLVersion(4,0) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,1) < GLVersion(4,0)) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) < GLVersion(3,1)) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) < GLVersion(4,0)) );
+    CPPUNIT_ASSERT ( *four_zero < *four_one );
+    CPPUNIT_ASSERT ( *three_one < *four_zero );
+    CPPUNIT_ASSERT ( !(*four_one < *four_zero) );
+    CPPUNIT_ASSERT ( !(*four_zero < *three_one) );
+    CPPUNIT_ASSERT ( !(*four_zero < *four_zero_dup) );
 }
 
 void GLVersionComparisonTest::testGreaterThan() {
-    CPPUNIT_ASSERT ( GLVersion(4,1) > GLVersion(4,0) );
-    CPPUNIT_ASSERT ( GLVersion(4,0) > GLVersion(3,1) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) > GLVersion(4,1)) );
-    CPPUNIT_ASSERT ( !(GLVersion(3,1) > GLVersion(4,0)) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) < GLVersion(4,0)) );
+    CPPUNIT_ASSERT ( *four_one > *four_zero );
+    CPPUNIT_ASSERT ( *four_zero > *three_one );
+    CPPUNIT_ASSERT ( !(*four_zero > *four_one) );
+    CPPUNIT_ASSERT ( !(*three_one > *four_zero) );
+    CPPUNIT_ASSERT ( !(*four_zero < *four_zero_dup) );
 }
 
 void GLVersionComparisonTest::testEquality() {
-    CPPUNIT_ASSERT ( GLVersion(4,0) == GLVersion(4,0) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) == GLVersion(3,0)) );
-    CPPUNIT_ASSERT ( !(GLVersion(4,0) == GLVersion(4,1)) );
+    CPPUNIT_ASSERT ( *four_zero == *four_zero_dup );
+    CPPUNIT_ASSERT ( !(*four_zero == *three_zero) );
+    CPPUNIT_ASSERT ( !(*four_zero == *four_one) );
 }
 
 void GLVersionParsingTest::runTest() {

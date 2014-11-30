@@ -11,6 +11,7 @@ SDLDisplay::SDLDisplay(const char *title, int width, int height) {
   printf("GL Version: %s\n",  glGetString(GL_VERSION));
   printf("GL Renderer: %s\n", glGetString(GL_RENDERER));
   printf("GL Vendor: %s\n", glGetString(GL_VENDOR));
+  printf("GLSL Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
  
 SDLDisplay::~SDLDisplay() {

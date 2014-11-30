@@ -7,6 +7,8 @@ public:
     virtual bool operator>(const VersionNumber &right);
     virtual bool operator<=(const VersionNumber &right);
     virtual bool operator>=(const VersionNumber &right);
+
+    virtual bool operator==(const VersionNumber &right);
 protected:
     GLint major, minor;
 };
@@ -17,5 +19,6 @@ public:
     GLVersion();
 
     void printVersion();
-};
 
+    static GLVersion *versionFromText(char *text);
+};

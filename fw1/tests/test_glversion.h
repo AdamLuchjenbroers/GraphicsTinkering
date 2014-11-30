@@ -18,16 +18,22 @@ class GLVersionComparisonTest : public CppUnit::TestFixture {
         void testGreaterThan();
         //void testLessThanEqual();
         //void testGreaterThanEqual();
-        //void testEquality();
+        void testEquality();
 
         static CppUnit::Test *suite() {
             CppUnit::TestSuite *allTests = new CppUnit::TestSuite("GL Version Comparison Tests");
 
             allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testLessThan", &GLVersionComparisonTest::testLessThan));
             allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testGreaterThan", &GLVersionComparisonTest::testGreaterThan));
+            allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testEquality", &GLVersionComparisonTest::testEquality));
 
             return allTests;
         }
+};
+
+class GLVersionParsingTest : public CppUnit::TestCase {
+public:
+    void runTest();
 };
 
 

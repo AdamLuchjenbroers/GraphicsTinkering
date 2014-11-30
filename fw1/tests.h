@@ -10,6 +10,7 @@ namespace FrameworkOneTestSuite {
         CppUnit::TestSuite *allTests = new CppUnit::TestSuite("Framework One Test Cases");
 
         allTests->addTest(GLVersionComparisonTest::suite());
+        allTests->addTest(new GLVersionParsingTest());
 
         return allTests;
     }

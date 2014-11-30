@@ -31,3 +31,21 @@ void GLVersionComparisonTest::testGreaterThan() {
     CPPUNIT_ASSERT ( !(GLVersion(3,1) > GLVersion(4,0)) );
     CPPUNIT_ASSERT ( !(GLVersion(4,0) < GLVersion(4,0)) );
 }
+
+void GLVersionComparisonTest::testEquality() {
+    CPPUNIT_ASSERT ( GLVersion(4,0) == GLVersion(4,0) );
+    CPPUNIT_ASSERT ( !(GLVersion(4,0) == GLVersion(3,0)) );
+    CPPUNIT_ASSERT ( !(GLVersion(4,0) == GLVersion(4,1)) );
+}
+
+void GLVersionParsingTest::runTest() {
+    GLVersion *parsed, *compare;
+
+    compare = new GLVersion(4,1);
+    parsed = GLVersion::versionFromText("4.1");
+
+    CPPUNIT_ASSERT(*compare == *parsed);
+
+    delete compare;
+    delete parsed;
+}

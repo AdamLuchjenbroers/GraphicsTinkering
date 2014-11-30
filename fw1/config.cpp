@@ -32,9 +32,13 @@ GLVersion::GLVersion(GLint maj, GLint min) {
   minor = min;
 }
 
-GLVersion::GLVersion() {
-  glGetIntegerv(GL_MAJOR_VERSION, &major);
-  glGetIntegerv(GL_MINOR_VERSION, &minor);
+GLVersion *GLVersion::getContextVersion() {
+    GLint major, minor;
+
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+    return new GLVersion(major, minor);
 }
 
 void GLVersion::printVersion() {

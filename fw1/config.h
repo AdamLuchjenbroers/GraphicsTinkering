@@ -21,10 +21,10 @@ protected:
 class GLVersion : public VersionNumber {
 public:
     GLVersion(GLint major, GLint minor);
-    GLVersion();
 
     void printVersion();
 
+    static GLVersion *getContextVersion();
     static GLVersion *versionFromText(char *text);
     static GLVersion *versionFromText(std::string text);
 };

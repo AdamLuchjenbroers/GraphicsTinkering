@@ -5,6 +5,9 @@
 #include <GL/glcorearb.h>
 #include <list>
 #include <string>
+#include <map>
+
+#include "config.h"
 
 class Shader {
 public:
@@ -37,4 +40,6 @@ private:
     static ShaderLibrary *library;
 
     ShaderLibrary(char *basepath);
+
+    std::map<GLVersion, char*> versions;
 };

@@ -126,9 +126,38 @@ void Shader::prepareSource() {
 };
 
 /*
- * 
+ * Shader Library 
  */
+ShaderLibrary::ShaderLibrary(char *basepath) {
+    //TODO: Scan path and build an index of available versions
+};
 
-Shader *ShaderLib::getShader(const char *name, GLuint stage) {
-  //TODO: Implement lookup based on supported OpenGL version
-}
+ShaderLibrary *ShaderLibrary::library = NULL;
+
+void ShaderLibrary::setLibraryPath(char *newpath) {
+    if (library != NULL) {
+        delete library;
+    }
+
+    library = new ShaderLibrary(newpath);
+};
+
+ShaderLibrary *ShaderLibrary::getLibrary() {
+    if (library == NULL) {
+        //Initialise with default library path
+        char defaultPath[9] = "./shader";
+        setLibraryPath(defaultPath);
+    }
+
+    return library;
+};
+
+Shader *ShaderLibrary::getShader(const char *name, GLuint stage) {
+    //TODO: Implement lookup based on supported OpenGL version
+};
+
+
+
+
+
+

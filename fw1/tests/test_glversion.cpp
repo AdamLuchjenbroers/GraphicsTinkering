@@ -40,9 +40,10 @@ void GLVersionComparisonTest::testEquality() {
 
 void GLVersionParsingTest::runTest() {
     GLVersion *parsed, *compare;
+    char version[4] = "4.1";
 
     compare = new GLVersion(4,1);
-    parsed = GLVersion::versionFromText("4.1");
+    parsed = GLVersion::versionFromText(version);
 
     CPPUNIT_ASSERT(*compare == *parsed);
 

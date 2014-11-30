@@ -1,5 +1,9 @@
 #define GL_GLEXT_PROTOTYPES
+
+#include <string>
+
 #include "GL/glcorearb.h"
+
 
 class VersionNumber {
 public:
@@ -21,4 +25,5 @@ public:
     void printVersion();
 
     static GLVersion *versionFromText(char *text);
+    static GLVersion *versionFromText(std::string text);
 };

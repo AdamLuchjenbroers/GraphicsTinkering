@@ -69,4 +69,6 @@ GLVersion *GLVersion::versionFromText(char *text) {
     }
 }
 
-
+GLVersion *GLVersion::versionFromText(std::string text) {
+    return versionFromText(text.c_str());
+}

@@ -41,5 +41,5 @@ private:
 
     ShaderLibrary(char *basepath);
 
-    std::map<GLVersion, char*> versions;
+    std::map<GLSLVersion, char*> versions;
 };

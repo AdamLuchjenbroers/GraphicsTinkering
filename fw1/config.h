@@ -8,12 +8,12 @@
 
 class VersionNumber {
 public:
-    virtual bool operator<(const VersionNumber &right);
-    virtual bool operator>(const VersionNumber &right);
-    virtual bool operator<=(const VersionNumber &right);
-    virtual bool operator>=(const VersionNumber &right);
+    virtual bool operator<(const VersionNumber &right) const;
+    virtual bool operator>(const VersionNumber &right) const;
+    virtual bool operator<=(const VersionNumber &right) const;
+    virtual bool operator>=(const VersionNumber &right) const;
 
-    virtual bool operator==(const VersionNumber &right);
+    virtual bool operator==(const VersionNumber &right) const;
 protected:
     GLint major, minor;
 };

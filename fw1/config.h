@@ -16,6 +16,9 @@ public:
     virtual bool operator==(const VersionNumber &right) const;
 protected:
     GLint major, minor;
+
+    char logName[16];
+    char *getLogName();
 };
 
 class GLVersion : public VersionNumber {

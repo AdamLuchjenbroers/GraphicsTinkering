@@ -30,6 +30,8 @@ inline bool VersionNumber::operator==(const VersionNumber &right) const {
 GLVersion::GLVersion(GLint maj, GLint min) {
   major = maj;
   minor = min;
+
+  snprintf(logName, 16, "%i.%i", major, minor);
 }
 
 GLVersion *GLVersion::contextVersion = NULL;

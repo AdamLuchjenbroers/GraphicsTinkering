@@ -104,6 +104,11 @@ GLSLVersion *GLSLVersion::versionFromText(char *text) {
     GLint major, minor;
 
     if ( parseVersion(text, major, minor) ) {
+        // GLSL Minor Versions always have two digits, so presume 1.1 is meant to be 1.10
+        if (minor < 10) {
+            minor *= 10;
+        }
+
         return new GLSLVersion(major, minor);
     } else {
         return NULL;

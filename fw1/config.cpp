@@ -32,13 +32,19 @@ GLVersion::GLVersion(GLint maj, GLint min) {
   minor = min;
 }
 
+GLVersion *GLVersion::contextVersion = NULL;
+
 GLVersion *GLVersion::getContextVersion() {
     GLint major, minor;
 
-    glGetIntegerv(GL_MAJOR_VERSION, &major);
-    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    if (contextVersion == NULL) {
+        glGetIntegerv(GL_MAJOR_VERSION, &major);
+        glGetIntegerv(GL_MINOR_VERSION, &minor);
 
-    return new GLVersion(major, minor);
+        contextVersion = new GLVersion(major, minor);
+    }
+
+    return contextVersion;
 }
 
 void GLVersion::printVersion() {
@@ -90,14 +96,22 @@ GLSLVersion::GLSLVersion(GLint maj, GLint min) {
     minor = min;
 }
 
+GLSLVersion *GLSLVersion::contextVersion = NULL;
+
 GLSLVersion *GLSLVersion::getContextVersion() {
     GLint major, minor;
     char versionString[1024];
 
-    strncpy(versionString, (char *)glGetString(GL_SHADING_LANGUAGE_VERSION), 1024);
-    if ( parseVersion(versionString, major, minor) ) {
-        return new GLSLVersion(major, minor);
+
+    if (contextVersion == NULL) {
+        strncpy(versionString, (char *)glGetString(GL_SHADING_LANGUAGE_VERSION), 1024);
+
+        if ( parseVersion(versionString, major, minor) ) {
+            contextVersion = new GLSLVersion(major, minor);
+        }
     }
+
+    return contextVersion;
 };
 
 GLSLVersion *GLSLVersion::versionFromText(char *text) {

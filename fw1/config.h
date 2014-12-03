@@ -27,6 +27,8 @@ public:
     static GLVersion *getContextVersion();
     static GLVersion *versionFromText(char *text);
     static GLVersion *versionFromText(std::string text);
+
+    static GLVersion *contextVersion;
 };
 
 class GLSLVersion : public VersionNumber {
@@ -36,4 +38,6 @@ public:
     static GLSLVersion *getContextVersion();
     static GLSLVersion *versionFromText(char *text);
     static GLSLVersion *versionFromText(std::string text);
+
+    static GLSLVersion *contextVersion;
 };

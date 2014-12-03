@@ -11,8 +11,8 @@ tests: ../tests/fw1.o
 clean:
 	rm -f *.o tests/*.o
 
-../build/fw1.o: sdldisplay.o shader.o logger.o config.o fw1.h
-	ld -r sdldisplay.o shader.o logger.o config.o -o ../build/fw1.o
+../build/fw1.o: sdldisplay.o shader.o logger.o config.o ShaderLibrary.o fw1.h 
+	ld -r sdldisplay.o shader.o logger.o config.o ShaderLibrary.o -o ../build/fw1.o
 
 sdldisplay.o: sdldisplay.cpp sdldisplay.h 
 	$(CC) $(incs) sdldisplay.cpp -c -o sdldisplay.o $(libs)
@@ -25,6 +25,9 @@ logger.o: logger.cpp logger.h
 
 config.o: config.cpp config.h 
 	$(CC) $(incs) config.cpp -c -o config.o $(libs)
+
+ShaderLibrary.o: ShaderLibrary.cpp ShaderLibrary.h
+	$(CC) $(incs) ShaderLibrary.cpp -c -o ShaderLibrary.o
 
 # Test Cases
 

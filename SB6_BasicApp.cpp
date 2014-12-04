@@ -31,6 +31,8 @@ void SB6_BasicApp::loadShaders(const char *vertexName, const char *fragmentName)
     if (glerror != GL_NO_ERROR) {
          Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
     }
+
+    glUseProgram(program);
 };
 
 void SB6_BasicApp::appQuit() {

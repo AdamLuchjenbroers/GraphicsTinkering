@@ -49,6 +49,7 @@ void SB6_Chapter2::appInit() {
     loadShaders("sb2-vertex.sdr", "sb2.fragment.sdr");
    
     glGenVertexArrays(1, &vertexarray);
+    glBindVertexArray(vertexarray);
 }
 
 bool SB6_Chapter2::appMain() {
@@ -57,8 +58,6 @@ bool SB6_Chapter2::appMain() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBindVertexArray(vertexarray);
-    glUseProgram(program);
     glPointSize(pointsize);
 
     glDrawArrays(GL_POINTS, 0, 1);
@@ -89,7 +88,6 @@ bool SB6_Chapter2::appMain() {
 
     return running;
 }
-
 
 
 int main( int argc, char* args[] ) { 

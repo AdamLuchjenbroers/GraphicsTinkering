@@ -7,4 +7,5 @@
 #include "logger.h"
 #include "shader.h"
 #include "sdldisplay.h"
+#include "ShaderLibrary.h"
 #include "config.h"

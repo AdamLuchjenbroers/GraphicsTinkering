@@ -27,6 +27,10 @@ inline bool VersionNumber::operator==(const VersionNumber &right) const {
   return (this->major == right.major && this->minor == right.minor);
 }
 
+const char *VersionNumber::getLogName() const {
+    return logName;
+}
+
 GLVersion::GLVersion(GLint maj, GLint min) {
   major = maj;
   minor = min;
@@ -96,6 +100,13 @@ GLVersion *GLVersion::versionFromText(std::string text) {
 GLSLVersion::GLSLVersion(GLint maj, GLint min) {
     major = maj;
     minor = min;
+        
+    // GLSL Minor Versions always have two digits, so presume 1.1 is meant to be 1.10
+    if (minor < 10) {
+        minor *= 10;
+    }
+  
+    snprintf(logName, 16, "%i.%i", major, minor);
 }
 
 GLSLVersion *GLSLVersion::contextVersion = NULL;
@@ -120,10 +131,6 @@ GLSLVersion *GLSLVersion::versionFromText(char *text) {
     GLint major, minor;
 
     if ( parseVersion(text, major, minor) ) {
-        // GLSL Minor Versions always have two digits, so presume 1.1 is meant to be 1.10
-        if (minor < 10) {
-            minor *= 10;
-        }
 
         return new GLSLVersion(major, minor);
     } else {

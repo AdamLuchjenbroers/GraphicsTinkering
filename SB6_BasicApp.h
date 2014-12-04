@@ -12,4 +12,6 @@ protected:
 
     GLuint program;
     bool running;
+
+    static void valueSwing(GLfloat &offset, GLfloat increment, bool &increase, GLfloat min, GLfloat max);
 };

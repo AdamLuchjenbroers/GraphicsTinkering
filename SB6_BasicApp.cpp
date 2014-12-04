@@ -39,3 +39,14 @@ void SB6_BasicApp::appQuit() {
     running = false;
 };
 
+void SB6_BasicApp::valueSwing(GLfloat &offset, GLfloat increment, bool &increase, GLfloat min, GLfloat max) {
+    if (increase) {
+        offset += increment;
+    } else {
+        offset -= increment;
+    }
+
+    if (offset >= max || offset <= min) {
+        increase = !increase;
+    }
+};

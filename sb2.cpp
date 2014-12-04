@@ -72,19 +72,7 @@ bool SB6_Chapter2::appMain() {
 
     SDL_Delay(10);
 
-    if (ascending) {
-        pointsize += 0.5f;
-
-        if (pointsize >= 64.0f) {
-            ascending = false;
-        }
-    } else {
-        pointsize -= 0.5f;
-
-        if (pointsize <= 0.5f) {
-            ascending = true;
-        }
-    }
+    valueSwing(pointsize, 0.5f, ascending, 0.5f, 64.0f);
 
     return running;
 }

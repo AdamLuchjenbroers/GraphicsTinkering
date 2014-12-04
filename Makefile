@@ -45,8 +45,8 @@ sb2: sb2.o build/fw1.o SB6_BasicApp.o
 sb2_2.o : sb2_2.cpp
 	$(CC) $(incs) sb2_2.cpp -c -o sb2_2.o	
 
-sb2_2: sb2_2.o build/fw1.o
-	$(CC) $(incs) sb2_2.o build/fw1.o -o build/sb2_2 $(libs)
+sb2_2: sb2_2.o build/fw1.o SB6_BasicApp.o
+	$(CC) $(incs) sb2_2.o build/fw1.o SB6_BasicApp.o -o build/sb2_2 $(libs)
 	
 sb3_1.o : sb3_1.cpp
 	$(CC) $(incs) sb3_1.cpp -c -o sb3_1.o	

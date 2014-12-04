@@ -3,7 +3,7 @@
  */
 
 #include "fw1/fw1.h"
-
+#include "SB6_BasicApp.h"
 
 
 #define COLOUR_RED 0
@@ -12,63 +12,37 @@
 #define COLOUR_ALPHA 3
 
 
-class SB6_Chapter2 : public EngineApplication {
+class SB6_Chapter2 : public SB6_BasicApp {
 public:
     SB6_Chapter2();
     ~SB6_Chapter2();
 
     bool appMain();
     void appInit();
-    void appQuit();
 
 private:
-    DisplayInterface *display;
-
-    GLuint program, vertexarray;
-    Shader *vertex, *fragment;
-
-    bool running;
-
-    GLfloat pointsize;
-    bool ascending;
-
+    GLuint vertexarray;
 };
 
 SB6_Chapter2::SB6_Chapter2() {
-   GLenum glerror;
-
-   display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
+   display = new SDLDisplay("Chapter 2.2 - A Triangle", 300, 400);
    running = true;
-
-   vertex = new Shader("shader/sb2_2-vertex.sdr", GL_VERTEX_SHADER);
-
-   fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
-
-   program = glCreateProgram();
-   glAttachShader(program, vertex->getShader());
-   glAttachShader(program, fragment->getShader());
-   glLinkProgram(program);
-   glerror = glGetError();
-   if (glerror != GL_NO_ERROR) {
-     Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
-   } 
-
-   glGenVertexArrays(1, &vertexarray);
-
-   pointsize = 10.0f;
-   ascending = true;
 }
 
 SB6_Chapter2::~SB6_Chapter2() {
-   if (display != NULL) {
-       delete display;
-   }
+    if (display != NULL) {
+        delete display;
+    }
 
-   delete vertex;
-   delete fragment;
+    delete vertex;
+    delete fragment;
 }
 
 void SB6_Chapter2::appInit() {
+    loadShaders("sb2_2-vertex.sdr", "sb2-fragment.sdr");
+
+    glGenVertexArrays(1, &vertexarray);
+    glBindVertexArray(vertexarray);
 }
 
 bool SB6_Chapter2::appMain() {
@@ -76,10 +50,6 @@ bool SB6_Chapter2::appMain() {
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    glBindVertexArray(vertexarray);
-    glUseProgram(program);
-    glPointSize(pointsize);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
    
@@ -93,28 +63,8 @@ bool SB6_Chapter2::appMain() {
 
     SDL_Delay(10);
 
-    if (ascending) {
-        pointsize += 0.5f;
-
-        if (pointsize >= 64.0f) {
-            ascending = false;
-        }
-    } else {
-        pointsize -= 0.5f;
-
-        if (pointsize <= 0.5f) {
-            ascending = true;
-        }
-    }
-
     return running;
 }
-
-void SB6_Chapter2::appQuit() {
-    running = false;
-}
-
-
 
 int main( int argc, char* args[] ) { 
   EngineApplication *thisApp = new SB6_Chapter2();

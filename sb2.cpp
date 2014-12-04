@@ -71,7 +71,6 @@ bool SB6_Chapter2::appMain() {
     display->mainLoop(*this);
 
     SDL_Delay(10);
-
     valueSwing(pointsize, 0.5f, ascending, 0.5f, 64.0f);
 
     return running;

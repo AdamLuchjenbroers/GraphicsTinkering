@@ -3,6 +3,8 @@
  */
 
 #include "fw1/fw1.h"
+#include "SB6_BasicApp.h"
+
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
@@ -10,35 +12,25 @@
 #define COLOUR_ALPHA 3
 
 
-class SB6_Chapter2 : public EngineApplication {
+class SB6_Chapter2 : public SB6_BasicApp {
 public:
     SB6_Chapter2();
     ~SB6_Chapter2();
 
     bool appMain();
     void appInit();
-    void appQuit();
 
 private:
-    DisplayInterface *display;
-
-    GLuint program, vertexarray;
-    Shader *vertex, *fragment;
-
-    bool running;
+    GLuint vertexarray;
 
     GLfloat pointsize;
     bool ascending;
 
 };
 
-
 SB6_Chapter2::SB6_Chapter2() {
    display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
    running = true;
-
-   vertex = NULL;
-   fragment = NULL;
 
    pointsize = 10.0f;
    ascending = true;
@@ -54,25 +46,7 @@ SB6_Chapter2::~SB6_Chapter2() {
 }
 
 void SB6_Chapter2::appInit() {
-    ShaderLibrary *lib;
-    GLuint glerror;
-    char shaderPath[9] = "./shader";
-
-    ShaderLibrary::setLibraryPath(shaderPath);
-    lib = ShaderLibrary::getLibrary();
-
-    vertex = lib->getShader("sb2-vertex.sdr", GL_VERTEX_SHADER); 
-    fragment = lib->getShader("sb2-fragment.sdr", GL_FRAGMENT_SHADER); 
-    
-    program = glCreateProgram();
-    glAttachShader(program, vertex->getShader());
-    glAttachShader(program, fragment->getShader());
-    glLinkProgram(program);
-   
-    glerror = glGetError();
-    if (glerror != GL_NO_ERROR) {
-         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
-    } 
+    loadShaders("sb2-vertex.sdr", "sb2.fragment.sdr");
    
     glGenVertexArrays(1, &vertexarray);
 }
@@ -114,10 +88,6 @@ bool SB6_Chapter2::appMain() {
     }
 
     return running;
-}
-
-void SB6_Chapter2::appQuit() {
-    running = false;
 }
 
 

@@ -32,12 +32,15 @@ cube: cube.o build/fw1.o
 	 	
 cube.o: cube.cpp
 	$(CC) $(incs) cube.cpp -c -o cube.o
+
+SB6_BasicApp.o: SB6_BasicApp.cpp SB6_BasicApp.h
+	$(CC) $(incs) SB6_BasicApp.cpp -c -o SB6_BasicApp.o
 	
-sb2.o : sb2.cpp
+sb2.o : sb2.cpp SB6_BasicApp.h
 	$(CC) $(incs) sb2.cpp -c -o sb2.o
 
-sb2: sb2.o build/fw1.o
-	$(CC) $(incs) sb2.o build/fw1.o -o build/sb2 $(libs)
+sb2: sb2.o build/fw1.o SB6_BasicApp.o
+	$(CC) $(incs) sb2.o build/fw1.o SB6_BasicApp.o -o build/sb2 $(libs)
 	
 sb2_2.o : sb2_2.cpp
 	$(CC) $(incs) sb2_2.cpp -c -o sb2_2.o	

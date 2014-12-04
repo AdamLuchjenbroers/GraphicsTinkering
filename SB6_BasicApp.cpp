@@ -50,3 +50,19 @@ void SB6_BasicApp::valueSwing(GLfloat &offset, GLfloat increment, bool &increase
         increase = !increase;
     }
 };
+
+
+SB6_BasicApp::~SB6_BasicApp() {
+   if (display != NULL) {
+       delete display;
+   }
+  
+   if (vertex != NULL) {
+       delete vertex;
+   }
+
+   if (fragment != NULL) {
+       delete fragment;
+   }
+}
+

@@ -15,11 +15,9 @@
 class SB6_Chapter2 : public SB6_BasicApp {
 public:
     SB6_Chapter2();
-    ~SB6_Chapter2();
 
     bool appMain();
     void appInit();
-
 private:
     GLuint vertexarray;
 
@@ -34,15 +32,6 @@ SB6_Chapter2::SB6_Chapter2() {
 
    pointsize = 10.0f;
    ascending = true;
-}
-
-SB6_Chapter2::~SB6_Chapter2() {
-   if (display != NULL) {
-       delete display;
-   }
-
-   delete vertex;
-   delete fragment;
 }
 
 void SB6_Chapter2::appInit() {

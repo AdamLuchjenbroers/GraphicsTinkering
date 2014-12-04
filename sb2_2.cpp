@@ -15,7 +15,6 @@
 class SB6_Chapter2 : public SB6_BasicApp {
 public:
     SB6_Chapter2();
-    ~SB6_Chapter2();
 
     bool appMain();
     void appInit();
@@ -27,15 +26,6 @@ private:
 SB6_Chapter2::SB6_Chapter2() {
    display = new SDLDisplay("Chapter 2.2 - A Triangle", 300, 400);
    running = true;
-}
-
-SB6_Chapter2::~SB6_Chapter2() {
-    if (display != NULL) {
-        delete display;
-    }
-
-    delete vertex;
-    delete fragment;
 }
 
 void SB6_Chapter2::appInit() {

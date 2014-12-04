@@ -2,6 +2,8 @@
 include Makefile.inc
 incs = -I./include
 
+.PHONY: all clean build/fw1.o tests/fw1.o
+
 opts = $(libs) $(defs) $(incs)
 
 all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3

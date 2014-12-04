@@ -32,25 +32,13 @@ private:
 
 };
 
-SB6_Chapter2::SB6_Chapter2() {
-   GLenum glerror;
 
+SB6_Chapter2::SB6_Chapter2() {
    display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
    running = true;
 
-   vertex = new Shader("shader/sb2-vertex.sdr", GL_VERTEX_SHADER);
-   fragment = new Shader("shader/sb2-fragment.sdr", GL_FRAGMENT_SHADER);
-
-   program = glCreateProgram();
-   glAttachShader(program, vertex->getShader());
-   glAttachShader(program, fragment->getShader());
-   glLinkProgram(program);
-   glerror = glGetError();
-   if (glerror != GL_NO_ERROR) {
-     Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
-   } 
-
-   glGenVertexArrays(1, &vertexarray);
+   vertex = NULL;
+   fragment = NULL;
 
    pointsize = 10.0f;
    ascending = true;
@@ -66,6 +54,27 @@ SB6_Chapter2::~SB6_Chapter2() {
 }
 
 void SB6_Chapter2::appInit() {
+    ShaderLibrary *lib;
+    GLuint glerror;
+    char shaderPath[9] = "./shader";
+
+    ShaderLibrary::setLibraryPath(shaderPath);
+    lib = ShaderLibrary::getLibrary();
+
+    vertex = lib->getShader("sb2-vertex.sdr", GL_VERTEX_SHADER); 
+    fragment = lib->getShader("sb2-fragment.sdr", GL_FRAGMENT_SHADER); 
+    
+    program = glCreateProgram();
+    glAttachShader(program, vertex->getShader());
+    glAttachShader(program, fragment->getShader());
+    glLinkProgram(program);
+   
+    glerror = glGetError();
+    if (glerror != GL_NO_ERROR) {
+         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
+    } 
+   
+    glGenVertexArrays(1, &vertexarray);
 }
 
 bool SB6_Chapter2::appMain() {
@@ -82,7 +91,7 @@ bool SB6_Chapter2::appMain() {
    
     glerror = glGetError();
     if (glerror != GL_NO_ERROR) {
-       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while drawing: %s\n", gluErrorString(glerror));
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while drawing: %s\n", gluErrorString(glerror));
     } 
     display->swapBuffers();
 

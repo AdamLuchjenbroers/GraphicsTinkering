@@ -1,10 +1,11 @@
 #include "SB6_BasicApp.h"
 
 
-void SB6_BasicApp::loadShaders(const char *vertexName, const char *fragmentName) {
+bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentName) {
     ShaderLibrary *lib;
     GLuint glerror;
     char shaderPath[9] = "./shader";
+    bool allLoaded = true;
 
     ShaderLibrary::setLibraryPath(shaderPath);
     lib = ShaderLibrary::getLibrary();
@@ -12,15 +13,29 @@ void SB6_BasicApp::loadShaders(const char *vertexName, const char *fragmentName)
     program = glCreateProgram();
 
     if (vertexName != NULL) {
-        vertex = lib->getShader(vertexName, GL_VERTEX_SHADER); 
-        glAttachShader(program, vertex->getShader());
+        vertex = lib->getShader(vertexName, GL_VERTEX_SHADER);
+
+        if (vertex != NULL) {
+            glAttachShader(program, vertex->getShader());
+        } else {
+            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_APPLICATION, "Unable to load Vertex shader %s\n", vertexName);
+            allLoaded = false;
+        }
+
     } else {
         vertex = NULL;
     }
 
     if (fragmentName != NULL) {
         fragment = lib->getShader(fragmentName, GL_FRAGMENT_SHADER);
-        glAttachShader(program, fragment->getShader());
+
+        if (fragment != NULL) {
+            glAttachShader(program, fragment->getShader());
+        } else {
+            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_APPLICATION, "Unable to load Fragment shader %s\n", fragmentName);
+            allLoaded = false;
+        }
+
     } else { 
         fragment = NULL;
     }

@@ -7,7 +7,12 @@ public:
     ~SB6_BasicApp();
 
 protected:
-    void loadShaders(const char *vertexName, const char *fragmentName);
+/** Creates and loads a simple shader program consisting of a Vertex and Fragment Shader
+ *  @param vertexName The name of the vertex shader to be loaded.
+ *  @param fragmentName The name of the fragment shader to be loaded.
+ *  @return True if all shader components loaded successfully
+ */
+    bool loadVFProgram(const char *vertexName, const char *fragmentName);
     virtual void appQuit();
 
     Shader *vertex, *fragment;

@@ -44,7 +44,7 @@ SB6_Chapter3::SB6_Chapter3() {
 }
 
 void SB6_Chapter3::appInit() {
-    loadShaders("sb3_2-vertex.sdr", "sb3-fragment.sdr");
+    loadVFProgram("sb3_2-vertex.sdr", "sb3-fragment.sdr");
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);

@@ -32,3 +32,7 @@ GLfloat Vector4::magnitude() {
 
     return sqrt(pythagoras);
 }
+
+void Vector4::normalize() {
+    *this /= this->magnitude();
+}

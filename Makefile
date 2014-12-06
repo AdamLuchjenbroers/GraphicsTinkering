@@ -1,6 +1,7 @@
+incs = -I./include
 
 include Makefile.inc
-incs = -I./include
+
 
 .PHONY: all clean build/fw1.o tests/fw1.o
 
@@ -10,7 +11,7 @@ all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3 sb3_4 sb5_1
 
 clean:
 	rm -f build/* *.o
-	cd ./system && $(MAKE) clean
+	cd ./fw1 && $(MAKE) clean
 
 build/fw1.o:
 	cd ./fw1 && $(MAKE)
@@ -22,59 +23,11 @@ tests: tests.cpp fw1/tests.h tests/fw1.o
 	$(CC) $(incs) tests.cpp tests/fw1.o -o build/tests -lcppunit $(libs)
 
 basic: basic.o build/fw1.o
-	$(CC) $(incs) basic.o build/fw1.o -o build/basic $(libs) 
-
-basic.o:
-	$(CC) $(incs) basic.cpp -c -o basic.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
 cube: cube.o build/fw1.o
-	$(CC) $(incs) cube.o build/fw1.o -o build/cube $(libs)
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
-cube.o: cube.cpp
-	$(CC) $(incs) cube.cpp -c -o cube.o
-
-SB6_BasicApp.o: SB6_BasicApp.cpp SB6_BasicApp.h
-	$(CC) $(incs) SB6_BasicApp.cpp -c -o SB6_BasicApp.o
-	
-sb2.o : sb2.cpp SB6_BasicApp.h
-	$(CC) $(incs) sb2.cpp -c -o sb2.o
-
-sb2: sb2.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb2.o build/fw1.o SB6_BasicApp.o -o build/sb2 $(libs)
-	
-sb2_2.o : sb2_2.cpp
-	$(CC) $(incs) sb2_2.cpp -c -o sb2_2.o	
-
-sb2_2: sb2_2.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb2_2.o build/fw1.o SB6_BasicApp.o -o build/sb2_2 $(libs)
-	
-sb3_1.o : sb3_1.cpp
-	$(CC) $(incs) sb3_1.cpp -c -o sb3_1.o	
-
-sb3_1: sb3_1.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb3_1.o build/fw1.o SB6_BasicApp.o -o build/sb3_1 $(libs)
-	
-sb3_2.o : sb3_2.cpp
-	$(CC) $(incs) sb3_2.cpp -c -o sb3_2.o	
-
-sb3_2: sb3_2.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb3_2.o build/fw1.o SB6_BasicApp.o -o build/sb3_2 $(libs)
-	
-sb3_3.o: sb3_3.cpp 
-	$(CC) $(incs) sb3_3.cpp -c -o sb3_3.o	
-
-sb3_3: sb3_3.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb3_3.o build/fw1.o SB6_BasicApp.o -o build/sb3_3 $(libs)
-	
-sb3_4.o: sb3_4.cpp 
-	$(CC) $(incs) sb3_4.cpp -c -o sb3_4.o	
-	
-sb3_4: sb3_4.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb3_4.o build/fw1.o SB6_BasicApp.o -o build/sb3_4 $(libs)
-	
-sb5_1.o: sb5_1.cpp 
-	$(CC) $(incs) sb5_1.cpp -c -o sb5_1.o	
-	
-sb5_1: sb5_1.o build/fw1.o SB6_BasicApp.o
-	$(CC) $(incs) sb5_1.o build/fw1.o SB6_BasicApp.o -o build/sb5_1 $(libs)
+sb%: sb%.o build/fw1.o SB6_BasicApp.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
 

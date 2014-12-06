@@ -23,3 +23,14 @@ else
 endif
 
 .PHONY: clean doxygen
+
+# Cancel existing implicit rule.
+.SUFFIXES: 
+
+%.o : %.cpp
+	$(CC) $(incs) $< -c -o $@
+	
+%.o : %.cpp %.h
+	$(CC) $(incs) $< -c -o $@
+
+

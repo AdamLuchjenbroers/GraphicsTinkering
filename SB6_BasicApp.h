@@ -35,6 +35,18 @@ protected:
 
     bool running;
 
-    static void valueSwing(GLfloat &offset, GLfloat increment, bool &increase, GLfloat min, GLfloat max);
+ /** Updates values to provide an ascending / descending integer sequence
+  *  @param value A reference to the value to be updated.
+  *  @param increment The value to increase or decrease offset by.
+  *  @param increase A reference boolean value, true if value should be increased, false if it should be decreased. Will be updated if value reaches min or max.
+  *  @param min The minimum value that value is allowed to reach, increase will be set to true if this value is reached.
+  *  @param max The maximum value that value is allowed to reach, increase will be set to false if this value is reached.
+  */
+    static void valueSwing(GLfloat &value, GLfloat increment, bool &increase, GLfloat min, GLfloat max);
+
+/** Checks for any OpenGL errors, and outputs details to the log if encountered. All errors are logged to the LOG_APPLICATION channel.
+ *  @return True if no errors were encountered.
+ */
+    bool checkGLError(const char *errfmt, Logger::Level errlevel);
 
 };

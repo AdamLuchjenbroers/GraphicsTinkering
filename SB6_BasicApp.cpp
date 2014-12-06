@@ -67,6 +67,18 @@ void SB6_BasicApp::valueSwing(GLfloat &offset, GLfloat increment, bool &increase
     }
 };
 
+bool SB6_BasicApp::checkGLError(const char *errfmt, Logger::Level loglevel) {
+    GLenum glerror;
+
+    glerror = glGetError();
+
+    if (glerror == GL_NO_ERROR) {
+       return true;
+    } else {
+       Logger::logprintf(loglevel, Logger::LOG_APPLICATION, errfmt, gluErrorString(glerror));
+       return false;
+    }
+}
 
 SB6_BasicApp::~SB6_BasicApp() {
    if (display != NULL) {

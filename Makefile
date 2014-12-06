@@ -6,7 +6,7 @@ incs = -I./include
 
 opts = $(libs) $(defs) $(incs)
 
-all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3 sb3_4
+all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3 sb3_4 sb5_1
 
 clean:
 	rm -f build/* *.o
@@ -71,4 +71,10 @@ sb3_4.o: sb3_4.cpp
 	
 sb3_4: sb3_4.o build/fw1.o SB6_BasicApp.o
 	$(CC) $(incs) sb3_4.o build/fw1.o SB6_BasicApp.o -o build/sb3_4 $(libs)
+	
+sb5_1.o: sb5_1.cpp 
+	$(CC) $(incs) sb5_1.cpp -c -o sb5_1.o	
+	
+sb5_1: sb5_1.o build/fw1.o SB6_BasicApp.o
+	$(CC) $(incs) sb5_1.o build/fw1.o SB6_BasicApp.o -o build/sb5_1 $(libs)
 

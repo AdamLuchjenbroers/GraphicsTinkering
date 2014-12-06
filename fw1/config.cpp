@@ -80,7 +80,7 @@ bool parseVersion(char *string, GLint &major, GLint &minor) {
         loc++;
     }
 
-    return (*loc == '.' || *loc == '\0');  
+    return (*loc == '.' || *loc == '\0' || *loc == ' ');
 };
 
 GLVersion *GLVersion::versionFromText(char *text) {

@@ -41,6 +41,7 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
 bool ShaderProgram::linkProgram() {
     std::map<GLenum, Shader>::iterator itr;
     GLuint glerror;
+    GLint linkState;
 
     for (itr = _shaders.begin(); itr != _shaders.end(); itr++) {
         GLuint shader = itr->second.getShader();
@@ -62,6 +63,18 @@ bool ShaderProgram::linkProgram() {
          return false;
     }
 
+    glGetProgramiv(_program, GL_LINK_STATUS, &linkState);
+    if (linkState != GL_TRUE) {
+        GLsizei logLength;
+        GLchar log[1024];
+
+        glGetProgramInfoLog(_program, 1024, &logLength, log);
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Linking of shader program %i failed\n---------\n%s\n---------\n", _program, log);
+
+        return false;
+    }
+
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully linked Shader Program %i\n", _program);
     _linked = true;
     return true;
 }

@@ -1,5 +1,5 @@
 /*
- * Really basic shader from OpenGL SuperBible, chapter 2
+ * Really basic shader from OpenGL SuperBible, chapter 3
  */
 
 #include "fw1/fw1.h"

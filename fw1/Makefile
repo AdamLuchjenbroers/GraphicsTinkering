@@ -5,14 +5,14 @@ include ../Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: ../build/fw1.o
+all: ../build/fw1.a
 
 tests: ../tests/fw1.o
 
 clean:
 	rm -f *.o tests/*.o
 
-../build/fw1.o: SDLDisplay.o Shader.o logger.o config.o ShaderLibrary.o ShaderProgram.o 
+../build/fw1.a: SDLDisplay.o Shader.o logger.o config.o ShaderLibrary.o ShaderProgram.o 
 	ld -r $^ -o $@
 
 # Test Cases

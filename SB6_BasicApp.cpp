@@ -31,6 +31,10 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
     return success;
 };
 
+bool SB6_BasicApp::loadShader(const char *shaderName, const GLenum shaderType) {
+    return program.addShader(shaderName, shaderType);
+}
+
 bool SB6_BasicApp::linkProgram() {
     return program.linkProgram();
 }

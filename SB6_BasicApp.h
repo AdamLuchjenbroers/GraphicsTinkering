@@ -16,6 +16,12 @@ protected:
  */
     bool loadVFProgram(const char *vertexName, const char *fragmentName);
 
+/** Add a shader to the shader program.
+ *  @param shaderName The name of the shader script file.
+ *  @param shaderType The pipeline stage this shader corresponds to.
+ *  @return True if the shader was successfully found and added.
+ */
+    bool loadShader(const char *shaderName, const GLenum shaderType);
 
 /** Links the compiled shaders into a new
  *  @return True if the program was successfully created.

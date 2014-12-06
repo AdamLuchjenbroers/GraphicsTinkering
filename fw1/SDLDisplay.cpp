@@ -37,5 +37,13 @@ void SDLDisplay::mainLoop(FrameworkOneApp &app) {
     if (event.type == SDL_QUIT) {
       app.appQuit();
     };
+
+    if (event.type == SDL_KEYDOWN) {
+        app.keyEvent( event.key.keysym, true);
+    };
+
+    if (event.type == SDL_KEYUP) {
+        app.keyEvent( event.key.keysym, true);
+    };
  }
 }

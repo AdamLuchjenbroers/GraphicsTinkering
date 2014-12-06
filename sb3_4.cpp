@@ -18,10 +18,12 @@ public:
     bool appMain();
     void appInit();
 
+    void keyEvent(SDL_Keysym &key, bool press);
+
 private:
     GLuint vertexarray;
 
-    GLfloat offset_x, offset_y, time;
+    GLfloat offset_x, offset_y, time, tess_lvl;
     bool increase_x, increase_y, increase_time;
 
     void colour_for_time(GLfloat *colour);
@@ -39,6 +41,8 @@ SB6_Chapter3::SB6_Chapter3() {
 
    time = 0.0f;
    increase_time = true;
+
+   tess_lvl = 4.0f;
 
    vertexarray = 0;
 }
@@ -80,7 +84,7 @@ bool SB6_Chapter3::appMain() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glVertexAttrib4fv(0, colour);
-    glVertexAttrib1f(1, 4.0f);
+    glVertexAttrib1f(1, tess_lvl);
 
     glerror = glGetError();
     if (glerror != GL_NO_ERROR) {
@@ -128,6 +132,15 @@ void SB6_Chapter3::colour_for_time(GLfloat *colour) {
 
 }
 
+void SB6_Chapter3::keyEvent(SDL_Keysym &key, bool press) {
+    if ((key.sym == SDLK_KP_MINUS) && tess_lvl > 1.0f) {
+        tess_lvl -= 1.0f;
+    }
+
+    if (key.sym == SDLK_KP_PLUS || key.sym == SDLK_PLUS) {
+        tess_lvl += 1.0f;
+    }
+}
 
 int main( int argc, char* args[] ) { 
   FrameworkOneApp *thisApp = new SB6_Chapter3();

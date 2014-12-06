@@ -27,11 +27,9 @@ public:
     /**
         Called whenever a key is pressed
         @param key Enumerated value representing the key that was pressed. Alphanumeric keys pass KEY_ALPHANUMERIC and pass the character in using alpha.
-        @param modmask Bitfield representing the keyboard modifier keys that were pressed.
         @param press Boolean value, true if the key is being pressed, false if released.
-        @param alpha The alphanumeric representation of the key pressed (0 if invalid)
     */
-    virtual void keyEvent(SDL_Keysym key, unsigned int modmask, bool press, char alpha) {}
+    virtual void keyEvent(SDL_Keysym &key, bool press) {}
 
     /**
         Called whenever a mouse button is pressed.

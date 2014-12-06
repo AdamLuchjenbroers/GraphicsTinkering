@@ -34,7 +34,7 @@ class PWGLDisplay;
 /**
   Provides a GLX rendering context via a connection to an X Server
 */
-class WGLDisplay : public DisplayInterface {
+class WGLDisplay : public SDLDisplay {
 public:
   WGLDisplay(char *title, HINSTANCE hApplication, int showCmd);
   ~WGLDisplay();

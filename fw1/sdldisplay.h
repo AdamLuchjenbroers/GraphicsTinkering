@@ -7,19 +7,22 @@
 #include <SDL2/SDL.h>
 #include <GL/glcorearb.h>
 #include <GL/glu.h>
-#include "DisplayInterface.h"
 
+#include "FrameworkOneApp.h"
 
-class SDLDisplay : public DisplayInterface {
+class SDLDisplay  {
   public: 
     SDLDisplay(const char *title, int width, int height);
-    ~SDLDisplay();
+    virtual ~SDLDisplay();
 
     virtual void swapBuffers();
     virtual void mainLoop(FrameworkOneApp &app);
     virtual void close();
 
     void printRendererInfo();
+
+  protected:
+    int width, height;
 
   private:
     SDL_Window *app_window;

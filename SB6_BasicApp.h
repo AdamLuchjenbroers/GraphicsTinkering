@@ -31,7 +31,7 @@ protected:
     virtual void appQuit();
 
     ShaderProgram program;
-    DisplayInterface *display;
+    SDLDisplay *display;
 
     bool running;
 

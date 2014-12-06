@@ -4,6 +4,8 @@
  * Basic initialisation and useful infrastructure
  */
 
+#include "FrameworkOneApp.h"
+
 #include "logger.h"
 #include "Shader.h"
 #include "sdldisplay.h"

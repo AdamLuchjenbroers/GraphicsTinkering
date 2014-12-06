@@ -17,7 +17,7 @@ public:
 	void appQuit();
 
 private:
-	DisplayInterface *display;
+	SDLDisplay *display;
 	int colourIndex;
 
 	bool running;

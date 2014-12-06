@@ -14,7 +14,7 @@ public:
 	void appQuit();
 
 private:
-	DisplayInterface *display;
+	SDLDisplay *display;
 	int remainingRotations;
         float currentAngle;
 

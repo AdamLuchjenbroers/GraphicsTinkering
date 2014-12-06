@@ -29,7 +29,7 @@
 /**
   Provides a GLX rendering context via a connection to an X Server
 */
-class GLXDisplay : public DisplayInterface {
+class GLXDisplay : public SDLDisplay {
 public:
   GLXDisplay(char *title);
   virtual void swapBuffers();

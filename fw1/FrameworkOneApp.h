@@ -1,8 +1,7 @@
 #pragma once
 
 #include <errorhandling.h>
-#include <system/constants.h>
-#include "DisplayInterface.h"
+#include <SDL2/SDL.h>
 #include <string>
 #include <stdlib.h>
 
@@ -32,7 +31,7 @@ public:
         @param press Boolean value, true if the key is being pressed, false if released.
         @param alpha The alphanumeric representation of the key pressed (0 if invalid)
     */
-    virtual void keyEvent(Key key, unsigned int modmask, bool press, char alpha) {}
+    virtual void keyEvent(SDL_Keysym key, unsigned int modmask, bool press, char alpha) {}
 
     /**
         Called whenever a mouse button is pressed.

@@ -12,7 +12,7 @@
 #pragma once
 
 #include <errorhandling.h>
-#include <system/application.h>
+#include "FrameworkOneApp.h"
 
 /**
   Abstract class for handling displays \ openGL rendering contexts.
@@ -39,7 +39,7 @@ public:
   Enters the main application loop, which will continue to execute until close is called. Use appMain() in the EngineApplication interface to implement the application specific portion of the main loop.
   @param app The object that will handle application code and event processing.
 */
-  virtual void mainLoop(EngineApplication &app) = 0;
+  virtual void mainLoop(FrameworkOneApp &app) = 0;
 /**
   Terminates the main loop at the end of its current cycle, and returns control to the point where mainLoop() was called.
 */

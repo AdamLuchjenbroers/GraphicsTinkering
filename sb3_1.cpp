@@ -78,7 +78,7 @@ bool SB6_Chapter3::appMain() {
 
 
 int main( int argc, char* args[] ) { 
-  EngineApplication *thisApp = new SB6_Chapter3();
+  FrameworkOneApp *thisApp = new SB6_Chapter3();
 
   thisApp->appInit();
 

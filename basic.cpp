@@ -7,7 +7,7 @@
 #define COLOUR_ALPHA 3
 
 
-class BasicApp : public EngineApplication {
+class BasicApp : public FrameworkOneApp {
 public:
 	BasicApp();
 	~BasicApp();
@@ -101,7 +101,7 @@ GLfloat *BasicApp::colour_for_time(int time) {
 
 
 int main( int argc, char* args[] ) { 
-  EngineApplication *thisApp = new BasicApp();
+  FrameworkOneApp *thisApp = new BasicApp();
 
   thisApp->appInit();
 

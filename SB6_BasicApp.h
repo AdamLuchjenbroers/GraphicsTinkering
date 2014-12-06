@@ -4,7 +4,7 @@
 
 #include <map>
 
-class SB6_BasicApp : public EngineApplication {
+class SB6_BasicApp : public FrameworkOneApp {
 public:
     ~SB6_BasicApp();
 

@@ -147,7 +147,7 @@ void WGLDisplay::swapBuffers() {
   SwapBuffers(hDevice);
 }
 
-void WGLDisplay::mainLoop(EngineApplication &app) {
+void WGLDisplay::mainLoop(FrameworkOneApp &app) {
   if (pApp) {
     throw WGLDisplayError("Main loop still being executed", 21); //ERR_NOT_READY
   }

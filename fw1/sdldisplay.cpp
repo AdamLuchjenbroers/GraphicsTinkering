@@ -26,7 +26,7 @@ void SDLDisplay::close() {
   SDL_DestroyWindow(this->app_window);
 }
 
-void SDLDisplay::mainLoop(EngineApplication &app) {
+void SDLDisplay::mainLoop(FrameworkOneApp &app) {
   SDL_Event event;
 
 

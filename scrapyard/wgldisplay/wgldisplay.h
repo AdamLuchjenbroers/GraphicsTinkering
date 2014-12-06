@@ -39,7 +39,7 @@ public:
   WGLDisplay(char *title, HINSTANCE hApplication, int showCmd);
   ~WGLDisplay();
   virtual void swapBuffers();
-  virtual void mainLoop(EngineApplication &app);
+  virtual void mainLoop(FrameworkOneApp &app);
   virtual void close();
 
   LRESULT receiveEvent(UINT, WPARAM, LPARAM);
@@ -53,7 +53,7 @@ private:
   HINSTANCE hApp;
   int   showCmd;
   bool  closeFlag;
-  EngineApplication* pApp;
+  FrameworkOneApp* pApp;
   int oldX, oldY;
 
   bool keyState[256];

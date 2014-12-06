@@ -2,13 +2,13 @@
 
 #include <errorhandling.h>
 #include <system/constants.h>
-#include <system/display.h>
+#include "DisplayInterface.h"
 #include <string>
 #include <stdlib.h>
 
-class EngineApplication {
+class FrameworkOneApp {
 public:
-	virtual ~EngineApplication() {};
+	virtual ~FrameworkOneApp() {};
 
     /** Main body of application code, called once per iteration of the main display loop */
     virtual bool appMain() = 0;

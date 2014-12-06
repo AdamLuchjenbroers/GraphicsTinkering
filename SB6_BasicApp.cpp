@@ -32,11 +32,23 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
 };
 
 bool SB6_BasicApp::loadShader(const char *shaderName, const GLenum shaderType) {
-    return program.addShader(shaderName, shaderType);
+    bool success = program.addShader(shaderName, shaderType);
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build compile shader %s\n", shaderName);
+        return false;
+    }
+    return true;
 }
 
 bool SB6_BasicApp::linkProgram() {
-    return program.linkProgram();
+    bool success = program.linkProgram();
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to link shader program\n");
+        return false;
+    }
+    return true;
 }
 
 void SB6_BasicApp::appQuit() {

@@ -4,7 +4,7 @@
 
 #include "fw1/fw1.h"
 
-class CubeApp : public EngineApplication {
+class CubeApp : public FrameworkOneApp {
 public:
 	CubeApp(int rotations);
 	~CubeApp();
@@ -102,7 +102,7 @@ void CubeApp::appQuit() {
 }
 
 int main( int argc, char* args[] ) {
-  EngineApplication *thisApp = new CubeApp(2);
+  FrameworkOneApp *thisApp = new CubeApp(2);
 
   thisApp->appInit();
 

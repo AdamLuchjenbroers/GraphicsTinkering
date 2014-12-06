@@ -33,7 +33,7 @@ class GLXDisplay : public DisplayInterface {
 public:
   GLXDisplay(char *title);
   virtual void swapBuffers();
-  virtual void mainLoop(EngineApplication &app);
+  virtual void mainLoop(FrameworkOneApp &app);
   virtual void close();
 
 private:
@@ -46,8 +46,8 @@ private:
   int           oldX, oldY;
 
   void waitForMap();
-  void processKeyEvent(XKeyEvent *ke, bool press, EngineApplication &app);
-  void processButtonEvent(XButtonEvent *be, bool press, EngineApplication &app);
+  void processKeyEvent(XKeyEvent *ke, bool press, FrameworkOneApp &app);
+  void processButtonEvent(XButtonEvent *be, bool press, FrameworkOneApp &app);
 };
 
 /**

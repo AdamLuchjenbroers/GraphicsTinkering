@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <GL/glcorearb.h>
 #include <GL/glu.h>
-#include "system/display.h"
+#include "DisplayInterface.h"
 
 
 class SDLDisplay : public DisplayInterface {
@@ -16,7 +16,7 @@ class SDLDisplay : public DisplayInterface {
     ~SDLDisplay();
 
     virtual void swapBuffers();
-    virtual void mainLoop(EngineApplication &app);
+    virtual void mainLoop(FrameworkOneApp &app);
     virtual void close();
 
     void printRendererInfo();

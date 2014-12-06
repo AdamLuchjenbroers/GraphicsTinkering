@@ -107,7 +107,7 @@ void SB6_Chapter3::colour_for_time(GLfloat *colour) {
 
 
 int main( int argc, char* args[] ) { 
-  EngineApplication *thisApp = new SB6_Chapter3();
+  FrameworkOneApp *thisApp = new SB6_Chapter3();
 
   thisApp->appInit();
 

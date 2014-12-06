@@ -55,7 +55,7 @@ bool SB6_Chapter3::appMain() {
     GLfloat offset[] = { offset_x, offset_y, 0.0f, 0.0f };
     GLfloat colour[4];
     
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(1.0f - colour[0], 1.0f - colour[1], 1.0f - colour[2], 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     colour_for_time(colour);

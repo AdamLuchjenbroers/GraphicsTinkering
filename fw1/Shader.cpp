@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "shader.h"
+#include "Shader.h"
 #include "logger.h"
 #include <GL/glu.h>
 

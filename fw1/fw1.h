@@ -5,7 +5,7 @@
  */
 
 #include "logger.h"
-#include "shader.h"
+#include "Shader.h"
 #include "sdldisplay.h"
 #include "ShaderLibrary.h"
 #include "config.h"

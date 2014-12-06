@@ -8,7 +8,7 @@
 
 #include "logger.h"
 #include "Shader.h"
-#include "sdldisplay.h"
+#include "SDLDisplay.h"
 #include "ShaderLibrary.h"
 #include "ShaderProgram.h"
 #include "config.h"

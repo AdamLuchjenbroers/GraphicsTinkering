@@ -1,8 +1,11 @@
-#include "sdldisplay.h"
+#include "SDLDisplay.h"
 
-SDLDisplay::SDLDisplay(const char *title, int width, int height) {
+SDLDisplay::SDLDisplay(const char *title, int w, int h) {
   //Start SDL 
   SDL_Init( SDL_INIT_EVERYTHING ); 
+
+  width = w;
+  height = h;
 
   this->app_window = SDL_CreateWindow(title, 50,50,width,height, SDL_WINDOW_OPENGL);
   this->app_glcontext = SDL_GL_CreateContext(this->app_window);  

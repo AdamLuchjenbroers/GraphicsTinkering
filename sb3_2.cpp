@@ -30,7 +30,7 @@ private:
 
 SB6_Chapter3::SB6_Chapter3() {
 
-   display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
+   display = new SDLDisplay("Chapter 3.2 - Coloured Triangle", 300, 400);
    running = true;
 
    offset_x = 0.0f;

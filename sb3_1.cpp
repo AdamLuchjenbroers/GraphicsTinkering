@@ -21,11 +21,8 @@ public:
 private:
     GLuint vertexarray;
 
-    bool running;
-
     GLfloat offset_x, offset_y;
     bool increase_x, increase_y;
-
 };
 
 SB6_Chapter3::SB6_Chapter3() {
@@ -59,7 +56,6 @@ bool SB6_Chapter3::appMain() {
     if (glerror != GL_NO_ERROR) {
        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glVertexAttrib4fv: %s\n", gluErrorString(glerror));
     }
-    display->swapBuffers();
     glDrawArrays(GL_TRIANGLES, 0, 3);
    
     glerror = glGetError();
@@ -72,8 +68,8 @@ bool SB6_Chapter3::appMain() {
 
     SDL_Delay(10);
 
-    valueSwing(offset_x, 0.1f, increase_x, 0.0f, 1.0f);
-    valueSwing(offset_y, 0.07f, increase_y, 0.0f, 1.0f);
+    valueSwing(offset_x, 0.02f, increase_x, -1.0f, 1.0f);
+    valueSwing(offset_y, 0.015f, increase_y, -1.0f, 1.0f);
 
     return running;
 }

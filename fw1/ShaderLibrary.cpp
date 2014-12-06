@@ -66,6 +66,8 @@ Shader *ShaderLibrary::getShader(const char *name, GLuint stage) {
     std::map<GLSLVersion, char*>::iterator itr;
     GLSLVersion *context = GLSLVersion::getContextVersion();
 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "getShader() called to retrieve %s. Context supports up to GLSL %s\n", name, context->getLogName());
+
     //Start at the highest version and work our way back
     for(itr = versions.end(); itr != versions.begin(); ) {
         itr--;

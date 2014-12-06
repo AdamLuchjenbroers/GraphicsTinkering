@@ -1,4 +1,5 @@
 #include "config.h"
+#include "logger.h"
 
 #include <cstdio>
 #include <cstring>
@@ -121,6 +122,9 @@ GLSLVersion *GLSLVersion::getContextVersion() {
 
         if ( parseVersion(versionString, major, minor) ) {
             contextVersion = new GLSLVersion(major, minor);
+        } else {
+            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_CONTEXT, "Unable to get supported GLSL version for context, defaulting to 1.3\n");
+            contextVersion = new GLSLVersion(1,3);
         }
     }
 

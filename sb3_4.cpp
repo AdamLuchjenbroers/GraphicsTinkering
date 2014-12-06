@@ -133,7 +133,7 @@ void SB6_Chapter3::colour_for_time(GLfloat *colour) {
 }
 
 void SB6_Chapter3::keyEvent(SDL_Keysym &key, bool press) {
-    if ((key.sym == SDLK_KP_MINUS) && tess_lvl > 1.0f) {
+    if ((key.sym == SDLK_KP_MINUS || key.sym == SDLK_MINUS) && tess_lvl > 1.0f) {
         tess_lvl -= 1.0f;
     }
 

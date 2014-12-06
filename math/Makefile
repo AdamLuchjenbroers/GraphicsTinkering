@@ -12,3 +12,8 @@ clean:
 
 ../build/math.a: Vector4.o 
 	ld -r $^ -o $@
+	
+tests: ../tests/math.a
+
+../tests/math.a: tests/Vector4Tests.o ../build/math.a
+	ld -r $^ -o $@

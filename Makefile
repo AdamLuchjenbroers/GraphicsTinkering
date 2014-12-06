@@ -2,7 +2,7 @@ incs = -I./include
 
 include Makefile.inc
 
-.PHONY: all clean build/fw1.a build/math.a tests/fw1.o
+.PHONY: all clean build/fw1.a build/math.a tests/fw1.a tests/math.a
 
 opts = $(libs) $(defs) $(incs)
 
@@ -18,11 +18,15 @@ build/fw1.a:
 build/math.a: 
 	cd math && $(MAKE)
 
-tests/fw1.o:
+tests/fw1.a:
 	cd ./fw1 && $(MAKE) tests
+	
+tests/math.a:
+	cd ./math && $(MAKE) tests
 
-tests: tests.cpp fw1/tests.h tests/fw1.a
-	$(CC) $(incs) tests.cpp tests/fw1.o -o build/tests -lcppunit $(libs)
+test: tests.cpp tests/fw1.a tests/math.a
+	$(CC) $(incs) $^ -o $@ -lcppunit $(libs)
+	./test
 
 basic: basic.o build/fw1.a
 	$(CC) $(incs) $^ -o build/$@ $(libs) 

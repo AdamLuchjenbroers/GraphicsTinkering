@@ -11,6 +11,7 @@
 
 class Shader {
 public:
+  Shader();
   Shader(const std::string scriptfile, GLenum shadertype);
   ~Shader();
 
@@ -18,7 +19,11 @@ public:
   void printShader();
 
   GLuint getShader();
+
+  virtual void operator=(Shader *source);
+  virtual void operator=(Shader &source);
 private:
+
   void prepareSource();
   void releaseSource();
 

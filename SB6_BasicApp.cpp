@@ -5,50 +5,35 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
     ShaderLibrary *lib;
     GLuint glerror;
     char shaderPath[9] = "./shader";
-    bool allLoaded = true;
+    bool success = true;
 
     ShaderLibrary::setLibraryPath(shaderPath);
-    lib = ShaderLibrary::getLibrary();
 
-    program = glCreateProgram();
+    success = program.addShader(vertexName, GL_VERTEX_SHADER);
+    success &= program.addShader(fragmentName, GL_FRAGMENT_SHADER);
 
-    if (vertexName != NULL) {
-        vertex = lib->getShader(vertexName, GL_VERTEX_SHADER);
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
 
-        if (vertex != NULL) {
-            glAttachShader(program, vertex->getShader());
-        } else {
-            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_APPLICATION, "Unable to load Vertex shader %s\n", vertexName);
-            allLoaded = false;
-        }
-
-    } else {
-        vertex = NULL;
+        return false;
     }
 
-    if (fragmentName != NULL) {
-        fragment = lib->getShader(fragmentName, GL_FRAGMENT_SHADER);
+    success = program.linkProgram();
 
-        if (fragment != NULL) {
-            glAttachShader(program, fragment->getShader());
-        } else {
-            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_APPLICATION, "Unable to load Fragment shader %s\n", fragmentName);
-            allLoaded = false;
-        }
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
 
-    } else { 
-        fragment = NULL;
+        return false;
     }
     
-    glLinkProgram(program);
-   
-    glerror = glGetError();
-    if (glerror != GL_NO_ERROR) {
-         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
-    }
+    glUseProgram(program.programID());
 
-    glUseProgram(program);
+    return success;
 };
+
+bool SB6_BasicApp::linkProgram() {
+    return program.linkProgram();
+}
 
 void SB6_BasicApp::appQuit() {
     running = false;
@@ -70,14 +55,6 @@ void SB6_BasicApp::valueSwing(GLfloat &offset, GLfloat increment, bool &increase
 SB6_BasicApp::~SB6_BasicApp() {
    if (display != NULL) {
        delete display;
-   }
-  
-   if (vertex != NULL) {
-       delete vertex;
-   }
-
-   if (fragment != NULL) {
-       delete fragment;
    }
 }
 

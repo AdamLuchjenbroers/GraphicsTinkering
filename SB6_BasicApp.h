@@ -2,6 +2,8 @@
 
 #include "fw1/fw1.h"
 
+#include <map>
+
 class SB6_BasicApp : public EngineApplication {
 public:
     ~SB6_BasicApp();
@@ -13,13 +15,20 @@ protected:
  *  @return True if all shader components loaded successfully
  */
     bool loadVFProgram(const char *vertexName, const char *fragmentName);
+
+
+/** Links the compiled shaders into a new
+ *  @return True if the program was successfully created.
+ */
+    bool linkProgram();
+
     virtual void appQuit();
 
-    Shader *vertex, *fragment;
+    ShaderProgram program;
     DisplayInterface *display;
 
-    GLuint program;
     bool running;
 
     static void valueSwing(GLfloat &offset, GLfloat increment, bool &increase, GLfloat min, GLfloat max);
+
 };

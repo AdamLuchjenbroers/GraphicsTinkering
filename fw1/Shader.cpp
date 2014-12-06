@@ -8,6 +8,12 @@
 #include "logger.h"
 #include <GL/glu.h>
 
+Shader::Shader() {
+    this->shader = 0;
+    this->shadersource = NULL;
+    this->shaderlines = 0;
+}
+
 Shader::Shader(const std::string scriptfile, GLenum shadertype) {
   std::ifstream script;
   std::string scriptline;
@@ -54,7 +60,8 @@ Shader::Shader(const std::string scriptfile, GLenum shadertype) {
 
 Shader::~Shader() {
     if (this->shader >= 0) {
-    	glDeleteShader(this->shader);
+        // FIXME: Currently, this breaks the copy constructor.
+    	//glDeleteShader(this->shader);
     }
 
     if (this->shadersource != NULL) {
@@ -72,6 +79,7 @@ void Shader::releaseSource() {
   delete this->shadersource;
 
   this->shadersource = NULL;
+  this->shaderlines = 0;
 }
 
 void Shader::printScript() {
@@ -124,4 +132,13 @@ void Shader::prepareSource() {
     sourceline++;
   }
 };
+
+void Shader::operator=(Shader &source) {
+    this->shader = source.shader;
+};
+
+void Shader::operator=(Shader *source) {
+    // Delegate to the reference implementation.
+    operator=(*source);
+}
 

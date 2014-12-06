@@ -33,6 +33,8 @@ SB6_Chapter3::SB6_Chapter3() {
    increase_x = true;
    offset_y = 0.0f;
    increase_y = true;
+
+   vertexarray = 0;
 }
 
 void SB6_Chapter3::appInit() {
@@ -50,7 +52,7 @@ bool SB6_Chapter3::appMain() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    offsetLocation = glGetAttribLocation(program, "offset");
+    offsetLocation = glGetAttribLocation(program.programID(), "offset");
 
     glVertexAttrib4fv(0, offset);
     if (glerror != GL_NO_ERROR) {

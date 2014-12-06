@@ -11,6 +11,7 @@ all: basic cube sb2 sb2_2 sb3_1 sb3_2 sb3_3 sb3_4 sb5_1
 clean:
 	rm -f build/* *.o
 	cd ./fw1 && $(MAKE) clean
+	cd ./math && $(MAKE) clean
 
 build/fw1.a: 
 	cd fw1 && $(MAKE)

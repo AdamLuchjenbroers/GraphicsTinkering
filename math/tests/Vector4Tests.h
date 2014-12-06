@@ -14,17 +14,13 @@ class Vector4Tests : public CppUnit::TestFixture {
         //void tearDown();
 
         void testConstructors();
-
-        //void testLessThan();
-        //void testGreaterThan();
-        //void testLessThanEqual();
-        //void testGreaterThanEqual();
-        //void testEquality();
+        void testMagnitude();
 
         static CppUnit::Test *suite() {
             CppUnit::TestSuite *allTests = new CppUnit::TestSuite("Vector 4 Unit Tests");
 
             allTests->addTest(new CppUnit::TestCaller<Vector4Tests>("testConstructors", &Vector4Tests::testConstructors));
+            allTests->addTest(new CppUnit::TestCaller<Vector4Tests>("testMagnitude", &Vector4Tests::testMagnitude));
 
             return allTests;
         }

@@ -19,5 +19,16 @@ void Vector4Tests::testConstructors() {
     for(int i = 0; i < 4; i++) {
         CPPUNIT_ASSERT ( array[i] == data[i] );
     }
+}
 
+void Vector4Tests::testMagnitude() {
+
+    Vector4 oneAxis = Vector4(8.0f, 0.0f, 0.0f, 1.0f);
+    CPPUNIT_ASSERT ( oneAxis.magnitude() == 8.0f);
+
+    Vector4 twoAxis = Vector4(4.0f, 3.0f, 0.0f, 1.0f);
+    CPPUNIT_ASSERT ( twoAxis.magnitude() == 5.0f);
+
+    Vector4 threeAxis = Vector4(4.0f, 4.0f, 2.0f, 1.0f);
+    CPPUNIT_ASSERT ( threeAxis.magnitude() == 6.0f);
 }

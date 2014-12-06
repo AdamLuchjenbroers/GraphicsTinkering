@@ -35,6 +35,20 @@ public:
     inline const GLfloat operator[](int idx) const {
         return _vector[idx];
     }
+
+/** Mem returns the a pointer to the internal buffer of Vector4. This is intended to be used to pass
+ *  the vector data to the OpenGL API, and should not be used for any other purpose.
+ *  @return A pointer to the internal vector buffer.
+ */
+    inline GLfloat *mem() {
+        return _vector;
+    };
+
+/** Calculates and returns the magnitude of this vector, computed based on the x, y and z co-ordinates.
+ *  @return The magnitude of this vector.
+ */
+    GLfloat magnitude();
+
 private:
     GLfloat _vector[4];
 };

@@ -2,7 +2,7 @@ incs = -I./include
 
 include Makefile.inc
 
-.PHONY: all clean build/fw1.a tests/fw1.o
+.PHONY: all clean build/fw1.a build/math.a tests/fw1.o
 
 opts = $(libs) $(defs) $(incs)
 
@@ -14,6 +14,9 @@ clean:
 
 build/fw1.a: 
 	cd fw1 && $(MAKE)
+
+build/math.a: 
+	cd math && $(MAKE)
 
 tests/fw1.o:
 	cd ./fw1 && $(MAKE) tests
@@ -27,6 +30,6 @@ basic: basic.o build/fw1.a
 cube: cube.o build/fw1.a
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
-sb%: sb%.o build/fw1.a SB6_BasicApp.o
+sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 

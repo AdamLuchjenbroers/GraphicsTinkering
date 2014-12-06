@@ -19,7 +19,7 @@ void SB6_BasicApp::loadShaders(const char *vertexName, const char *fragmentName)
     }
 
     if (fragmentName != NULL) {
-        fragment = lib->getShader("sb2-fragment.sdr", GL_FRAGMENT_SHADER); 
+        fragment = lib->getShader(fragmentName, GL_FRAGMENT_SHADER);
         glAttachShader(program, fragment->getShader());
     } else { 
         fragment = NULL;

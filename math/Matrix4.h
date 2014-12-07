@@ -33,6 +33,10 @@ public:
     //    return _matrix[(col*4) + row];
     //};
 
+    /** Compares two matrices, and returns true if both are equal.
+     *  @param comp The second matrix to compare.
+     *  @return True if both matrices match.
+     */
     bool operator==(const Matrix4 &mult) const;
 
     /** Multiply two matrices together to the product of both matrices.

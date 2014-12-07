@@ -3,6 +3,8 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glcorearb.h>
 
+#include <string>
+#include <cstdio>
 #include <cstring>
 
 /** Stores a three dimensional vector as a homogeneous coordinate with four components (including w).
@@ -119,6 +121,10 @@ public:
  */
     Vector3H cross(const Vector3H &other);
 
+/** Produces a printable copy of the vertex data as a string.
+ *  @return A printable copy of the vertex data as a string.
+ */
+    std::string printable() const;
 private:
     GLfloat _vector[4];
 };

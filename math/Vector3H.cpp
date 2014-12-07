@@ -51,3 +51,14 @@ Vector3H Vector3H::cross(const Vector3H &other) {
       , _vector[4] //Don't change w.
     );
 }
+
+std::string Vector3H::printable() const {
+    char buffer[32];
+    const char *format = "[%1.4f %1.4f %1.4f %1.4f]";
+
+    snprintf(buffer, 512, format
+           , _vector[0], _vector[1], _vector[2] , _vector[3]
+    );
+
+    return std::string(buffer);
+}

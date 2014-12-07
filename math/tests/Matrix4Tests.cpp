@@ -72,3 +72,20 @@ void Matrix4Tests::testMatrixMultiplication() {
 
     CPPUNIT_ASSERT(testId == matA);
 }
+
+void Matrix4Tests::testVectorMultiplication() {
+    Vector3H vec = Vector3H(2.0f, 3.0f, 4.0f, 1.0f);
+
+    GLfloat matData[] = {
+            1.0f, 0.0f, 1.0f, 3.0f
+          , 2.0f, 1.0f, 0.0f, 1.0f
+          , 1.0f, 2.0f, 1.0f, 2.0f
+          , 1.0f, 2.0f, 1.0f, 1.0f
+    };
+    Matrix4 mat = Matrix4(matData);
+
+    Vector3H result = mat * vec;
+    Vector3H expected = Vector3H(9.0f, 8.0f, 14.0f, 13.0f);
+
+    CPPUNIT_ASSERT(result == expected);
+}

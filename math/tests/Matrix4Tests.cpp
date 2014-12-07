@@ -88,4 +88,9 @@ void Matrix4Tests::testVectorMultiplication() {
     Vector3H expected = Vector3H(9.0f, 8.0f, 14.0f, 13.0f);
 
     CPPUNIT_ASSERT(result == expected);
+
+    Matrix4 identity = Matrix4();
+    Vector3H testId = identity * vec;
+
+    CPPUNIT_ASSERT(vec == testId);
 }

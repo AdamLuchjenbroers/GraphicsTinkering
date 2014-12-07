@@ -3,23 +3,27 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glcorearb.h>
 
-class Vector4 {
+/** Stores a three dimensional vector as a homogeneous coordinate with four components (including w).
+ *  Mathematical operations on this class will typically affect only the x,y and z co-ordinates, with
+ *  the w being handled separately.
+ */
+class Vector3H {
 public:
 /** Constructs a 0 vector with four components
  */
-    Vector4();
+    Vector3H();
 /** Constructs a four component vector using the provided values
  *  @param x The X co-ordinate value
  *  @param y The Y co-ordinate value
  *  @param z The Z co-ordinate value
  *  @param w The W co-ordinate value
  */
-    Vector4(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+    Vector3H(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
 
 /** Constructs a vector by copying an array of four float values
  *  @param source An array of four floating point co-ordinates to initialize the vector with.
  */
-    Vector4(GLfloat *source);
+    Vector3H(GLfloat *source);
 
 /** The [] operator returns the value of the specified index
  *  @param idx The index to retrieve.
@@ -39,8 +43,8 @@ public:
 /** Divides the x, y and z values by a scalar value
  *  @return A Vector with the x,y and z co-ordinates reduced by a scalar value
  */
-    inline Vector4 operator/(const GLfloat div) {
-        return Vector4 (
+    inline Vector3H operator/(const GLfloat div) {
+        return Vector3H (
                  _vector[0] / div
                , _vector[1] / div
                , _vector[2] / div
@@ -59,8 +63,8 @@ public:
 /** Multiplies the x, y and z values by a scalar value
   * @return A Vector with the x,y and z co-ordinates multiplied by a scalar value
   */
-    inline Vector4 operator*(const GLfloat mult) {
-        return Vector4 (
+    inline Vector3H operator*(const GLfloat mult) {
+        return Vector3H (
                  _vector[0] * mult
                , _vector[1] * mult
                , _vector[2] * mult
@@ -93,6 +97,18 @@ public:
 /** Adjusts this vector to change the magnitude to unit length without changing the direction.
  */
     void normalize();
+
+/** Computes the dot product of two vectors
+ *  @param other The other vector to use to compute this dot product
+ *  @return The dot product of the vector.
+ */
+    GLfloat dot(const Vector3H &other);
+
+/** Computes the cross product of two vectors
+ *  @param other The other vector to use to compute this cross product
+ *  @return The cross product of these vectors.
+ */
+    Vector3H cross(const Vector3H &other);
 
 private:
     GLfloat _vector[4];

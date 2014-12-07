@@ -104,3 +104,19 @@ void Matrix4Tests::testTranslation() {
 
     CPPUNIT_ASSERT (finish == expected);
 }
+
+void Matrix4Tests::testScaling() {
+    Vector3H start = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
+
+    Matrix4 uniformScale = Matrix4::scale(2.0f);
+    Vector3H uniformResult = uniformScale * start;
+    Vector3H uniformExpect = Vector3H(2.0f, 2.0f, 2.0f, 1.0f);
+
+    CPPUNIT_ASSERT ( uniformResult == uniformExpect );
+
+    Matrix4 variedScale = Matrix4::scale(2.0f, 3.0f, 5.0f);
+    Vector3H variedResult = variedScale * start;
+    Vector3H variedExpect = Vector3H(2.0f, 3.0f, 5.0f, 1.0f);
+
+    CPPUNIT_ASSERT ( variedResult == variedExpect );
+}

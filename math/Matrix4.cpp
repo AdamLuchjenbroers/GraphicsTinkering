@@ -96,3 +96,25 @@ Matrix4 Matrix4::translate(GLfloat x, GLfloat y, GLfloat z) {
 
     return Matrix4(matData);
 }
+
+Matrix4 Matrix4::scale(GLfloat scaleK) {
+    GLfloat matData[] = {
+            scaleK,   0.0f,   0.0f, 0.0f
+          ,   0.0f, scaleK,   0.0f, 0.0f
+          ,   0.0f,   0.0f, scaleK, 0.0f
+          ,   0.0f,   0.0f,   0.0f, 1.0f
+    };
+
+    return Matrix4(matData);
+}
+
+Matrix4 Matrix4::scale(GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ) {
+    GLfloat matData[] = {
+            scaleX,   0.0f,   0.0f, 0.0f
+          ,   0.0f, scaleY,   0.0f, 0.0f
+          ,   0.0f,   0.0f, scaleZ, 0.0f
+          ,   0.0f,   0.0f,   0.0f, 1.0f
+    };
+
+    return Matrix4(matData);
+}

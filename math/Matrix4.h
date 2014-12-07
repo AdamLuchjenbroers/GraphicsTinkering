@@ -62,6 +62,22 @@ public:
      *  @return A matrix describing a translation in 3D space.
      */
     static Matrix4 translate(GLfloat x, GLfloat y, GLfloat z);
+
+    /** Creates a matrix describing a re-scaling along all three axes by 
+     *  the scalar k.
+     *  @param scaleK The scaling value to use for all three axes.
+     *  @return A Matrix describing a scaling in 3D space
+     */
+    static Matrix4 scale(GLfloat scaleK);
+
+    /** Creates a matrix describing a re-scaling along all three axes by 
+     *  the requested vaues
+     *  @param scaleX The scaling value to use for the X axis.
+     *  @param scaleY The scaling value to use for the Y axis.
+     *  @param scaleZ The scaling value to use for the Z axis.
+     *  @return A Matrix describing a scaling in 3D space
+     */
+    static Matrix4 scale(GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ);
 private:
     GLfloat _matrix[16];
 };

@@ -57,6 +57,11 @@ public:
      *  @return A printable copy of the matrix data as a string.
      */
     std::string printable() const;
+
+    /** Create a Matrix describing a translation in 3D space.
+     *  @return A matrix describing a translation in 3D space.
+     */
+    static Matrix4 translate(GLfloat x, GLfloat y, GLfloat z);
 private:
     GLfloat _matrix[16];
 };

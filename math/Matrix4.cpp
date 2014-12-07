@@ -58,10 +58,10 @@ Vector3H Matrix4::operator*(const Vector3H &mult) {
     GLfloat newVector[4];
 
     for(int i=0;i<4;i++) {
-        newVector[i] = at(0,i) * mult[0]
-                     + at(1,i) * mult[1]
-                     + at(2,i) * mult[2]
-                     + at(3,i) * mult[3];
+        newVector[i] = at(i,0) * mult[0]
+                     + at(i,1) * mult[1]
+                     + at(i,2) * mult[2]
+                     + at(i,3) * mult[3];
     }
 
     return Vector3H(newVector);
@@ -85,3 +85,14 @@ std::string Matrix4::printable() const {
 
     return std::string(buffer);
 };
+
+Matrix4 Matrix4::translate(GLfloat x, GLfloat y, GLfloat z) {
+    GLfloat matData[] = {
+            1.0f, 0.0f, 0.0f, 0.0f
+          , 0.0f, 1.0f, 0.0f, 0.0f
+          , 0.0f, 0.0f, 1.0f, 0.0f
+          ,    x,    y,    z, 1.0f
+    };
+
+    return Matrix4(matData);
+}

@@ -85,7 +85,7 @@ void Matrix4Tests::testVectorMultiplication() {
     Matrix4 mat = Matrix4(matData);
 
     Vector3H result = mat * vec;
-    Vector3H expected = Vector3H(9.0f, 8.0f, 14.0f, 13.0f);
+    Vector3H expected = Vector3H(13.0f, 13.0f, 7.0f, 18.0f);
 
     CPPUNIT_ASSERT(result == expected);
 
@@ -93,4 +93,14 @@ void Matrix4Tests::testVectorMultiplication() {
     Vector3H testId = identity * vec;
 
     CPPUNIT_ASSERT(vec == testId);
+}
+
+void Matrix4Tests::testTranslation() {
+    Vector3H start = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
+    Matrix4 translate = Matrix4::translate(2.0f, 3.0f, -1.5f);
+
+    Vector3H finish = translate * start;
+    Vector3H expected = Vector3H(3.0f, 4.0f, -0.5f, 1.0f);
+
+    CPPUNIT_ASSERT (finish == expected);
 }

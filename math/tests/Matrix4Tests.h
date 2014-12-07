@@ -16,6 +16,7 @@ class Matrix4Tests : public CppUnit::TestFixture {
         void testConstructors();
         void testMatrixMultiplication();
         void testVectorMultiplication();
+        void testTranslation();
 
         static CppUnit::Test *suite() {
             CppUnit::TestSuite *allTests = new CppUnit::TestSuite("Matrix4 Unit Tests");
@@ -23,6 +24,7 @@ class Matrix4Tests : public CppUnit::TestFixture {
             allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testConstructors", &Matrix4Tests::testConstructors));
             allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testMatrixMultiplication", &Matrix4Tests::testMatrixMultiplication));
             allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testVectorMultiplication", &Matrix4Tests::testVectorMultiplication));
+            allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testTranslation", &Matrix4Tests::testTranslation));
 
             return allTests;
         }

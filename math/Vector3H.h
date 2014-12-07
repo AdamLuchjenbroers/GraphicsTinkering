@@ -3,6 +3,8 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glcorearb.h>
 
+#include <cstring>
+
 /** Stores a three dimensional vector as a homogeneous coordinate with four components (including w).
  *  Mathematical operations on this class will typically affect only the x,y and z co-ordinates, with
  *  the w being handled separately.
@@ -80,6 +82,13 @@ public:
         _vector[2] *= mult;
     }
 
+ /** Compares two vectors, and returns true if both are equal.
+  *  @param comp The second vector to compare.
+  *  @return True if both vectors match.
+  */
+    inline bool operator==(const Vector3H &comp) const {
+        return (memcmp(_vector, comp._vector, sizeof(_vector)) == 0);
+    }
 
 /** Mem returns the a pointer to the internal buffer of Vector4. This is intended to be used to pass
  *  the vector data to the OpenGL API, and should not be used for any other purpose.

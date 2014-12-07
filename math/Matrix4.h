@@ -33,10 +33,20 @@ public:
     //    return _matrix[(col*4) + row];
     //};
 
+    bool operator==(const Matrix4 &mult) const;
+
+    /** Multiply two matrices together to the product of both matrices.
+     *  @param mult The other matrix to multiply this by
+     *  @result The product of both matrices.
+     */
     Matrix4 operator*(const Matrix4 &mult);
 
-    //Matrix4 operator*(const Vector3H &vec) { }
-
+    /** Multiply a matrix with a vector (treating the vector as a column vector)
+     *  together to produce a transformed vector
+     *  @param mult The vector to multiply this Matrix by
+     *  @result The product of the vector and matrix.
+     */
+    Vector3H operator*(const Vector3H &vec);
 
 
     /** Produces a printable copy of the matrix data as a string.

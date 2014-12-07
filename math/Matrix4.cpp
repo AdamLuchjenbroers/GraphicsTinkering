@@ -34,6 +34,10 @@ GLfloat Matrix4::at(int row, int col) const {
     return _matrix[(col*4) + row];
 };
 
+bool Matrix4::operator==(const Matrix4 &comp) const {
+    return (memcmp(_matrix, comp._matrix, sizeof(_matrix)) == 0);
+}
+
 Matrix4 Matrix4::operator*(const Matrix4 &mult) {
     GLfloat newMatrix[16];
 
@@ -47,9 +51,20 @@ Matrix4 Matrix4::operator*(const Matrix4 &mult) {
         }
     }
 
-
-
     return Matrix4(newMatrix);
+}
+
+Vector3H Matrix4::operator*(const Vector3H &mult) {
+    GLfloat newVector[4];
+
+    for(int i=0;i<4;i++) {
+        newVector[i] = at(i,0) * mult[0]
+                     + at(i,1) * mult[1]
+                     + at(i,2) * mult[2]
+                     + at(i,3) * mult[3];
+    }
+
+    return Vector3H(newVector);
 }
 
 std::string Matrix4::printable() const {

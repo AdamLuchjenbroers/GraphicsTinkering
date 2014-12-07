@@ -66,4 +66,9 @@ void Matrix4Tests::testMatrixMultiplication() {
     Matrix4 matResult = matA * matB;
 
     matchMatrixToBuffer(matResult, result);
+
+    Matrix4 identity = Matrix4();
+    Matrix4 testId = matA * identity;
+
+    CPPUNIT_ASSERT(testId == matA);
 }

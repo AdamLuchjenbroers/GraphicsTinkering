@@ -3,15 +3,15 @@
 #include <math.h>
 
 #include <string>
+
+#include <cstring>
 #include <cstdio>
 
 Matrix4::Matrix4() {
     int i, j;
 
-    printf("\n");
-
-    for (i=0;i<4;i++) {
-        for(j=0;j<4;j++) {
+    for (j=0;j<4;j++) {
+        for(i=0;i<4;i++) {
             if (i == j) {
                 at(i,j) = 1.0f;
             } else {
@@ -21,19 +21,45 @@ Matrix4::Matrix4() {
     }
 };
 
-GLfloat &Matrix4::at(int col, int row) {
+Matrix4::Matrix4(GLfloat *buffer) {
+    memcpy(_matrix, buffer, sizeof(_matrix));
+}
+
+GLfloat &Matrix4::at(int row, int col) {
     return _matrix[(col*4) + row];
 };
 
+
+GLfloat Matrix4::at(int row, int col) const {
+    return _matrix[(col*4) + row];
+};
+
+Matrix4 Matrix4::operator*(const Matrix4 &mult) {
+    GLfloat newMatrix[16];
+
+    int i,j;
+    for (i=0;i<4;i++) {
+        for (j=0;j<4;j++) {
+            newMatrix[(j*4)+i] = at(i,0) * mult.at(0,j)
+                               + at(i,1) * mult.at(1,j)
+                               + at(i,2) * mult.at(2,j)
+                               + at(i,3) * mult.at(3,j);
+        }
+    }
+
+
+
+    return Matrix4(newMatrix);
+}
+
 std::string Matrix4::printable() const {
     char buffer[512];
-    char *format = {
+    const char *format = {
         "\n| %1.4f %1.4f %1.4f %1.4f |"
         "\n| %1.4f %1.4f %1.4f %1.4f |"
         "\n| %1.4f %1.4f %1.4f %1.4f |"
         "\n| %1.4f %1.4f %1.4f %1.4f |\n"
     };
-
 
     snprintf(buffer, 512, format
            , _matrix[0], _matrix[4], _matrix[8] , _matrix[12]

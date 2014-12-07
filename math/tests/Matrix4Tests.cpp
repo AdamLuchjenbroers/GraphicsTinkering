@@ -18,4 +18,52 @@ void Matrix4Tests::testConstructors() {
     CPPUNIT_ASSERT(identity.at(2,0) == 0.0f);
     CPPUNIT_ASSERT(identity.at(3,1) == 0.0f);
     CPPUNIT_ASSERT(identity.at(2,3) == 0.0f);
+
+    GLfloat buffer[] = {
+         1.0f,  2.0f,  3.0f,  4.0f,
+         5.0f,  6.0f,  7.0f,  8.0f,
+         9.0f, 10.0f, 11.0f, 12.0f,
+        13.0f, 14.0f, 15.0f, 16.0f
+    };
+
+    Matrix4 fromBuf = Matrix4(buffer);
+    matchMatrixToBuffer(fromBuf,buffer);
+}
+
+bool Matrix4Tests::matchMatrixToBuffer(const Matrix4 &matrix, const GLfloat *buffer) {
+    int i,j;
+
+    for (i=0;i<4;i++) {
+        for(j=0;j<4;j++) {
+            CPPUNIT_ASSERT(matrix.at(i,j) == buffer[(j*4)+i]);
+        }
+    }
+    return true;
+}
+
+void Matrix4Tests::testMatrixMultiplication() {
+    GLfloat dataA[] = {
+            1.0f, 2.0f, 1.0f, 3.0f
+          , 2.0f, 1.0f, 0.0f, 1.0f
+          , 4.0f, 2.0f, 1.0f, 2.0f
+          , 1.0f, 2.0f, 1.0f, 2.0f
+    };
+    GLfloat dataB[] = {
+            1.0f, 1.0f, 1.0f, 2.0f
+          , 1.0f, 2.0f, 1.0f, 1.0f
+          , 2.0f, 1.0f, 1.0f, 1.0f
+          , 1.0f, 1.0f, 2.0f, 1.0f
+    };
+    GLfloat result[] = {
+             9.0f,  9.0f,  4.0f, 10.0f
+          , 10.0f,  8.0f,  3.0f,  9.0f
+          ,  9.0f,  9.0f,  4.0f, 11.0f
+          , 12.0f,  9.0f,  4.0f, 10.0f
+    };
+
+    Matrix4 matA = Matrix4(dataA);
+    Matrix4 matB = Matrix4(dataB);
+    Matrix4 matResult = matA * matB;
+
+    matchMatrixToBuffer(matResult, result);
 }

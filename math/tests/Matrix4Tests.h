@@ -14,12 +14,16 @@ class Matrix4Tests : public CppUnit::TestFixture {
         //void tearDown();
 
         void testConstructors();
+        void testMatrixMultiplication();
 
         static CppUnit::Test *suite() {
             CppUnit::TestSuite *allTests = new CppUnit::TestSuite("Matrix4 Unit Tests");
 
             allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testConstructors", &Matrix4Tests::testConstructors));
+            allTests->addTest(new CppUnit::TestCaller<Matrix4Tests>("testMatrixMultiplication", &Matrix4Tests::testMatrixMultiplication));
 
             return allTests;
         }
+    private:
+        bool matchMatrixToBuffer(const Matrix4 &matrix, const GLfloat *buffer);
 };

@@ -1,5 +1,6 @@
 *.o
 build/*
+tests/
 include/GL
 
 #Eclipse CDT Files

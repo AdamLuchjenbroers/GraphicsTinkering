@@ -48,10 +48,14 @@ Shader::Shader(const std::string script, GLenum shadertype) {
     glGetShaderiv(_shader, GL_COMPILE_STATUS, &compileStatus);
 
     if (glerror != GL_NO_ERROR || compileStatus == GL_FALSE) {
+        GLchar infoLog[1024];
+        GLsizei infoLength;
+        
+        glGetShaderInfoLog(_shader, 1024, &infoLength, infoLog);
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\nLog:\n%s\n", script.c_str(), gluErrorString(glerror), infoLog);
+        
         glDeleteShader(_shader);
         _shader = 0;
-
-        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\n", script.c_str(), gluErrorString(glerror));
     } else {
         Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader: %s\n", script.c_str());
   }

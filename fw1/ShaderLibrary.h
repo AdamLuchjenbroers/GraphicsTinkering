@@ -2,6 +2,7 @@
 
 #include "fw1.h"
 
+#include <string>
 #include <map>
 
 /** Manages a collection of shader script files and supplies the shader as requested. It expects the shader library
@@ -18,7 +19,7 @@ public:
  *  @param stage The GL pipeline stage for this shader.
  *  @return A Shader object created with the requested script and for the requested pipeline stage.
  */
-    Shader *getShader(const char *name, GLuint stage);
+    ShaderRef getShader(const std::string name, GLuint stage);
 
 /** Gets the Shader Library object, or creates it if required using the default shader search path.
  *  @return A pointer to the shader library.
@@ -33,5 +34,6 @@ private:
 
     ShaderLibrary(char *basepath);
 
-    std::map<GLSLVersion, char*> versions;
+    std::map<GLSLVersion, char*> _versions;
+    std::map<std::string, Shader> _shaders;
 };

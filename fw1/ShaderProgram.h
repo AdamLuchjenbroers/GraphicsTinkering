@@ -33,5 +33,5 @@ private:
     GLuint _program;
     bool _linked;
 
-    std::map<GLenum, Shader> _shaders;
+    std::map<GLenum, ShaderRef> _shaders;
 };

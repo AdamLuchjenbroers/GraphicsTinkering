@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <errno.h>
 #include <string.h>
 
@@ -9,136 +10,83 @@
 #include <GL/glu.h>
 
 Shader::Shader() {
-    this->shader = 0;
-    this->shadersource = NULL;
-    this->shaderlines = 0;
+    this->_shader = 0;
 }
 
-Shader::Shader(const std::string scriptfile, GLenum shadertype) {
-  std::ifstream script;
-  std::string scriptline;
-  GLenum glerror;
+Shader::Shader(const std::string script, GLenum shadertype) {
+    std::ifstream scriptFile;
+    std::stringstream scriptData;
+    GLenum glerror;
 
-  this->shader = 0;
-  this->shadersource = NULL;
-  this->shaderlines = 0;
+    scriptFile.open(script.c_str());
+    scriptData << scriptFile.rdbuf();
 
-  script.open(scriptfile.c_str());
+    if ( scriptFile.fail() ) {
+        _shader = 0;
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to open shader source file %s (%s)\n", script.c_str(), strerror(errno));
+        return;
+    }
 
-  if ( script.fail() ) {
-    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to open shader source file %s (%s)\n", scriptfile.c_str(), strerror(errno));
-    return;
-  }
+    this->_shader = glCreateShader(shadertype);
 
-  while ( getline(script, scriptline) ) {
-    this->shaderscript.push_back( scriptline );
-  }
+    const char *glSource = scriptData.str().c_str();
 
-  this->prepareSource();
+    glShaderSource(_shader, 1, &glSource, NULL);
+    glerror = glGetError();
+    if (glerror != GL_NO_ERROR) {
+        glDeleteShader(_shader);
+        _shader = 0;
 
-  this->shader = glCreateShader(shadertype);
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glShaderSource failed to load shader: %s\n", gluErrorString(glerror));
+        return;
+    }
 
-  glShaderSource(this->shader, this->shaderlines, this->shadersource, NULL);
-  glerror = glGetError();
-  if (glerror != GL_NO_ERROR) {
-    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glShaderSource failed to load shader: %s\n", gluErrorString(glerror));
-    return;
-  } 
+    glCompileShader(_shader);
+    glerror = glGetError();
+    if (glerror != GL_NO_ERROR) {
+        glDeleteShader(_shader);
+        _shader = 0;
 
-  glCompileShader(this->shader);
-  glerror = glGetError();
-  if (glerror != GL_NO_ERROR) {
-    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\n", scriptfile.c_str(), gluErrorString(glerror));
-  } else {
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader: %s\n", scriptfile.c_str());
-
-    this->shaderscript.clear();
-    this->releaseSource();
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\n", script.c_str(), gluErrorString(glerror));
+    } else {
+        Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader: %s\n", script.c_str());
   }
 
 };
+
+Shader::Shader(const Shader &copy) {
+    _shader = copy._shader;
+}
 
 Shader::~Shader() {
-    if (this->shader >= 0) {
-        // FIXME: Currently, this breaks the copy constructor.
-    	//glDeleteShader(this->shader);
-    }
-
-    if (this->shadersource != NULL) {
-        this->releaseSource();
+    if (_shader >= 0) {
+    	glDeleteShader(_shader);
     }
 };
 
-void Shader::releaseSource() {
-  int i;
-
-  for(i=0;i<this->shaderlines;i++) {
-    delete this->shadersource[i];
-  }
-
-  delete this->shadersource;
-
-  this->shadersource = NULL;
-  this->shaderlines = 0;
+bool Shader::isValid() {
+    return (_shader > 0);
 }
 
-void Shader::printScript() {
-  int line = 0;
-
-  if (this->shadersource == NULL) {
-      return;
-  }
-
-
-  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "----------------");
-  while (line < this->shaderlines) {
-    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, shadersource[line]);
-    line++;
-  }
-  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "----------------");
-};
-
-
-void Shader::printShader() {
+std::string Shader::getSource() {
   GLchar shadersource[1024];
 
-  glGetShaderSource(this->shader, 1024, NULL, shadersource);
+  glGetShaderSource(_shader, 1024, NULL, shadersource);
 
-  Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Shader source:\n%s\n------------\n",shadersource);
+  return std::string(shadersource);
 };
 
 GLuint Shader::getShader() {
-  return this->shader;
+  return _shader;
 }
 
-void Shader::prepareSource() {
-  std::list<std::string>::iterator line;
-  char **sourceline;
-
-  this->shaderlines = this->shaderscript.size();
-  this->shadersource = new char*[this->shaderlines];
-
-  sourceline = this->shadersource;
-
-  line = this->shaderscript.begin();
-
-  while ( line != this->shaderscript.end() ) {
-	int length = line->size();
-    *sourceline = new char[length+2]; //Add space for newline and terminator.
-
-    snprintf(*sourceline, length+2, "%s\n", line->c_str());
-
-    line++;
-    sourceline++;
-  }
+Shader &Shader::operator=(Shader &source) {
+    _shader = source._shader;
+    return *this;
 };
 
-void Shader::operator=(Shader &source) {
-    this->shader = source.shader;
-};
-
-void Shader::operator=(Shader *source) {
-    // Delegate to the reference implementation.
-    operator=(*source);
+Shader &Shader::operator=(Shader *source) {
+    _shader = source->_shader;
+    return *this;
 }
 

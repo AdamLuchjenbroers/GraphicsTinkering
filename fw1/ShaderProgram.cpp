@@ -17,7 +17,7 @@ ShaderProgram::~ShaderProgram() {
 
 bool ShaderProgram::addShader(const char *name, const GLenum type) {
     ShaderLibrary *lib;
-    Shader *newShader;
+    ShaderRef newShader;
 
     lib = ShaderLibrary::getLibrary();
 
@@ -28,9 +28,8 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
 
     newShader = lib->getShader(name, type);
 
-    if (newShader != NULL) {
+    if (newShader.isValid()) {
         _shaders[type] = newShader;
-        delete newShader;
 
         return true;
     } else {
@@ -39,7 +38,7 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
 }
 
 bool ShaderProgram::linkProgram() {
-    std::map<GLenum, Shader>::iterator itr;
+    std::map<GLenum, ShaderRef>::iterator itr;
     GLuint glerror;
     GLint linkState;
 

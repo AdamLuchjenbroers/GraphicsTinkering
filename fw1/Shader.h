@@ -11,26 +11,17 @@
 
 class Shader {
 public:
-  Shader();
-  Shader(const std::string scriptfile, GLenum shadertype);
-  ~Shader();
+    Shader();
+    Shader(const std::string scriptfile, GLenum shadertype);
+    Shader(const Shader &copy);
+    ~Shader();
 
-  void printScript();
-  void printShader();
+    std::string getSource();
+    GLuint getShader();
+    bool isValid();
 
-  GLuint getShader();
-
-  virtual void operator=(Shader *source);
-  virtual void operator=(Shader &source);
+    Shader &operator=(Shader *source);
+    Shader &operator=(Shader &source);
 private:
-
-  void prepareSource();
-  void releaseSource();
-
-  std::list<std::string> shaderscript;
-  // OpenGL expects an array of chars
-  char **shadersource;
-  size_t shaderlines;
-
-  GLuint shader;
+    GLuint _shader;
 };

@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "Shader.h"
+#include "ShaderRef.h"
 #include "logger.h"
 #include <GL/glu.h>
 
@@ -16,7 +16,7 @@ ShaderRef::ShaderRef(const ShaderRef &copy) {
     _master = copy._master;
 };
 
-ShaderRef::ShaderRef(const Shader &ref) {
+ShaderRef::ShaderRef(Shader &ref) {
     _master = &ref;
 }
 
@@ -54,12 +54,12 @@ GLuint ShaderRef::getShader() {
 }
 
 
-ShaderRef &ShaderRef::operator=(ShaderRef &source) {
+ShaderRef &ShaderRef::operator=(const ShaderRef &source) {
     _master = source._master;
     return *this;
 };
 
-ShaderRef &ShaderRef::operator=(ShaderRef *source) {
+ShaderRef &ShaderRef::operator=(const ShaderRef *source) {
     this->_master = source->_master;
     return *this;
 }

@@ -19,13 +19,12 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
     ShaderLibrary *lib;
     ShaderRef newShader;
 
-    lib = ShaderLibrary::getLibrary();
-
     if (_program == 0) {
         //First time this is called, create the program.
         _program = glCreateProgram();
     }
 
+    lib = ShaderLibrary::getLibrary();
     newShader = lib->getShader(name, type);
 
     if (newShader.isValid()) {
@@ -43,6 +42,8 @@ bool ShaderProgram::linkProgram() {
     GLint linkState;
 
     for (itr = _shaders.begin(); itr != _shaders.end(); itr++) {
+
+
         GLuint shader = itr->second.getShader();
 
         glAttachShader(_program, shader);

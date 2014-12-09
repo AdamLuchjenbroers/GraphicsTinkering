@@ -14,18 +14,18 @@ class ShaderRef {
 public:
   ShaderRef();
   ShaderRef(const ShaderRef &copy);
-  ShaderRef(const Shader &ref);
+  ShaderRef(Shader &ref);
   ~ShaderRef();
 
   std::string getSource();
+  void printShader();
   bool isValid();
 
   GLuint getShader();
 
-  ShaderRef &operator=(ShaderRef *source);
-  ShaderRef &operator=(ShaderRef &source);
+  ShaderRef &operator=(const ShaderRef *source);
+  ShaderRef &operator=(const ShaderRef &source);
 private:
-
 
   Shader *_master;
 };

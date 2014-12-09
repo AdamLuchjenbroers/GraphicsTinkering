@@ -17,6 +17,7 @@ Shader::Shader(const std::string script, GLenum shadertype) {
     std::ifstream scriptFile;
     std::stringstream scriptData;
     GLenum glerror;
+    GLint compileStatus;
 
     scriptFile.open(script.c_str());
     scriptData << scriptFile.rdbuf();
@@ -30,6 +31,7 @@ Shader::Shader(const std::string script, GLenum shadertype) {
     this->_shader = glCreateShader(shadertype);
 
     const char *glSource = scriptData.str().c_str();
+    printf("\n%s\n",glSource);
 
     glShaderSource(_shader, 1, &glSource, NULL);
     glerror = glGetError();
@@ -43,7 +45,9 @@ Shader::Shader(const std::string script, GLenum shadertype) {
 
     glCompileShader(_shader);
     glerror = glGetError();
-    if (glerror != GL_NO_ERROR) {
+    glGetShaderiv(_shader, GL_COMPILE_STATUS, &compileStatus);
+
+    if (glerror != GL_NO_ERROR || compileStatus == GL_FALSE) {
         glDeleteShader(_shader);
         _shader = 0;
 

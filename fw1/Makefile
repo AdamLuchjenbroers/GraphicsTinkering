@@ -12,7 +12,7 @@ tests: ../tests/fw1.a
 clean:
 	rm -f *.o tests/*.o
 
-../build/fw1.a: SDLDisplay.o Shader.o logger.o config.o ShaderLibrary.o ShaderProgram.o 
+../build/fw1.a: SDLDisplay.o Shader.o logger.o config.o ShaderLibrary.o ShaderProgram.o VersionNumber.o
 	ld -r $^ -o $@
 
 # Test Cases

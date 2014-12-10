@@ -28,11 +28,11 @@ public:
 /** Replaces the current Shader Library object with a new Shader Library based in the specified path
  *  @param newpath The new base search path for the shader library.
  */
-    static void setLibraryPath(char *newpath);
+    static void setLibraryPath(const char *newpath);
 private:
     static ShaderLibrary *library;
 
-    ShaderLibrary(char *basepath);
+    ShaderLibrary(const char *basepath);
 
     std::map<GLSLVersion, char*> _versions;
     std::map<std::string, Shader> _shaders;

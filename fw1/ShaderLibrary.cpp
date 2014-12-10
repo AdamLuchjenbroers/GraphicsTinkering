@@ -8,7 +8,7 @@
 /*
  * Shader Library 
  */
-ShaderLibrary::ShaderLibrary(char *basepath) {
+ShaderLibrary::ShaderLibrary(const char *basepath) {
     char search[64];
     glob_t files;
     int file_index;
@@ -44,7 +44,7 @@ ShaderLibrary::ShaderLibrary(char *basepath) {
 
 ShaderLibrary *ShaderLibrary::library = NULL;
 
-void ShaderLibrary::setLibraryPath(char *newpath) {
+void ShaderLibrary::setLibraryPath(const char *newpath) {
     if (library != NULL) {
         delete library;
     }

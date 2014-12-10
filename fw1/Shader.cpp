@@ -32,10 +32,7 @@ Shader::Shader(const std::string script, GLenum shadertype) {
     std::string scriptString = scriptData.str();
     const char *glSource = scriptString.c_str();
 
-    printf("\n|%s|\n",glSource);
-
     glShaderSource(_shader, 1, &glSource, NULL);
-    printf("\n|%s|\n",glSource);
     glerror = glGetError();
     if (glerror != GL_NO_ERROR) {
         glDeleteShader(_shader);
@@ -55,10 +52,6 @@ Shader::Shader(const std::string script, GLenum shadertype) {
         
         glGetShaderInfoLog(_shader, 1024, &infoLength, infoLog);
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glCompileShader failed to compile %s: %s\nLog:\n%s\n", script.c_str(), gluErrorString(glerror), infoLog);
-        
-        std::string source = getSource();
-
-        printf("SOURCE:\n|%s|\n", source.c_str());
 
         glDeleteShader(_shader);
         _shader = 0;

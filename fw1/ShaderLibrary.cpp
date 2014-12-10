@@ -86,8 +86,7 @@ ShaderRef ShaderLibrary::getShader(const std::string name, GLuint stage) {
 
             if (stat(shaderPath, &shaderStat) == 0) {
                 Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Found shader %s\n", shaderPath);
-                Shader newShader = Shader(shaderPath, stage);
-                _shaders[name] = newShader;
+                _shaders[name].loadShader(shaderPath, stage);
 
                 return ShaderRef(_shaders[name]);
             }

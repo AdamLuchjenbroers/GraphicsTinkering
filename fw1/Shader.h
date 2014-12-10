@@ -12,16 +12,13 @@
 class Shader {
 public:
     Shader();
-    Shader(const std::string scriptfile, GLenum shadertype);
-    Shader(const Shader &copy);
     ~Shader();
 
+    bool loadShader(const std::string scriptfile, GLenum shadertype);
     std::string getSource();
     GLuint getShader();
     bool isValid();
 
-    Shader &operator=(Shader *source);
-    Shader &operator=(Shader &source);
 private:
     GLuint _shader;
 };

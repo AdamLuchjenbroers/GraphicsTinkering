@@ -50,7 +50,7 @@ bool ShaderProgram::linkProgram() {
 
         glerror = glGetError();
         if (glerror != GL_NO_ERROR) {
-            Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to attach shader, error: %s\n", gluErrorString(glerror));
+            Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to attach shader [%i], error: %s\n", shader, gluErrorString(glerror));
             return false;
         }
     }

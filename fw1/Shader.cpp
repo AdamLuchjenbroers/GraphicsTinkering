@@ -13,7 +13,7 @@ Shader::Shader() {
     this->_shader = 0;
 }
 
-Shader::Shader(const std::string script, GLenum shadertype) {
+bool Shader::loadShader(const std::string script, GLenum shadertype) {
     std::ifstream scriptFile;
     std::stringstream scriptData;
     GLenum glerror;
@@ -22,10 +22,15 @@ Shader::Shader(const std::string script, GLenum shadertype) {
     scriptFile.open(script.c_str());
     scriptData << scriptFile.rdbuf();
 
+    if ( _shader != 0 ) {
+        //Release the previous shader
+        glDeleteShader(_shader);
+    }
+
     if ( scriptFile.fail() ) {
         _shader = 0;
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "Unable to open shader source file %s (%s)\n", script.c_str(), strerror(errno));
-        return;
+        return false;
     }
 
     this->_shader = glCreateShader(shadertype);
@@ -39,7 +44,7 @@ Shader::Shader(const std::string script, GLenum shadertype) {
         _shader = 0;
 
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glShaderSource failed to load shader: %s\n", gluErrorString(glerror));
-        return;
+        return false;
     }
 
     glCompileShader(_shader);
@@ -55,15 +60,13 @@ Shader::Shader(const std::string script, GLenum shadertype) {
 
         glDeleteShader(_shader);
         _shader = 0;
+        return false;
     } else {
-        Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader: %s\n", script.c_str());
-  }
+        Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader [%i]: %s\n", _shader, script.c_str());
+        return true;
+    }
 
 };
-
-Shader::Shader(const Shader &copy) {
-    _shader = copy._shader;
-}
 
 Shader::~Shader() {
     if (_shader >= 0) {
@@ -85,15 +88,5 @@ std::string Shader::getSource() {
 
 GLuint Shader::getShader() {
   return _shader;
-}
-
-Shader &Shader::operator=(Shader &source) {
-    _shader = source._shader;
-    return *this;
-};
-
-Shader &Shader::operator=(Shader *source) {
-    _shader = source->_shader;
-    return *this;
 }
 

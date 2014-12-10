@@ -41,27 +41,7 @@ void SB6_Chapter3::appInit() {
     GLuint glerror;
     bool success;
 
-    ShaderLibrary::setLibraryPath("./shader");
-
-    success = program.addShader("sb3_1-vertex.sdr", GL_VERTEX_SHADER);
-    success &= program.addShader("sb3-fragment.sdr", GL_FRAGMENT_SHADER);
-
-    if (success == false) {
-        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
-        exit(1);
-    }
-
-    program.bindAttribute("offset", 1);
-    program.bindAttribute("color", 2);
-
-    success = program.linkProgram();
-
-    if (success == false) {
-        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
-        exit(1);
-    }
-    
-    glUseProgram(program.programID());
+    loadVFProgram("sb3_1-vertex.sdr", "sb3-fragment.sdr");
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);

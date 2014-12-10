@@ -16,6 +16,10 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
         return false;
     }
 
+    // Use explicit location bindings compatibility with older GLSL versions
+    program.bindAttribute("offset", 1);
+    program.bindAttribute("color", 2);
+
     success = program.linkProgram();
 
     if (success == false) {

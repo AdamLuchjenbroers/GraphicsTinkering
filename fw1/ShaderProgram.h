@@ -18,6 +18,11 @@ public:
  */
     bool addShader(const char *name, const GLenum type );
 
+/** Binds an attribute to a specific input location
+ *  @param attrib Attribute name
+ *  @param location Intended attribute location
+ */
+    void bindAttribute(const GLchar *attrib, GLuint location);
 /** Link the selected shaders together to create a shader program.
  *  @return True if the link process was successful.
  */

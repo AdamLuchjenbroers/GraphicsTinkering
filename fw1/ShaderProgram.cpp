@@ -36,6 +36,10 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
     }
 }
 
+void ShaderProgram::bindAttribute(const GLchar *attrib, GLuint location) {
+    glBindAttribLocation(_program, location, attrib);
+}
+
 bool ShaderProgram::linkProgram() {
     std::map<GLenum, ShaderRef>::iterator itr;
     GLuint glerror;

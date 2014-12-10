@@ -2,7 +2,6 @@
 
 
 bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentName) {
-    ShaderLibrary *lib;
     GLuint glerror;
     bool success = true;
 

@@ -60,8 +60,8 @@ bool SB6_Chapter3::appMain() {
 
     colour_for_time(colour);
 
-    glVertexAttrib4fv(0, offset);
-    glVertexAttrib4fv(1, colour);
+    glVertexAttrib4fv(1, offset);
+    glVertexAttrib4fv(2, colour);
     if (glerror != GL_NO_ERROR) {
        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glVertexAttrib4fv: %s\n", gluErrorString(glerror));
     }

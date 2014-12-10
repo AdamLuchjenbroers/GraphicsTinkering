@@ -51,8 +51,8 @@ void SB6_Chapter3::appInit() {
         exit(1);
     }
 
-    program.bindAttribute("offset", 0);
-    program.bindAttribute("color", 1);
+    program.bindAttribute("offset", 1);
+    program.bindAttribute("color", 2);
 
     success = program.linkProgram();
 
@@ -76,10 +76,7 @@ bool SB6_Chapter3::appMain() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     offsetLocation = glGetAttribLocation(program.programID(), "offset");
-
-    //printf("[%1.4f, %1.4f, %1.4f, %1.4f]\n", offset[0], offset[1], offset[2], offset[3]); 
-    
-    glVertexAttrib4f(0, 1.0f, 1.0f, 0.0f, 0.0f);
+    glVertexAttrib4fv(offsetLocation, offset);
     if (glerror != GL_NO_ERROR) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glVertexAttrib4fv: %s\n", gluErrorString(glerror));
     }

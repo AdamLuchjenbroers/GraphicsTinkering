@@ -1,6 +1,9 @@
 #version 130
 
 in vec4 offset;
+//in vec4 colour;
+
+out vec4 vs_color;
 
 void main(void)
 {
@@ -10,5 +13,8 @@ void main(void)
                                      vec4( 0.25,  0.25, 0.5, 1.0));
 
     // Index into our array using gl_VertexID
-    gl_Position = vertices[gl_VertexID] + offset;
+    gl_Position = offset + vertices[gl_VertexID];
+
+    vs_color = vec4(0.4, 0.4, 1.0, 1.0);
 }
+

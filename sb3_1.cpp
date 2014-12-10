@@ -38,7 +38,30 @@ SB6_Chapter3::SB6_Chapter3() {
 }
 
 void SB6_Chapter3::appInit() {
-    loadVFProgram("sb3_1-vertex.sdr", "sb2-fragment.sdr");
+    GLuint glerror;
+    bool success;
+
+    ShaderLibrary::setLibraryPath("./shader");
+
+    success = program.addShader("sb3_1-vertex.sdr", GL_VERTEX_SHADER);
+    success &= program.addShader("sb3-fragment.sdr", GL_FRAGMENT_SHADER);
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
+        exit(1);
+    }
+
+    program.bindAttribute("offset", 0);
+    program.bindAttribute("color", 1);
+
+    success = program.linkProgram();
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
+        exit(1);
+    }
+    
+    glUseProgram(program.programID());
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);
@@ -54,15 +77,17 @@ bool SB6_Chapter3::appMain() {
 
     offsetLocation = glGetAttribLocation(program.programID(), "offset");
 
-    glVertexAttrib4fv(0, offset);
+    //printf("[%1.4f, %1.4f, %1.4f, %1.4f]\n", offset[0], offset[1], offset[2], offset[3]); 
+    
+    glVertexAttrib4f(0, 1.0f, 1.0f, 0.0f, 0.0f);
     if (glerror != GL_NO_ERROR) {
-       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glVertexAttrib4fv: %s\n", gluErrorString(glerror));
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glVertexAttrib4fv: %s\n", gluErrorString(glerror));
     }
     glDrawArrays(GL_TRIANGLES, 0, 3);
    
     glerror = glGetError();
     if (glerror != GL_NO_ERROR) {
-       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glDrawArrays: %s\n", gluErrorString(glerror));
+         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Error encountered while calling glDrawArrays: %s\n", gluErrorString(glerror));
     } 
     display->swapBuffers();
 

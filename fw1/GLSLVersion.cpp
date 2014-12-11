@@ -1,4 +1,4 @@
-#include "config.h"
+#include "GLSLVersion.h"
 #include "logger.h"
 
 #include <cstdio>

@@ -7,8 +7,6 @@
 #define GL_GLEXT_PROTOTYPES
 #include "GL/glcorearb.h"
 
-
-
 class GLSLVersion : public VersionNumber {
 public:
     GLSLVersion(GLint major, GLint minor);

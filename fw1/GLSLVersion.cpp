@@ -17,6 +17,13 @@ GLSLVersion::GLSLVersion(GLint maj, GLint min) {
     snprintf(logName, 16, "%i.%i", major, minor);
 }
 
+GLSLVersion::GLSLVersion(const GLSLVersion &copy) {
+    major = copy.major;
+    minor = copy.minor;
+
+    strncpy(logName, copy.logName, sizeof(logName));
+}
+
 GLSLVersion *GLSLVersion::contextVersion = NULL;
 
 GLSLVersion *GLSLVersion::getContextVersion() {

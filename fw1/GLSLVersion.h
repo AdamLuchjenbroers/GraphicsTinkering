@@ -10,6 +10,7 @@
 class GLSLVersion : public VersionNumber {
 public:
     GLSLVersion(GLint major, GLint minor);
+    GLSLVersion(const GLSLVersion &copy);
 
     static GLSLVersion *getContextVersion();
     static GLSLVersion *versionFromText(char *text);

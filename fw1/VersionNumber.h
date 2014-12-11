@@ -17,4 +17,6 @@ protected:
     GLint major, minor;
 
     char logName[16];
+
+    static bool parseVersion(char *string, GLint &major, GLint &minor);
 };

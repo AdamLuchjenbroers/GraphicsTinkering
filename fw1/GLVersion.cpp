@@ -51,10 +51,3 @@ GLVersion *GLVersion::versionFromText(char *text) {
 GLVersion *GLVersion::versionFromText(std::string text) {
     return versionFromText(text.c_str());
 }
-
-GLVersion &GLVersion::operator=(const GLVersion &copy) {
-    major = copy.major;
-    minor = copy.minor;
-
-    return *this;
-}

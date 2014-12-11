@@ -12,6 +12,8 @@ public:
 
     virtual bool operator==(const VersionNumber &right) const;
 
+    virtual VersionNumber &operator=(const VersionNumber &copy);
+
     const char *getLogName() const;
 protected:
     GLint major, minor;

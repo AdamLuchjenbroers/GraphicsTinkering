@@ -52,3 +52,10 @@ bool VersionNumber::parseVersion(char *string, GLint &major, GLint &minor) {
 
     return (*loc == '.' || *loc == '\0' || *loc == ' ');
 };
+
+VersionNumber &VersionNumber::operator=(const VersionNumber &copy) {
+    major = copy.major;
+    minor = copy.minor;
+
+    return *this;
+}

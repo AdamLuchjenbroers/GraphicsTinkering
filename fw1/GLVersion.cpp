@@ -5,10 +5,17 @@
 #include <cstring>
 
 GLVersion::GLVersion(GLint maj, GLint min) {
-  major = maj;
-  minor = min;
+    major = maj;
+    minor = min;
 
-  snprintf(logName, 16, "%i.%i", major, minor);
+    snprintf(logName, 16, "%i.%i", major, minor);
+}
+
+GLVersion::GLVersion(const GLVersion &copy) {
+    major = copy.major;
+    minor = copy.minor;
+  
+    snprintf(logName, 16, "%i.%i", major, minor);
 }
 
 GLVersion *GLVersion::contextVersion = NULL;
@@ -45,3 +52,9 @@ GLVersion *GLVersion::versionFromText(std::string text) {
     return versionFromText(text.c_str());
 }
 
+GLVersion &GLVersion::operator=(const GLVersion &copy) {
+    major = copy.major;
+    minor = copy.minor;
+
+    return *this;
+}

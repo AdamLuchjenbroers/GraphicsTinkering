@@ -18,19 +18,13 @@ GLVersion::GLVersion(const GLVersion &copy) {
     snprintf(logName, 16, "%i.%i", major, minor);
 }
 
-GLVersion *GLVersion::contextVersion = NULL;
-
-GLVersion *GLVersion::getContextVersion() {
+GLVersion GLVersion::getContextVersion() {
     GLint major, minor;
 
-    if (contextVersion == NULL) {
-        glGetIntegerv(GL_MAJOR_VERSION, &major);
-        glGetIntegerv(GL_MINOR_VERSION, &minor);
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
 
-        contextVersion = new GLVersion(major, minor);
-    }
-
-    return contextVersion;
+    return GLVersion(major, minor);
 }
 
 void GLVersion::printVersion() {
@@ -38,16 +32,17 @@ void GLVersion::printVersion() {
 }
 
 
-GLVersion *GLVersion::versionFromText(char *text) {
+GLVersion GLVersion::versionFromText(char *text) {
     GLint major, minor;
 
     if ( parseVersion(text, major, minor) ) {
-        return new GLVersion(major, minor);
+        return GLVersion(major, minor);
     } else {
-        return NULL;
+        //TODO: Throw exception
+        return GLVersion(0,0);
     }
 };
 
-GLVersion *GLVersion::versionFromText(std::string text) {
+GLVersion GLVersion::versionFromText(std::string text) {
     return versionFromText(text.c_str());
 }

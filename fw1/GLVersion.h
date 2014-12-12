@@ -14,9 +14,7 @@ public:
 
     void printVersion();
 
-    static GLVersion *getContextVersion();
-    static GLVersion *versionFromText(char *text);
-    static GLVersion *versionFromText(std::string text);
-
-    static GLVersion *contextVersion;
+    static GLVersion getContextVersion();
+    static GLVersion versionFromText(char *text);
+    static GLVersion versionFromText(std::string text);
 };

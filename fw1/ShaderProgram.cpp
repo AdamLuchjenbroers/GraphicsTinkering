@@ -1,5 +1,5 @@
 #include "ShaderProgram.h"
-#include "logger.h"
+#include "Logger.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glcorearb.h>

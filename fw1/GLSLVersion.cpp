@@ -1,5 +1,5 @@
 #include "GLSLVersion.h"
-#include "logger.h"
+#include "Logger.h"
 
 #include <cstdio>
 #include <cstring>

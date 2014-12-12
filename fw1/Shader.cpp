@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "Shader.h"
-#include "logger.h"
+#include "Logger.h"
 #include <GL/glu.h>
 
 Shader::Shader() {

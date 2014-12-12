@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "ShaderRef.h"
-#include "logger.h"
+#include "Logger.h"
 #include <GL/glu.h>
 
 ShaderRef::ShaderRef() {

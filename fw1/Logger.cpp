@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "Logger.h"
 #include <cstdarg>
 
 void Logger::logprintf(Logger::Level loglevel, Logger::Channel logchannel, const char *format, ...) {

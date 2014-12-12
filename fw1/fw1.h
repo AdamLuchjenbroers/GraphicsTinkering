@@ -6,7 +6,7 @@
 
 #include "FrameworkOneApp.h"
 
-#include "logger.h"
+#include "Logger.h"
 #include "Shader.h"
 #include "ShaderRef.h"
 #include "SDLDisplay.h"

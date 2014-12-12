@@ -5,6 +5,8 @@
 #include "fw1/fw1.h"
 #include "SB6_BasicApp.h"
 
+#include <SDL2/SDL.h>
+
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1
 #define COLOUR_BLUE 2
@@ -26,6 +28,7 @@ private:
 };
 
 SB6_Chapter3::SB6_Chapter3() {
+ 
    display = new SDLDisplay("Chapter 3 - Moving Triangle", 300, 400);
    running = true;
 

@@ -11,6 +11,7 @@ public:
     virtual bool operator>=(const VersionNumber &right) const;
 
     virtual bool operator==(const VersionNumber &right) const;
+    virtual bool operator!=(const VersionNumber &right) const;
 
     virtual VersionNumber &operator=(const VersionNumber &copy);
 

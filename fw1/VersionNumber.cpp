@@ -1,27 +1,31 @@
 #include "VersionNumber.h"
 
 inline bool VersionNumber::operator<(const VersionNumber &right) const {
-  if (this->major < right.major) return true;
-  if ((this->major == right.major) && (this->minor < right.minor)) return true;
-  return false; 
+    if (this->major < right.major) return true;
+    if ((this->major == right.major) && (this->minor < right.minor)) return true;
+    return false; 
 }
 
 inline bool VersionNumber::operator>(const VersionNumber &right) const {
-  if (this->major > right.major) return true;
-  if ((this->major == right.major) && (this->minor > right.minor)) return true;
-  return false; 
+    if (this->major > right.major) return true;
+    if ((this->major == right.major) && (this->minor > right.minor)) return true;
+    return false; 
 }
 
 inline bool VersionNumber::operator>=(const VersionNumber &right) const {
-  return !(*this < right);
+    return !(*this < right);
 }
 
 inline bool VersionNumber::operator<=(const VersionNumber &right) const {
-  return !(*this > right);
+    return !(*this > right);
 }
 
 inline bool VersionNumber::operator==(const VersionNumber &right) const {
-  return (this->major == right.major && this->minor == right.minor);
+    return (this->major == right.major && this->minor == right.minor);
+}
+
+inline bool VersionNumber::operator!=(const VersionNumber &right) const {
+    return !(*this == right);
 }
 
 const char *VersionNumber::getLogName() const {

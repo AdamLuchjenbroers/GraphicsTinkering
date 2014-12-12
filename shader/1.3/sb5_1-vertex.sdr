@@ -1,0 +1,13 @@
+#version 130
+
+in vec4 position;
+in vec4 offset;
+in vec4 color;
+
+out vec4 vs_color;
+
+void main(void)
+{
+    gl_Position = offset;
+    vs_color = color;
+}

@@ -37,28 +37,28 @@ SB6_Chapter3::SB6_Chapter3() {
    vertexarray = 0;
 }
 
+static const float vertices[] =
+{
+     0.15, -0.35, 0.5, 1.0,
+    -0.35, -0.35, 0.5, 1.0,
+     0.15,  0.15, 0.5, 1.0,
+     -0.15, 0.35, 0.5, 1.0,
+     0.35,  0.35, 0.5, 1.0,
+     -0.15, -0.15, 0.5, 1.0
+};
+
+static const float colours[] =
+{
+     1.0, 0.8, 0.8, 1.0,
+     0.8, 1.0, 0.8, 1.0,
+     0.8, 0.8, 1.0, 1.0,
+     1.0, 0.5, 0.8, 1.0,
+     0.8, 1.0, 0.5, 1.0,
+     0.5, 0.8, 1.0, 1.0
+};
+
 void SB6_Chapter3::appInit() {
     loadVFProgram("sb5_1-vertex.sdr", "sb3-fragment.sdr");
-
-    static const float vertices[] =
-    {
-         0.15, -0.35, 0.5, 1.0,
-        -0.35, -0.35, 0.5, 1.0,
-         0.15,  0.15, 0.5, 1.0,
-         -0.15, 0.35, 0.5, 1.0,
-         0.35,  0.35, 0.5, 1.0,
-         -0.15, -0.15, 0.5, 1.0
-    };
-
-    static const float colours[] =
-    {
-         1.0, 0.8, 0.8, 1.0,
-         0.8, 1.0, 0.8, 1.0,
-         0.8, 0.8, 1.0, 1.0,
-         1.0, 0.5, 0.8, 1.0,
-         0.8, 1.0, 0.5, 1.0,
-         0.5, 0.8, 1.0, 1.0
-    };
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);
@@ -73,7 +73,7 @@ void SB6_Chapter3::appInit() {
     checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
     checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
 
     glGenBuffers(1, &colourbuffer);
@@ -85,13 +85,13 @@ void SB6_Chapter3::appInit() {
     checkGLError("Error encountered loading Array Buffer: %s\n", Logger::LOG_ERROR);
 
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
     checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
 }
 
 bool SB6_Chapter3::appMain() {
     GLenum glerror;
-    GLfloat offset[] = { offset_x, offset_y, 0.0f, 0.0f };
+    GLfloat offset[] = { offset_x, offset_y, 0.0f, 1.0f };
     GLint offsetLocation;
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -99,10 +99,9 @@ bool SB6_Chapter3::appMain() {
 
     //offsetLocation = glGetAttribLocation(program.programID(), "color");
 
-    //glVertexAttrib4fv(1, offset);
+    glVertexAttrib4fv(0, offset);
     checkGLError("Error encountered while calling glVertexAttrib4fv: %s\n", Logger::LOG_ERROR);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-   
 
     checkGLError("Error encountered while calling glDrawArrays: %s\n", Logger::LOG_ERROR);
     display->swapBuffers();

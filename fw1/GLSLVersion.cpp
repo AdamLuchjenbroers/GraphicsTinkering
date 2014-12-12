@@ -24,39 +24,34 @@ GLSLVersion::GLSLVersion(const GLSLVersion &copy) {
     strncpy(logName, copy.logName, sizeof(logName));
 }
 
-GLSLVersion *GLSLVersion::contextVersion = NULL;
 
-GLSLVersion *GLSLVersion::getContextVersion() {
+GLSLVersion GLSLVersion::getContextVersion() {
     GLint major, minor;
     char versionString[1024];
 
+    strncpy(versionString, (char *)glGetString(GL_SHADING_LANGUAGE_VERSION), 1024);
 
-    if (contextVersion == NULL) {
-        strncpy(versionString, (char *)glGetString(GL_SHADING_LANGUAGE_VERSION), 1024);
-
-        if ( parseVersion(versionString, major, minor) ) {
-            contextVersion = new GLSLVersion(major, minor);
-        } else {
-            Logger::logprintf(Logger::LOG_WARN, Logger::LOG_CONTEXT, "Unable to get supported GLSL version for context, defaulting to 1.3\n");
-            contextVersion = new GLSLVersion(1,3);
-        }
+    if ( parseVersion(versionString, major, minor) ) {
+        return GLSLVersion(major, minor);
+    } else {
+        Logger::logprintf(Logger::LOG_WARN, Logger::LOG_CONTEXT, "Unable to get supported GLSL version for context, defaulting to 1.3\n");
+        return GLSLVersion(1,3);
     }
-
-    return contextVersion;
 };
 
-GLSLVersion *GLSLVersion::versionFromText(char *text) {
+GLSLVersion GLSLVersion::versionFromText(char *text) {
     GLint major, minor;
 
     if ( parseVersion(text, major, minor) ) {
 
-        return new GLSLVersion(major, minor);
+        return GLSLVersion(major, minor);
     } else {
-        return NULL;
+        //FIXME: Raise exception
+        return GLSLVersion(0,0);
     }
 };
 
-GLSLVersion *GLSLVersion::versionFromText(std::string text) {
+GLSLVersion GLSLVersion::versionFromText(std::string text) {
     return versionFromText(text.c_str());
 }
 

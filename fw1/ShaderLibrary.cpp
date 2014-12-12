@@ -20,7 +20,6 @@ ShaderLibrary::ShaderLibrary(const char *basepath) {
 
     for(file_index=0; file_index < files.gl_pathc; file_index++) {
         char *path = NULL;
-        GLSLVersion *ver = NULL;
         struct stat stat_data;
         
         Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Checking found file %s\n", files.gl_pathv[file_index]);
@@ -28,14 +27,14 @@ ShaderLibrary::ShaderLibrary(const char *basepath) {
 
         if (S_ISDIR(stat_data.st_mode)) {
             char *dirname = basename(files.gl_pathv[file_index]);
+            GLSLVersion ver = GLSLVersion::versionFromText(dirname);
 
-            ver = GLSLVersion::versionFromText(dirname);
-            if ( ver != NULL ) {
+            if ( ver > GLSLVersion(0,0) ) {
                 path = new char[ strlen(files.gl_pathv[file_index])+ 1 ];
                 strcpy(path, files.gl_pathv[file_index]);
                  
                 Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Added base shader path %s\n", path, files.gl_pathv[file_index]);
-                _versions[*ver] = path;
+                _versions[ver] = path;
             }
         }
     }
@@ -64,20 +63,20 @@ ShaderLibrary *ShaderLibrary::getLibrary() {
 
 ShaderRef ShaderLibrary::getShader(const std::string name, GLuint stage) {
     std::map<GLSLVersion, char*>::iterator itr;
-    GLSLVersion *context = GLSLVersion::getContextVersion();
+    GLSLVersion context = GLSLVersion::getContextVersion();
 
     // First, check if we've already got this shader in memory.
     if ( _shaders.find(name) != _shaders.end() ) {
         return ShaderRef(_shaders[name]);
     }
 
-    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "getShader() called to retrieve %s. Context supports up to GLSL %s\n", name.c_str(), context->getLogName());
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "getShader() called to retrieve %s. Context supports up to GLSL %s\n", name.c_str(), context.getLogName());
 
     //Start at the highest version and work our way back
     for(itr = _versions.end(); itr != _versions.begin(); ) {
         itr--;
         
-        if (itr->first <= *context) {
+        if (itr->first <= context) {
             char shaderPath[256];
             struct stat shaderStat;
 

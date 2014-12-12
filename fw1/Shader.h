@@ -7,8 +7,6 @@
 #include <string>
 #include <map>
 
-#include "config.h"
-
 class Shader {
 public:
     Shader();

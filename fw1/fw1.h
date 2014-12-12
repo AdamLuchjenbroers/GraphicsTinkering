@@ -12,4 +12,5 @@
 #include "SDLDisplay.h"
 #include "ShaderLibrary.h"
 #include "ShaderProgram.h"
-#include "config.h"
+#include "GLVersion.h"
+#include "GLSLVersion.h"

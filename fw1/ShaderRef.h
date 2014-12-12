@@ -7,7 +7,6 @@
 #include <string>
 #include <map>
 
-#include "config.h"
 #include "Shader.h"
 
 class ShaderRef {

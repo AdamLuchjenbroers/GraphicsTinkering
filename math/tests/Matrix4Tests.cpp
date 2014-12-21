@@ -120,3 +120,30 @@ void Matrix4Tests::testScaling() {
 
     CPPUNIT_ASSERT ( variedResult == variedExpect );
 }
+
+void Matrix4Tests::testRotation() {
+    Vector3H basic = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
+    Vector3H result;
+    Matrix4 rotate;
+
+    rotate = Matrix4::rotate(180.0f, 0.0f, 0.0f);
+    result = rotate * basic;
+    CPPUNIT_ASSERT (result == Vector3H(1.0f, -1.0f, -1.0f, 1.0f));
+
+    rotate = Matrix4::rotate(0.0f, 180.0f, 0.0f);
+    result = rotate * basic;
+    CPPUNIT_ASSERT (result == Vector3H(-1.0f, 1.0f, -1.0f, 1.0f));
+
+    rotate = Matrix4::rotate(0.0f, 0.0f, 180.0f);
+    result = rotate * basic;
+    CPPUNIT_ASSERT (result == Vector3H(-1.0f, -1.0f, 1.0f, 1.0f));
+
+    Matrix4 combined = Matrix4::rotate(45.0f, 60.0f, 120.0f);
+    Matrix4 x = Matrix4::rotate(45.0f, 0.0f, 0.0f);
+    Matrix4 y = Matrix4::rotate(0.0f, 60.0f, 0.0f);
+    Matrix4 z = Matrix4::rotate(0.0f, 0.0f, 120.0f);
+    Matrix4 matResult = z * y * x;
+
+    std::cout << matResult.printable() << "\n" << combined.printable();
+    CPPUNIT_ASSERT ( matResult == combined );
+}

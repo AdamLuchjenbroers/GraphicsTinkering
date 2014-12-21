@@ -118,3 +118,45 @@ Matrix4 Matrix4::scale(GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ) {
 
     return Matrix4(matData);
 }
+
+Matrix4 Matrix4::rotate(GLfloat rotateX, GLfloat rotateY, GLfloat rotateZ) {
+    GLfloat radianX = (rotateX * M_PI)  / 180.0f; 
+    GLfloat radianY = (rotateY * M_PI)  / 180.0f; 
+    GLfloat radianZ = (rotateZ * M_PI)  / 180.0f; 
+
+    GLfloat sinX = sin(radianX);
+    GLfloat sinY = sin(radianY);
+    GLfloat sinZ = sin(radianZ);
+
+    GLfloat cosX = cos(radianX);
+    GLfloat cosY = cos(radianY);
+    GLfloat cosZ = cos(radianZ);
+
+    GLfloat matData[16];
+
+    // Top row
+    matData[0] = cosY * cosZ; 
+    matData[4] = (cosX * sinZ) + (sinX * sinY * cosZ); 
+    matData[8] = (sinX * sinZ) - (cosX * sinY * cosZ);
+    matData[12] = 0.0f; 
+
+    // Second row
+    matData[1] = - (cosY * sinZ); 
+    matData[5] = (cosX * cosZ) - (sinX * sinY * sinZ); 
+    matData[9] = (sinX * sinZ) + (cosX * sinY * sinZ);
+    matData[13] = 0.0f; 
+
+    // Third row
+    matData[2] = sinY; 
+    matData[6] = - (sinX * cosY); 
+    matData[10] = cosX * cosY;
+    matData[14] = 0.0f; 
+
+    // Last row
+    matData[3] = 0.0f; 
+    matData[7] = 0.0f;
+    matData[12] = 0.0f;
+    matData[15] = 1.0f; 
+
+    return Matrix4(matData);
+}

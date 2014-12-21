@@ -78,6 +78,14 @@ public:
      *  @return A Matrix describing a scaling in 3D space
      */
     static Matrix4 scale(GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ);
+
+    /** Creates a matrix describining a rotation around the x, y and z axes.
+        @param rotateX Rotation around the X axis
+        @param rotateY Rotation around the Y axis
+        @param rotateZ Rotation around the Z axis
+        @return A matrix describing the rotation in 3D space
+    */
+    static Matrix4 rotate(GLfloat rotateX, GLfloat rotateY, GLfloat rotateZ);
 private:
     GLfloat _matrix[16];
 };

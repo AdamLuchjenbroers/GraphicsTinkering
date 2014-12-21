@@ -72,7 +72,7 @@ void SB6_Chapter3::appInit() {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
 
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
     checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
 
@@ -84,7 +84,7 @@ void SB6_Chapter3::appInit() {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(colours), colours);
     checkGLError("Error encountered loading Array Buffer: %s\n", Logger::LOG_ERROR);
 
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(2);
     checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
 }

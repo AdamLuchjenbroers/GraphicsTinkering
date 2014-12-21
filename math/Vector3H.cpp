@@ -23,6 +23,17 @@ Vector3H::Vector3H(GLfloat *source) {
     _vector[3] = source[3];
 };
 
+bool Vector3H::operator==(const Vector3H &comp) const {
+    for(int i=0;i<4;i++) {
+        GLfloat diff = _vector[i] - comp._vector[i];
+
+        if ((diff > FP_MARGIN) || (diff < -FP_MARGIN)) {
+            return false;
+        } 
+    }
+    return true;
+}
+
 GLfloat Vector3H::magnitude() {
     GLfloat pythagoras = 0.0f;
 
@@ -53,8 +64,8 @@ Vector3H Vector3H::cross(const Vector3H &other) {
 }
 
 std::string Vector3H::printable() const {
-    char buffer[32];
-    const char *format = "[%1.4f %1.4f %1.4f %1.4f]";
+    char buffer[64];
+    const char *format = "[%1.10f %1.10f %1.10f %1.10f]";
 
     snprintf(buffer, 512, format
            , _vector[0], _vector[1], _vector[2] , _vector[3]

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math.h"
+
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glcorearb.h>
 
@@ -88,9 +90,7 @@ public:
   *  @param comp The second vector to compare.
   *  @return True if both vectors match.
   */
-    inline bool operator==(const Vector3H &comp) const {
-        return (memcmp(_vector, comp._vector, sizeof(_vector)) == 0);
-    }
+    bool operator==(const Vector3H &comp) const;
 
 /** Mem returns the a pointer to the internal buffer of Vector4. This is intended to be used to pass
  *  the vector data to the OpenGL API, and should not be used for any other purpose.

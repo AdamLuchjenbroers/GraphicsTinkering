@@ -1,4 +1,5 @@
 #include "Matrix4.h"
+#include "Math.h"
 
 #include <math.h>
 
@@ -35,7 +36,14 @@ GLfloat Matrix4::at(int row, int col) const {
 };
 
 bool Matrix4::operator==(const Matrix4 &comp) const {
-    return (memcmp(_matrix, comp._matrix, sizeof(_matrix)) == 0);
+    for(int i=0;i<16;i++) {
+        GLfloat diff = _matrix[i] - comp._matrix[i];
+
+        if ((diff > FP_MARGIN) || (diff < -FP_MARGIN)) {
+            return false;
+        } 
+    }
+    return true;
 }
 
 Matrix4 Matrix4::operator*(const Matrix4 &mult) {

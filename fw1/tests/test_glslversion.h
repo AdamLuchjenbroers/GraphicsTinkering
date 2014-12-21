@@ -4,12 +4,9 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "../config.h"
+#include "../GLSLVersion.h"
 
 class GLSLVersionComparisonTest : public CppUnit::TestFixture {
-    protected:
-       GLSLVersion *four_zero, *four_zero_dup, *four_one, *three_zero, *three_one;
-
     public:
         void setUp();
         void tearDown();

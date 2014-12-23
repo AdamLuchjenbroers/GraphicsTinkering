@@ -168,3 +168,38 @@ Matrix4 Matrix4::rotate(GLfloat rotateX, GLfloat rotateY, GLfloat rotateZ) {
 
     return Matrix4(matData);
 }
+
+Matrix4 Matrix4::zoomProjection(GLfloat near, GLfloat far, GLfloat h_zoom, GLfloat w_zoom) {
+    GLfloat matData[] = {
+            w_zoom,   0.0f,                            0.0f, 0.0f
+          ,   0.0f, h_zoom,                            0.0f, 0.0f
+          ,   0.0f,   0.0f, (far + near) / (far - near)    , 1.0f
+          ,   0.0f,   0.0f, (2 * far * near) / (near - far), 0.0f
+    };
+    return Matrix4(matData);
+}
+
+Matrix4 Matrix4::frustrum(GLfloat near, GLfloat far, GLfloat width, GLfloat height) {
+    GLfloat w_zoom = (far * 2.0f) / width; 
+    GLfloat h_zoom = (far * 2.0f) / height; 
+
+    return zoomProjection(near, far, h_zoom, w_zoom);
+}
+
+Matrix4 Matrix4::fovHorizontal(GLfloat near, GLfloat far, GLfloat fov, GLfloat aspect) {
+    GLfloat halfFovRadians = (fov * M_PI) / 360.0f; // Half of the fov angle, represented in radians.
+
+    GLfloat w_zoom = 1.0f / tan(halfFovRadians);
+    GLfloat h_zoom = w_zoom / aspect;
+
+    return zoomProjection(near, far, h_zoom, w_zoom);
+}
+
+Matrix4 Matrix4::fovVertical(GLfloat near, GLfloat far, GLfloat fov, GLfloat aspect) {
+    GLfloat halfFovRadians = (fov * M_PI) / 360.0f; // Half of the fov angle, represented in radians.
+
+    GLfloat h_zoom = 1.0f / tan(halfFovRadians);
+    GLfloat w_zoom = w_zoom * aspect;
+
+    return zoomProjection(near, far, h_zoom, w_zoom);
+} 

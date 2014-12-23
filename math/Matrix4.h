@@ -86,7 +86,47 @@ public:
         @return A matrix describing the rotation in 3D space
     */
     static Matrix4 rotate(GLfloat rotateX, GLfloat rotateY, GLfloat rotateZ);
+
+    /** Creates a matrix describing a projection frustrum from the origin
+        looking along the Z axis.
+        @param near Distance to the near clipping plane. 
+        @param far Distance to the far clipping plane. 
+        @param width The width of the far clipping plane.
+        @param height The height of the far clipping plane.
+        @return A perspective projection matrix.
+    */
+    static Matrix4 frustrum(GLfloat near, GLfloat far, GLfloat width, GLfloat height);
+
+    /** Creates a matrix describing a projection frustrum from the origin
+        looking along the Z axis.
+        @param near Distance to the near clipping plane. 
+        @param far Distance to the far clipping plane. 
+        @param fov Horizontal field of view.
+        @param aspect Aspect ratio.
+        @return A perspective projection matrix.
+    */
+    static Matrix4 fovHorizontal(GLfloat near, GLfloat far, GLfloat fov, GLfloat aspect);
+
+    /** Creates a matrix describing a projection frustrum from the origin
+        looking along the Z axis.
+        @param near Distance to the near clipping plane. 
+        @param far Distance to the far clipping plane. 
+        @param fov Vertical field of view.
+        @param aspect Aspect ratio.
+        @return A perspective projection matrix.
+    */
+    static Matrix4 fovVertical(GLfloat near, GLfloat far, GLfloat fov, GLfloat aspect);
 private:
     GLfloat _matrix[16];
+
+    /** Creates a matrix describing a projection frustrum from the origin
+        looking along the Z axis.
+        @param near Distance to the near clipping plane. 
+        @param far Distance to the far clipping plane. 
+        @param h_zoom Horizontal Zoom
+        @param v_zoom Vertical Zoom
+        @return A perspective projection matrix.
+    */
+    static Matrix4 zoomProjection(GLfloat near, GLfloat far, GLfloat h_zoom, GLfloat w_zoom);
 };
 

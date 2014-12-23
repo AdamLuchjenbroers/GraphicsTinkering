@@ -58,6 +58,12 @@ public:
      */
     std::string printable() const;
 
+    /** Returns a pointer to the internal matrix buffer. Intended for
+     *  passing the matrix to OpenGL only.
+     *  @return A pointer to the matrix data, ready for use by OpenGL
+     */
+    inline GLfloat* buffer() { return _matrix; }
+
     /** Create a Matrix describing a translation in 3D space.
      *  @return A matrix describing a translation in 3D space.
      */

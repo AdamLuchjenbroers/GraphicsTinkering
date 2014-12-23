@@ -147,15 +147,15 @@ void Matrix4Tests::testRotationAroundY() {
     Vector3H result;
     Matrix4 rotate;
 
-    rotate = Matrix4::rotate(0.0f, 180.0f, 0.0f);
+    rotate = Matrix4::rotate(0.0f, 0.0f, 180.0f);
     result = rotate * basic;
-    CPPUNIT_ASSERT (result == Vector3H(-1.0f, 1.0f, -1.0f, 1.0f));
+    CPPUNIT_ASSERT (result == Vector3H(-1.0f, -1.0f, 1.0f, 1.0f));
 
     GLfloat rad = (60.0f * M_PI) / 180.0f;
     GLfloat expectData[] = {  cos(rad), 0.0f,  sin(rad), 0.0f
-                           ,      0.0f, 1.0f,      0.0f, 0.0f
+                           , 0.0f,      1.0f,      0.0f, 0.0f
                            , -sin(rad), 0.0f,  cos(rad), 0.0f
-                           ,      0.0f, 0.0f,      0.0f, 1.0f};
+                           , 0.0f,      0.0f,      0.0f, 1.0f};
     Matrix4 expect = Matrix4(expectData);
     
     rotate = Matrix4::rotate(0.0f, 60.0f, 0.0f);
@@ -168,18 +168,18 @@ void Matrix4Tests::testRotationAroundZ() {
     Vector3H result;
     Matrix4 rotate;
 
-    rotate = Matrix4::rotate(0.0f, 0.0f, 180.0f);
+    rotate = Matrix4::rotate(0.0f, 180.0f, 0.0f);
     result = rotate * basic;
-    CPPUNIT_ASSERT (result == Vector3H(-1.0f, -1.0f, 1.0f, 1.0f));
+    CPPUNIT_ASSERT (result == Vector3H(-1.0f, 1.0f, -1.0f, 1.0f));
 
     GLfloat rad = (60.0f * M_PI) / 180.0f;
-    GLfloat expectData[] = { 1.0f,      0.0f,      0.0f, 0.0f
-                           , 0.0f,  cos(rad), -sin(rad), 0.0f
-                           , 0.0f,  sin(rad),  cos(rad), 0.0f
-                           , 0.0f,      0.0f,      0.0f, 1.0f};
+    GLfloat expectData[] = {  cos(rad),  sin(rad), 0.0f, 0.0f
+                           , -sin(rad),  cos(rad), 0.0f, 0.0f
+                           ,      0.0f,      0.0f, 1.0f, 0.0f
+                           ,      0.0f,      0.0f, 0.0f, 1.0f};
     Matrix4 expect = Matrix4(expectData);
     
-    rotate = Matrix4::rotate(60.0f, 0.0f, 0.0f);
+    rotate = Matrix4::rotate(0.0f, 0.0f, 60.0f);
 
     CPPUNIT_ASSERT ( rotate == expect );
 }
@@ -191,6 +191,5 @@ void Matrix4Tests::testCompositeRotation() {
     Matrix4 z = Matrix4::rotate(0.0f, 0.0f, 120.0f);
     Matrix4 matResult = z * y * x;
 
-    std::cout << "\nComposite expected:\n" << matResult.printable() << "\nActual:\n" << combined.printable();
     CPPUNIT_ASSERT ( matResult == combined );
 }

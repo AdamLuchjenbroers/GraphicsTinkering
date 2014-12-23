@@ -27,6 +27,11 @@ public:
  *  @return True if the link process was successful.
  */
     bool linkProgram();
+/** Returns the location index of the specified Uniform parameter
+ *  @param uniform The name of the uniform being queried.
+ *  @return The location index of the specified Uniform parameter
+ */
+    GLint uniformLocation(const GLchar *uniform);
 
 /** Retrieves the OpenGL object ID for the compiled shader program. Returns -1
  *  if the shader program has not been successfully linked.

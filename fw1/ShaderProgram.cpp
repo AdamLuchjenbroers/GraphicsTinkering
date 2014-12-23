@@ -83,6 +83,14 @@ bool ShaderProgram::linkProgram() {
     return true;
 }
 
+GLint ShaderProgram::uniformLocation(const GLchar *uniform) {
+    if ( _linked ) {
+        return glGetUniformLocation( _program, uniform );
+    } else {
+        return -1;
+    }
+}
+
 GLuint ShaderProgram::programID() {
     if ( _linked ) {
         return _program;

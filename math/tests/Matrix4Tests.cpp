@@ -1,7 +1,6 @@
 #include "Matrix4Tests.h"
 
 #include <math.h>
-#define PI 3.14159265
 
 #include <cstdio>
 
@@ -121,29 +120,77 @@ void Matrix4Tests::testScaling() {
     CPPUNIT_ASSERT ( variedResult == variedExpect );
 }
 
-void Matrix4Tests::testRotation() {
+void Matrix4Tests::testRotationAroundX() {
     Vector3H basic = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
     Vector3H result;
     Matrix4 rotate;
 
     rotate = Matrix4::rotate(180.0f, 0.0f, 0.0f);
     result = rotate * basic;
+    std::cout << "\nX Result:\n" << result.printable();
     CPPUNIT_ASSERT (result == Vector3H(1.0f, -1.0f, -1.0f, 1.0f));
+
+    GLfloat rad = (60.0f * M_PI) / 180.0f;
+    GLfloat expectData[] = { 1.0f,      0.0f,      0.0f, 0.0f
+                           , 0.0f,  cos(rad), -sin(rad), 0.0f
+                           , 0.0f,  sin(rad),  cos(rad), 0.0f
+                           , 0.0f,      0.0f,      0.0f, 1.0f};
+    Matrix4 expect = Matrix4(expectData);
+    
+    rotate = Matrix4::rotate(60.0f, 0.0f, 0.0f);
+
+    CPPUNIT_ASSERT ( rotate == expect );
+}
+
+void Matrix4Tests::testRotationAroundY() {
+    Vector3H basic = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
+    Vector3H result;
+    Matrix4 rotate;
 
     rotate = Matrix4::rotate(0.0f, 180.0f, 0.0f);
     result = rotate * basic;
     CPPUNIT_ASSERT (result == Vector3H(-1.0f, 1.0f, -1.0f, 1.0f));
 
+    GLfloat rad = (60.0f * M_PI) / 180.0f;
+    GLfloat expectData[] = {  cos(rad), 0.0f,  sin(rad), 0.0f
+                           ,      0.0f, 1.0f,      0.0f, 0.0f
+                           , -sin(rad), 0.0f,  cos(rad), 0.0f
+                           ,      0.0f, 0.0f,      0.0f, 1.0f};
+    Matrix4 expect = Matrix4(expectData);
+    
+    rotate = Matrix4::rotate(0.0f, 60.0f, 0.0f);
+
+    CPPUNIT_ASSERT ( rotate == expect );
+}
+
+void Matrix4Tests::testRotationAroundZ() {
+    Vector3H basic = Vector3H(1.0f, 1.0f, 1.0f, 1.0f);
+    Vector3H result;
+    Matrix4 rotate;
+
     rotate = Matrix4::rotate(0.0f, 0.0f, 180.0f);
     result = rotate * basic;
     CPPUNIT_ASSERT (result == Vector3H(-1.0f, -1.0f, 1.0f, 1.0f));
 
+    GLfloat rad = (60.0f * M_PI) / 180.0f;
+    GLfloat expectData[] = { 1.0f,      0.0f,      0.0f, 0.0f
+                           , 0.0f,  cos(rad), -sin(rad), 0.0f
+                           , 0.0f,  sin(rad),  cos(rad), 0.0f
+                           , 0.0f,      0.0f,      0.0f, 1.0f};
+    Matrix4 expect = Matrix4(expectData);
+    
+    rotate = Matrix4::rotate(60.0f, 0.0f, 0.0f);
+
+    CPPUNIT_ASSERT ( rotate == expect );
+}
+
+void Matrix4Tests::testCompositeRotation() {
     Matrix4 combined = Matrix4::rotate(45.0f, 60.0f, 120.0f);
     Matrix4 x = Matrix4::rotate(45.0f, 0.0f, 0.0f);
     Matrix4 y = Matrix4::rotate(0.0f, 60.0f, 0.0f);
     Matrix4 z = Matrix4::rotate(0.0f, 0.0f, 120.0f);
     Matrix4 matResult = z * y * x;
 
-    std::cout << matResult.printable() << "\n" << combined.printable();
+    std::cout << "\nComposite expected:\n" << matResult.printable() << "\nActual:\n" << combined.printable();
     CPPUNIT_ASSERT ( matResult == combined );
 }

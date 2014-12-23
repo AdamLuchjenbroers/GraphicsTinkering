@@ -127,7 +127,6 @@ void Matrix4Tests::testRotationAroundX() {
 
     rotate = Matrix4::rotate(180.0f, 0.0f, 0.0f);
     result = rotate * basic;
-    std::cout << "\nX Result:\n" << result.printable();
     CPPUNIT_ASSERT (result == Vector3H(1.0f, -1.0f, -1.0f, 1.0f));
 
     GLfloat rad = (60.0f * M_PI) / 180.0f;

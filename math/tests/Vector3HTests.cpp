@@ -1,7 +1,6 @@
 #include "Vector3HTests.h"
 
 #include <math.h>
-#define PI 3.14159265
 
 void Vector3HTests::testConstructors() {
 
@@ -97,7 +96,7 @@ void Vector3HTests::testDotProduct() {
     CPPUNIT_ASSERT ( base.dot(base) == 1.0f);
     CPPUNIT_ASSERT ( base.dot(perpendicular) == 0.0f);
 
-    GLfloat cos45 = cos(PI/4);
+    GLfloat cos45 = cos(M_PI/4);
     CPPUNIT_ASSERT_DOUBLES_EQUAL ( base.dot(angle), cos45, 0.0000001f);
 }
 

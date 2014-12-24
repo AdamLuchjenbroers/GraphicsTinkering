@@ -1,0 +1,15 @@
+#version 130
+
+in vec4 offset;
+in vec4 color;
+
+uniform mat4 xform;
+uniform mat4 projection; 
+
+out vec4 vs_color;
+
+void main(void)
+{
+    gl_Position = projection * xform * offset;
+    vs_color = color;
+}

@@ -39,7 +39,7 @@ BasicApp::~BasicApp() {
 }
 
 void BasicApp::appInit() {
-	this->display = new SDLDisplay("I'm a window", 300, 400);
+	this->display = SDLDisplay::basicDisplay("I'm a window", 300, 400);
 }
 
 bool BasicApp::appMain() {

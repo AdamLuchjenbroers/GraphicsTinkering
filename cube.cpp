@@ -1,117 +1,199 @@
 /*
- * Primitive OpenGL program that generates a cube that rotates once
+ * Really basic shader from OpenGL SuperBible, chapter 3
  */
 
 #include "fw1/fw1.h"
+#include "SB6_BasicApp.h"
+#include "math/Matrix4.h"
 
-class CubeApp : public FrameworkOneApp {
+#define COLOUR_RED 0
+#define COLOUR_GREEN 1
+#define COLOUR_BLUE 2
+#define COLOUR_ALPHA 3
+
+
+class SB6_Chapter3 : public SB6_BasicApp {
 public:
-	CubeApp(int rotations);
-	~CubeApp();
+    SB6_Chapter3();
 
-	bool appMain();
-	void appInit();
-	void appQuit();
+    bool appMain();
+    void appInit();
 
 private:
-	SDLDisplay *display;
-	int remainingRotations;
-        float currentAngle;
+    GLuint vertexarray, vertexbuffer, colourbuffer;
 
-	void draw_colour(GLfloat r, GLfloat g, GLfloat b);
-	GLfloat *colour_for_time(int time);
+    Matrix4 _projection;
+
+    GLfloat angle;
 };
 
-CubeApp::CubeApp(int rotations) {
-   this->remainingRotations = rotations;
-   this->currentAngle = 0.0f;
+SB6_Chapter3::SB6_Chapter3() {
+   display = SDLDisplay::basicDisplay("Spinning Cube", 400, 400);
+   running = true;
 
-   this->display = NULL;
+   angle = 0.0f;   
+
+   vertexarray = 0;
+
+   _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 }
 
-CubeApp::~CubeApp() {
-	if (this->display != NULL) {
-		delete this->display;
-	}
+static const float vertices[] =
+{
+     1.0f,  1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,  1.0f,
+};
+
+static const float colours[] =
+{
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.8f, 0.2f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.8f, 0.2f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.8f, 0.2f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.2f, 0.8f, 0.8f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+     0.8f, 0.8f, 0.2f, 1.0f,
+};
+
+void SB6_Chapter3::appInit() {
+    loadVFProgram("cube.sdr", "sb3-fragment.sdr");
+
+    glGenVertexArrays(1, &vertexarray);
+    glBindVertexArray(vertexarray);
+    checkGLError("Error encountered creating Vertex Array: %s\n", Logger::LOG_ERROR);
+
+    glGenBuffers(1, &vertexbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    checkGLError("Error encountered creating Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), NULL, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
+
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(1);
+    checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
+
+    glGenBuffers(1, &colourbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, colourbuffer);
+    checkGLError("Error encountered creating Colour Array Buffer: %s\n", Logger::LOG_ERROR);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), NULL, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(colours), colours);
+    checkGLError("Error encountered loading Array Buffer: %s\n", Logger::LOG_ERROR);
+
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(2);
+    checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
+
+    GLint proj_loc = program.uniformLocation("projection");
+    glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
 
-void CubeApp::appInit() {
-	this->display = new SDLDisplay("I'm a window", 1200, 1200);
-}
+bool SB6_Chapter3::appMain() {
+    GLenum glerror;
+    GLint offsetLocation;
+    
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-bool CubeApp::appMain() {
-	if (this->remainingRotations < 0) {
-		return false;
-	}
+    GLint xform_loc = program.uniformLocation("xform");
+    Matrix4 translate = Matrix4::translate(0.0f, 0.0f, 4.0f);
+    Matrix4 rotate = Matrix4::rotate(angle / 2.0f, angle, 0.0f); 
 
-	// Clear colour buffer
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glLoadIdentity();
+    Matrix4 xform = translate * rotate;
 
-    // Setup Cube Position           // Move Into The Screen And Left
-    //glRotatef(this->currentAngle,0.0f,1.0f,0.0f);
+    glUniformMatrix4fv(xform_loc, 1, false, xform.buffer());
+  
+    checkGLError("Error encountered while calling glVertexAttrib4fv: %s\n", Logger::LOG_ERROR);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    //glTranslatef(0.0f,0.0f,-6.0f);
-
-    printf("Angle: %f, (%i rotations remaining)\n", this->currentAngle, this->remainingRotations);
-    /*glBegin(GL_QUADS);
-
-      glColor3f(1.0f, 1.0f, 1.0f);
-      // Front Face
-      glVertex3f(-1.0f,1.0f,1.0f);
-      glVertex3f(-1.0f,1.0f,-1.0f);
-      glVertex3f(-1.0f,-1.0f,-1.0f);
-      glVertex3f(-1.0f,-1.0f,1.0f);
-
-      // Back Face
-      glVertex3f(1.0f,1.0f,1.0f);
-      glVertex3f(1.0f,-1.0f,1.0f);
-      glVertex3f(1.0f,-1.0f,-1.0f);
-      glVertex3f(1.0f,1.0f,-1.0f);
-
-      glColor3f(0.0f, 1.0f, 0.0f);
-      // Left Face
-      glVertex3f(1.0f,1.0f,1.0f);
-      glVertex3f(-1.0f,1.0f,1.0f);
-      glVertex3f(-1.0f,1.0f,-1.0f);
-      glVertex3f(1.0f,1.0f,-1.0f);
-
-      // Right Face
-      glVertex3f(1.0f,-1.0f,1.0f);
-      glVertex3f(1.0f,-1.0f,-1.0f);
-      glVertex3f(-1.0f,-1.0f,-1.0f);
-      glVertex3f(-1.0f,-1.0f,1.0f);
-    glEnd();*/
-
-    this->currentAngle += 1.0f;
-    if (this->currentAngle >= 360.0f) {
-    	this->currentAngle = 0.0f;
-    	this->remainingRotations--;
-    }
+    checkGLError("Error encountered while calling glDrawArrays: %s\n", Logger::LOG_ERROR);
     display->swapBuffers();
+
     display->mainLoop(*this);
 
-    SDL_Delay(100);
-    return true;
+    SDL_Delay(10);
+
+    angle += 0.5f;
+    if (angle >= 720.0f) {
+        angle -= 720.0f;
+    }
+
+    return running;
 }
 
-void CubeApp::appQuit() {
-	// Fast forward the colour cascade to the last index
-	this->remainingRotations = -1;
-}
 
-int main( int argc, char* args[] ) {
-  FrameworkOneApp *thisApp = new CubeApp(2);
+int main( int argc, char* args[] ) { 
+  FrameworkOneApp *thisApp = new SB6_Chapter3();
 
   thisApp->appInit();
 
   while (thisApp->appMain()) { };
-
+ 
   delete thisApp;
   return 0;
 }
-
-
-
-

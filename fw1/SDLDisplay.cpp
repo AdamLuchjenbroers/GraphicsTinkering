@@ -50,8 +50,10 @@ SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int heigh
     return newDisplay;
 }
 
-bool SDLDisplay::createWindow() {	
-    SDL_Init( SDL_INIT_VIDEO ); 
+bool SDLDisplay::createWindow() {
+    if ( SDL_WasInit() & SDL_INIT_VIDEO == 0 ) {
+	SDL_Init( SDL_INIT_VIDEO );
+    } 
 
     app_window = SDL_CreateWindow(_title, _offsetX, _offsetY, _width, _height, _sdlFlags);
     app_glcontext = SDL_GL_CreateContext(this->app_window);
@@ -114,7 +116,7 @@ void SDLDisplay::mainLoop(FrameworkOneApp &app) {
         };
 
         if (event.type == SDL_KEYUP) {
-            app.keyEvent( event.key.keysym, true);
+            app.keyEvent( event.key.keysym, false);
         };
     }
 }

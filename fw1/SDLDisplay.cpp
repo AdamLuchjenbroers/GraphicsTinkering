@@ -9,6 +9,10 @@ SDLDisplay::SDLDisplay() {
     _offsetX = 50;
     _offsetY = 50;
 
+    _sdlFlags = SDL_WINDOW_OPENGL;
+
+    app_window = NULL;
+
     strncpy(_title, "Untitled Window", 64);
 }
  
@@ -22,9 +26,6 @@ SDLDisplay *SDLDisplay::basicDisplay(const char *title, int width, int height) {
     newDisplay->_width = width;
     newDisplay->_height = height;
 
-    newDisplay->_offsetX = 50;
-    newDisplay->_offsetY = 50;
-
     strncpy(newDisplay->_title, title, 64);
 
     newDisplay->createWindow();
@@ -33,10 +34,26 @@ SDLDisplay *SDLDisplay::basicDisplay(const char *title, int width, int height) {
     return newDisplay;
 }
 
-bool SDLDisplay::createWindow() {
-    SDL_Init( SDL_INIT_EVERYTHING ); 
+SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int height) {
+    SDLDisplay *newDisplay = new SDLDisplay();
 
-    app_window = SDL_CreateWindow(_title, _offsetX, _offsetY, _width, _height, SDL_WINDOW_OPENGL);
+    newDisplay->_width = width;
+    newDisplay->_height = height;
+
+    strncpy(newDisplay->_title, title, 64);
+
+    newDisplay->setResizable(true);
+
+    newDisplay->createWindow();
+    newDisplay->logRendererInfo();
+    
+    return newDisplay;
+}
+
+bool SDLDisplay::createWindow() {	
+    SDL_Init( SDL_INIT_VIDEO ); 
+
+    app_window = SDL_CreateWindow(_title, _offsetX, _offsetY, _width, _height, _sdlFlags);
     app_glcontext = SDL_GL_CreateContext(this->app_window);
 
     SDL_GL_MakeCurrent(this->app_window, this->app_glcontext);
@@ -48,6 +65,26 @@ void SDLDisplay::swapBuffers() {
 
 void SDLDisplay::close() {
     SDL_DestroyWindow(this->app_window);
+}
+
+void SDLDisplay::setResizable(bool resize) {
+    if (resize) {
+        _sdlFlags |= SDL_WINDOW_RESIZABLE;
+    } else {
+        _sdlFlags &= ~SDL_WINDOW_RESIZABLE;
+    }
+}
+
+bool SDLDisplay::isResizable() {
+    Uint32 windowFlags;
+
+    if (app_window != NULL) {
+        windowFlags = SDL_GetWindowFlags(app_window);        
+    } else {
+        windowFlags = _sdlFlags;
+    }
+
+    return ((windowFlags & SDL_WINDOW_RESIZABLE) != 0);
 }
 
 std::string SDLDisplay::printable() {

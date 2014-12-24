@@ -31,10 +31,25 @@ public:
     /** Print out the OpenGL renderer details to the log */
     void logRendererInfo();
 
+    /** Sets whether the window is resizable. Only effective before window creation 
+      * @param resize Whether the window should be resizable.
+      */
+    void setResizable(bool resize);
+
+    /** Queries the current window to determine if it is resizable.
+      * @return True if the display window is resizable
+      */
+    bool isResizable();
+
     /** Creates an SDLDisplay in a basic, non-resizable window */
     static SDLDisplay *basicDisplay(const char *title, int width, int heigth);
+
+    /** Creates an SDLDisplay in a basic, resizable window */
+    static SDLDisplay *resizableDisplay(const char *title, int width, int heigth);
 protected:
     int _width, _height, _offsetX, _offsetY;
+    Uint32 _sdlFlags;
+
     char _title[64];
 
     SDLDisplay();

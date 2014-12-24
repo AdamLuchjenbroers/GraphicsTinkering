@@ -2,25 +2,14 @@
 
 #include "Logger.h"
 
-SDLDisplay::SDLDisplay(const char *title, int w, int h) {
-    //Start SDL 
-    SDL_Init( SDL_INIT_EVERYTHING ); 
+SDLDisplay::SDLDisplay() {
+    _width = 200;
+    _height = 200;
+    
+    _offsetX = 50;
+    _offsetY = 50;
 
-    width = w;
-    height = h;
-
-    this->app_window = SDL_CreateWindow(title, 50,50,width,height, SDL_WINDOW_OPENGL);
-    this->app_glcontext = SDL_GL_CreateContext(this->app_window);
-
-    //Request a core profile, as some implementations (i.e. Mesa) only expose OpenGL 3.0
-    //when supporting compatibility profiles  
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-    SDL_GL_MakeCurrent(this->app_window, this->app_glcontext);
-
-    logRendererInfo();
+    strncpy(_title, "Untitled Window", 64);
 }
  
 SDLDisplay::~SDLDisplay() {
@@ -28,7 +17,29 @@ SDLDisplay::~SDLDisplay() {
 }
 
 SDLDisplay *SDLDisplay::basicDisplay(const char *title, int width, int height) {
-    return new SDLDisplay(title, width, height);
+    SDLDisplay *newDisplay = new SDLDisplay();
+
+    newDisplay->_width = width;
+    newDisplay->_height = height;
+
+    newDisplay->_offsetX = 50;
+    newDisplay->_offsetY = 50;
+
+    strncpy(newDisplay->_title, title, 64);
+
+    newDisplay->createWindow();
+    newDisplay->logRendererInfo();
+    
+    return newDisplay;
+}
+
+bool SDLDisplay::createWindow() {
+    SDL_Init( SDL_INIT_EVERYTHING ); 
+
+    app_window = SDL_CreateWindow(_title, _offsetX, _offsetY, _width, _height, SDL_WINDOW_OPENGL);
+    app_glcontext = SDL_GL_CreateContext(this->app_window);
+
+    SDL_GL_MakeCurrent(this->app_window, this->app_glcontext);
 }
 
 void SDLDisplay::swapBuffers() {

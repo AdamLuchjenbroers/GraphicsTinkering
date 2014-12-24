@@ -41,11 +41,18 @@ public:
       */
     bool isResizable();
 
+    /** Calculates the aspect ratio of the current window 
+      * @return The aspect ratio of the current display
+      */
+    inline GLfloat aspectRatio() {
+        return ((GLfloat) _width / (GLfloat) _height);
+    }
+
     /** Creates an SDLDisplay in a basic, non-resizable window */
-    static SDLDisplay *basicDisplay(const char *title, int width, int heigth);
+    static SDLDisplay *basicDisplay(const char *title, int width, int height);
 
     /** Creates an SDLDisplay in a basic, resizable window */
-    static SDLDisplay *resizableDisplay(const char *title, int width, int heigth);
+    static SDLDisplay *resizableDisplay(const char *title, int width, int height);
 protected:
     int _width, _height, _offsetX, _offsetY;
     Uint32 _sdlFlags;

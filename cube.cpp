@@ -151,6 +151,9 @@ void SB6_Chapter3::appInit() {
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
+
+    glEnable(GL_DEPTH_TEST);
+    checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
 bool SB6_Chapter3::appMain() {
@@ -158,7 +161,7 @@ bool SB6_Chapter3::appMain() {
     GLint offsetLocation;
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     GLint xform_loc = program.uniformLocation("xform");
     Matrix4 translate = Matrix4::translate(0.0f, 0.0f, 4.0f);

@@ -171,8 +171,8 @@ Matrix4 Matrix4::rotate(GLfloat rotateX, GLfloat rotateY, GLfloat rotateZ) {
 
 Matrix4 Matrix4::zoomProjection(GLfloat near, GLfloat far, GLfloat h_zoom, GLfloat w_zoom) {
     GLfloat matData[] = {
-            w_zoom,   0.0f,                            0.0f, 0.0f
-          ,   0.0f, h_zoom,                            0.0f, 0.0f
+            h_zoom,   0.0f,                            0.0f, 0.0f
+          ,   0.0f, w_zoom,                            0.0f, 0.0f
           ,   0.0f,   0.0f, (far + near) / (far - near)    , 1.0f
           ,   0.0f,   0.0f, (2 * far * near) / (near - far), 0.0f
     };

@@ -1,10 +1,12 @@
 /*
- * Really basic shader from OpenGL SuperBible, chapter 3
+ * Spinning cube.
  */
 
 #include "fw1/fw1.h"
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
+
+#include <iostream>
 
 #define COLOUR_RED 0
 #define COLOUR_GREEN 1

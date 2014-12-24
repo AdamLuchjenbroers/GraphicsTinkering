@@ -58,4 +58,6 @@ protected:
 private:
     SDL_Window *app_window;
     SDL_GLContext app_glcontext;
+
+    void processWindowEvent(SDL_WindowEvent &winEvent, FrameworkOneApp &app);
 };

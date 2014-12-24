@@ -51,7 +51,7 @@ SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int heigh
 }
 
 bool SDLDisplay::createWindow() {
-    if ( SDL_WasInit() & SDL_INIT_VIDEO == 0 ) {
+    if ( SDL_WasInit(SDL_INIT_VIDEO) == 0 ) {
 	SDL_Init( SDL_INIT_VIDEO );
     } 
 
@@ -107,16 +107,47 @@ void SDLDisplay::mainLoop(FrameworkOneApp &app) {
     SDL_Event event;
 
     while(SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            app.appQuit();
-        };
-
-        if (event.type == SDL_KEYDOWN) {
+        
+        switch(event.type) {
+        case SDL_KEYDOWN:
             app.keyEvent( event.key.keysym, true);
-        };
-
-        if (event.type == SDL_KEYUP) {
+            break;
+        case SDL_KEYUP:
             app.keyEvent( event.key.keysym, false);
-        };
+            break;
+        case SDL_WINDOWEVENT:
+            processWindowEvent(event.window, app);
+            break;
+        case SDL_QUIT:
+            app.appQuit();
+            break;
+        }
+   }
+}
+
+void SDLDisplay::processWindowEvent(SDL_WindowEvent &winEvent, FrameworkOneApp &app) {
+    switch (winEvent.event) {
+        case SDL_WINDOWEVENT_RESIZED:
+            _width = winEvent.data1;
+            _height = winEvent.data2;
+            app.resizeWindow(_width, _height);
+            break;
+        case SDL_WINDOWEVENT_MOVED:
+            _offsetX = winEvent.data1;
+            _offsetY = winEvent.data2;
+            break;
+        //TODO: These events currently aren't processed
+	case SDL_WINDOWEVENT_SHOWN:
+	case SDL_WINDOWEVENT_HIDDEN:
+	case SDL_WINDOWEVENT_EXPOSED:
+	case SDL_WINDOWEVENT_SIZE_CHANGED:
+	case SDL_WINDOWEVENT_MINIMIZED:
+	case SDL_WINDOWEVENT_MAXIMIZED:
+	case SDL_WINDOWEVENT_ENTER:
+	case SDL_WINDOWEVENT_LEAVE:
+	case SDL_WINDOWEVENT_FOCUS_GAINED:
+	case SDL_WINDOWEVENT_FOCUS_LOST: 
+	case SDL_WINDOWEVENT_CLOSE:
+            break;
     }
 }

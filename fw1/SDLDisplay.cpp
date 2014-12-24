@@ -130,6 +130,7 @@ void SDLDisplay::processWindowEvent(SDL_WindowEvent &winEvent, FrameworkOneApp &
         case SDL_WINDOWEVENT_RESIZED:
             _width = winEvent.data1;
             _height = winEvent.data2;
+            glViewport(0,0,_width, _height);
             app.resizeWindow(_width, _height);
             break;
         case SDL_WINDOWEVENT_MOVED:

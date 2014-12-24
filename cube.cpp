@@ -12,12 +12,14 @@
 #define COLOUR_ALPHA 3
 
 
-class SB6_Chapter3 : public SB6_BasicApp {
+class BasicCube : public SB6_BasicApp {
 public:
-    SB6_Chapter3();
+    BasicCube();
 
     bool appMain();
     void appInit();
+
+    void resizeWindow(int newX, int newY);
 
 private:
     GLuint vertexarray, vertexbuffer, colourbuffer;
@@ -27,15 +29,22 @@ private:
     GLfloat angle;
 };
 
-SB6_Chapter3::SB6_Chapter3() {
-   display = SDLDisplay::basicDisplay("Spinning Cube", 400, 400);
-   running = true;
+BasicCube::BasicCube() {
+    display = SDLDisplay::resizableDisplay("Spinning Cube", 400, 400);
+    running = true;
 
-   angle = 0.0f;   
+    angle = 0.0f;   
 
-   vertexarray = 0;
+    vertexarray = 0;
 
-   _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
+    _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
+}
+
+void BasicCube::resizeWindow(int newX, int newY) {
+    _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
+
+    GLint proj_loc = program.uniformLocation("projection");
+    glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
 
 static const float vertices[] =
@@ -118,7 +127,7 @@ static const float colours[] =
      0.8f, 0.8f, 0.2f, 1.0f,
 };
 
-void SB6_Chapter3::appInit() {
+void BasicCube::appInit() {
     loadVFProgram("cube.sdr", "sb3-fragment.sdr");
 
     glGenVertexArrays(1, &vertexarray);
@@ -156,7 +165,7 @@ void SB6_Chapter3::appInit() {
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
-bool SB6_Chapter3::appMain() {
+bool BasicCube::appMain() {
     GLenum glerror;
     GLint offsetLocation;
     
@@ -191,7 +200,7 @@ bool SB6_Chapter3::appMain() {
 
 
 int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new SB6_Chapter3();
+  FrameworkOneApp *thisApp = new BasicCube();
 
   thisApp->appInit();
 

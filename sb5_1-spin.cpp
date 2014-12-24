@@ -26,7 +26,7 @@ private:
 };
 
 SB6_Chapter3::SB6_Chapter3() {
-   display = new SDLDisplay("Chapter 5 - Basic Buffer", 400, 400);
+   display = SDLDisplay::basicDisplay("Chapter 5 - Basic Buffer", 400, 400);
    running = true;
 
    angle = 0.0f;   

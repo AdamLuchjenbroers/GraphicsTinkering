@@ -1,5 +1,7 @@
 #include "SDLDisplay.h"
 
+#include "Logger.h"
+
 SDLDisplay::SDLDisplay(const char *title, int w, int h) {
     //Start SDL 
     SDL_Init( SDL_INIT_EVERYTHING ); 
@@ -18,14 +20,15 @@ SDLDisplay::SDLDisplay(const char *title, int w, int h) {
 
     SDL_GL_MakeCurrent(this->app_window, this->app_glcontext);
 
-    printf("GL Version: %s\n",  glGetString(GL_VERSION));
-    printf("GL Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("GL Vendor: %s\n", glGetString(GL_VENDOR));
-    printf("GLSL Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    logRendererInfo();
 }
  
 SDLDisplay::~SDLDisplay() {
     this->close();
+}
+
+SDLDisplay *SDLDisplay::basicDisplay(const char *title, int width, int height) {
+    return new SDLDisplay(title, width, height);
 }
 
 void SDLDisplay::swapBuffers() {
@@ -34,6 +37,20 @@ void SDLDisplay::swapBuffers() {
 
 void SDLDisplay::close() {
     SDL_DestroyWindow(this->app_window);
+}
+
+std::string SDLDisplay::printable() {
+    char buffer[512];
+
+    snprintf(buffer, 512, "GL Version: %s\nGL Renderer: %s\nGL Vendor: %s\nGLSL Version: %s\n"
+            , glGetString(GL_VERSION), glGetString(GL_RENDERER), glGetString(GL_VENDOR)
+            , glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    return std::string(buffer);
+}
+
+void SDLDisplay::logRendererInfo() {
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "%s", printable().c_str());
 }
 
 void SDLDisplay::mainLoop(FrameworkOneApp &app) {

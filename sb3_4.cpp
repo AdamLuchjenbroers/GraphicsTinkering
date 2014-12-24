@@ -30,7 +30,7 @@ private:
 };
 
 SB6_Chapter3::SB6_Chapter3() {
-   display = new SDLDisplay("Chapter 3 - Tesselation", 600, 600);
+   display = SDLDisplay::basicDisplay("Chapter 3 - Tesselation", 600, 600);
    running = true;
 
    offset_x = 0.0f;

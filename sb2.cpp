@@ -27,7 +27,7 @@ private:
 };
 
 SB6_Chapter2::SB6_Chapter2() {
-   display = new SDLDisplay("Chapter 2 - A Point", 300, 400);
+   display = SDLDisplay::basicDisplay("Chapter 2 - A Point", 300, 400);
    running = true;
 
    pointsize = 10.0f;

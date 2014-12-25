@@ -130,7 +130,11 @@ static const float colours[] =
 };
 
 void BasicCube::appInit() {
-    loadVFProgram("cube.sdr", "sb3-fragment.sdr");
+    bool shaderReady = loadVFProgram("cube.sdr", "zshade-fragment.sdr");
+
+    if (!shaderReady) {
+        exit(1);
+    }
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);

@@ -7,9 +7,11 @@ uniform mat4 xform;
 uniform mat4 projection; 
 
 out vec4 vs_color;
+out vec4 world_pos;
 
 void main(void)
 {
-    gl_Position = projection * xform * offset;
+    world_pos = xform * offset;
+    gl_Position = projection * world_pos;
     vs_color = color;
 }

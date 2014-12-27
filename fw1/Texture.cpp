@@ -4,14 +4,18 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <SDL2/SDL_image.h>
+#include <GL/glu.h>
+
 TextureRef Texture::loadBMP(const char *filename) {
-    SDL_Surface *bitmap = SDL_LoadBMP(filename);
+    SDL_Surface *bitmap = IMG_Load(filename);
  
     if (bitmap == NULL) {
-        Logger::logprintf(Logger::LOG_WARN, Logger::LOG_TEXTURES, "Failed loading BMP texture from file %s - Error: %s\n", filename, SDL_GetError());
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_TEXTURES, "Failed loading BMP texture from file %s - Error: %s\n", filename, SDL_GetError());
         return TextureRef();
     }
 
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_TEXTURES, "Successfully loaded BMP texture from file %s\n", filename);
     Texture *texture = new Texture(*bitmap);
     SDL_FreeSurface(bitmap);
 
@@ -21,36 +25,24 @@ TextureRef Texture::loadBMP(const char *filename) {
 Texture::Texture(SDL_Surface &surface) {
     _refCount = 0;
 
-    switch(surface.format->format) {
-    case SDL_PIXELFORMAT_RGB888:
-        cloneSurface(surface);
-        _GLformat = GL_RGB;
-        _GLfmtChannels = 3;
-        _GLtype = GL_UNSIGNED_BYTE;
-        break;
-    default:
-        //TODO: Perform a conversion then copy.
-        cloneSurface(surface);
-        _GLformat = GL_RGB;
-        _GLfmtChannels = 3;
-        _GLtype = GL_UNSIGNED_BYTE;
-    }
-
     glGenTextures(1, &_GLtexture);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Texture loaded to name: %i\n", _GLtexture);
     glBindTexture( GL_TEXTURE_2D, _GLtexture);
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
         
-    glTexImage2D( GL_TEXTURE_2D, 0, _GLfmtChannels, surface.w, surface.h
-                , 0, _GLformat, _GLtype, _rawData );
-    
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface.w, surface.h
+                , 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.pixels );
+    checkGLError("Failed to load texture, %s\n", Logger::LOG_ERROR);
 }
 
 Texture::~Texture() {
-    if ( isLoaded() ) {
-        free(_rawData);
-    }
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Texture %i released\n", _GLtexture);
+    //if ( isLoaded() ) {
+    //    free(_rawData);
+    //    glDeleteTextures(1, &_GLtexture);
+    //}
 }
 
 bool Texture::isLoaded() {
@@ -67,4 +59,17 @@ bool Texture::cloneSurface(SDL_Surface &surface) {
     } else {
         return false;
     } 
+}
+
+bool Texture::checkGLError(const char *errfmt, Logger::Level loglevel) {
+    GLenum glerror;
+
+    glerror = glGetError();
+
+    if (glerror == GL_NO_ERROR) {
+       return true;
+    } else {
+       Logger::logprintf(loglevel, Logger::LOG_APPLICATION, errfmt, gluErrorString(glerror));
+       return false;
+    }
 }

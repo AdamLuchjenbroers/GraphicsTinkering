@@ -24,6 +24,17 @@ TextureRef::~TextureRef() {
     }
 }
 
+bool TextureRef::activate(GLenum texUnit) {
+    if (!isValid()) {
+        return false;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, _texture->_GLtexture);
+    glActiveTexture(texUnit);
+
+    return true;
+}
+
 bool TextureRef::isValid() {
     if (_texture == NULL) {
         return false;

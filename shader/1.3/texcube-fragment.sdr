@@ -3,7 +3,7 @@
 in vec2 vs_texUV;
 in vec4 world_pos;
 
-uniform sampler2D texture;
+uniform sampler2D texSampler;
 
 out vec4 color;
 
@@ -16,7 +16,7 @@ void main(void) {
         scale = 1.0;
     }
 
-    vec4 out_color = vec4(vs_texUV[0], vs_texUV[1], 0.5, 1.0);
+    vec4 out_color = texture(texSampler, vs_texUV);
     out_color /= scale;
 
     color = out_color;

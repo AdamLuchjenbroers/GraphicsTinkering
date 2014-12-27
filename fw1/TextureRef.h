@@ -15,6 +15,12 @@ public:
   * @return True if this reference object links to a valid texture
   */
     bool isValid();
+
+/** Maps the texture to an active texture unit.
+ *  @param @texUnit The texture unit to activate.
+ *  @return True if the texture could be successfully mapped
+ */
+    bool activate(GLenum texUnit);
 private:
     Texture *_texture;
 };

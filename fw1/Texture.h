@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 
 #include "TextureRef.h"
+#include "Logger.h"
 
 class TextureRef;
 
@@ -20,7 +21,7 @@ private:
     ~Texture();
 
     bool cloneSurface(SDL_Surface &surface);
-
+    bool checkGLError(const char *errfmt, Logger::Level loglevel);
     int _refCount;
     void *_rawData;
     size_t _rawSize;

@@ -34,7 +34,7 @@ private:
 };
 
 BasicCube::BasicCube() {
-    display = SDLDisplay::resizableDisplay("Spinning Cube", 400, 400);
+    display = SDLDisplay::resizableDisplay("Textured Spinning Cube", 400, 400);
     running = true;
 
     angle = 0.0f;   
@@ -124,7 +124,13 @@ void BasicCube::appInit() {
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 
-    _cubeTex = Texture::loadBMP("textures/rock.bmp");
+    GLint samp_loc = program.uniformLocation("texSampler");
+    _cubeTex = Texture::loadBMP("textures/rock.png");
+    _cubeTex.activate(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    printf("SampLoc: %i\n", samp_loc);
+    glUniform1i(samp_loc, 0);
+    checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 
     glEnable(GL_DEPTH_TEST);
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);

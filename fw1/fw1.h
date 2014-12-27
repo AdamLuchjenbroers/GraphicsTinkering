@@ -14,3 +14,5 @@
 #include "ShaderProgram.h"
 #include "GLVersion.h"
 #include "GLSLVersion.h"
+#include "TextureRef.h"
+#include "Texture.h"

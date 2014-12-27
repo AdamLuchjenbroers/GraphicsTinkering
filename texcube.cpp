@@ -28,6 +28,8 @@ private:
 
     Matrix4 _projection;
 
+    TextureRef _cubeTex;
+
     GLfloat angle;
 };
 
@@ -121,6 +123,8 @@ void BasicCube::appInit() {
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
+
+    _cubeTex = Texture::loadBMP("textures/rock.bmp");
 
     glEnable(GL_DEPTH_TEST);
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);

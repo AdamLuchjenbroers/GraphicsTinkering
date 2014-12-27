@@ -2,6 +2,11 @@
 
 #include "fw1/fw1.h"
 
+#define VI_POSITION 0
+#define VI_OFFSET 1
+#define VI_COLOR 2
+#define VI_TEXUV 3
+
 #include <map>
 
 class SB6_BasicApp : public FrameworkOneApp {

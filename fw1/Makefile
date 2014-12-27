@@ -13,7 +13,7 @@ clean:
 	rm -f *.o tests/*.o
 
 ../build/fw1.a: SDLDisplay.o Shader.o ShaderLibrary.o ShaderProgram.o ShaderRef.o VersionNumber.o
-../build/fw1.a: GLVersion.o GLSLVersion.o Logger.o
+../build/fw1.a: GLVersion.o GLSLVersion.o Logger.o TextureRef.o Texture.o
 	ld -r $^ -o $@
 
 # Test Cases

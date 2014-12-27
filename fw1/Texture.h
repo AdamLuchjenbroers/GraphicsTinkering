@@ -14,6 +14,7 @@ friend class TextureRef;
 public:
     static TextureRef loadBMP(const char *filename);
 
+    bool isLoaded();
 private:
     Texture(SDL_Surface &surface);
     ~Texture();
@@ -24,6 +25,7 @@ private:
     void *_rawData;
     size_t _rawSize;
 
-    GLenum _GLformat;
-    GLenum _GLtype;
+    GLenum _GLformat, _GLtype;
+    GLuint _GLtexture;
+    GLint _GLfmtChannels;
 };

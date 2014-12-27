@@ -6,7 +6,7 @@ include Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: basic cube sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
+all: basic cube texcube sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
 
 clean:
 	rm -f build/* *.o
@@ -33,6 +33,9 @@ basic: basic.o build/fw1.a
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
 cube: cube.o build/fw1.a build/math.a SB6_BasicApp.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	 	
+texcube: texcube.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
 sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o

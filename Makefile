@@ -13,6 +13,9 @@ clean:
 	cd ./fw1 && $(MAKE) clean
 	cd ./math && $(MAKE) clean
 
+doc:
+	doxygen doxygen.cfg
+
 build/fw1.a: 
 	cd fw1 && $(MAKE)
 

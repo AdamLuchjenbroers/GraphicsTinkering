@@ -1,4 +1,5 @@
 #include "TextureRef.h"
+#include "Logger.h"
 
 TextureRef::TextureRef() {
     _texture = NULL;
@@ -51,6 +52,7 @@ bool TextureRef::activate(GLenum texUnit) {
         return false;
     }
 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Binding GL Texture %i to Texture Unit %i\n", _texture->_GLtexture, texUnit);
     glBindTexture(GL_TEXTURE_2D, _texture->_GLtexture);
     glActiveTexture(texUnit);
 

@@ -125,10 +125,9 @@ void BasicCube::appInit() {
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 
     GLint samp_loc = program.uniformLocation("texSampler");
-    _cubeTex = Texture::loadBMP("textures/rock.png");
+    _cubeTex = Texture::loadImage("textures/rock.png");
     _cubeTex.activate(GL_TEXTURE0);
     glEnable(GL_TEXTURE_2D);
-    printf("SampLoc: %i\n", samp_loc);
     glUniform1i(samp_loc, 0);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 

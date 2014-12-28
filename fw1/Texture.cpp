@@ -7,15 +7,15 @@
 #include <SDL2/SDL_image.h>
 #include <GL/glu.h>
 
-TextureRef Texture::loadBMP(const char *filename) {
+TextureRef Texture::loadImage(const char *filename) {
     SDL_Surface *bitmap = IMG_Load(filename);
  
     if (bitmap == NULL) {
-        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_TEXTURES, "Failed loading BMP texture from file %s - Error: %s\n", filename, SDL_GetError());
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_TEXTURES, "Failed loading texture from file %s - Error: %s\n", filename, SDL_GetError());
         return TextureRef();
     }
 
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_TEXTURES, "Successfully loaded BMP texture from file %s\n", filename);
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_TEXTURES, "Successfully loaded texture from file %s\n", filename);
     Texture *texture = new Texture(*bitmap);
     SDL_FreeSurface(bitmap);
 
@@ -26,39 +26,28 @@ Texture::Texture(SDL_Surface &surface) {
     _refCount = 0;
 
     glGenTextures(1, &_GLtexture);
-    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Texture loaded to name: %i\n", _GLtexture);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Loading SDL Surface 0x%X (Pixel Format %s) to OpenGL name %i\n", &surface,SDL_GetPixelFormatName(surface.format->format), _GLtexture);
+
     glBindTexture( GL_TEXTURE_2D, _GLtexture);
+    _loaded = checkGLError("glBindTexture failed: %s\n", Logger::LOG_ERROR );
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
         
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface.w, surface.h
                 , 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.pixels );
-    checkGLError("Failed to load texture, %s\n", Logger::LOG_ERROR);
+    _loaded &= checkGLError("Failed to load texture from SDL Surface: %s\n", Logger::LOG_ERROR);
 }
 
 Texture::~Texture() {
     Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Texture %i released\n", _GLtexture);
-    //if ( isLoaded() ) {
-    //    free(_rawData);
-    //    glDeleteTextures(1, &_GLtexture);
-    //}
+    if ( _loaded ) {
+         glDeleteTextures(1, &_GLtexture);
+    }
 }
 
 bool Texture::isLoaded() {
-    return (_rawData != NULL);
-}
-
-bool Texture::cloneSurface(SDL_Surface &surface) {
-    _rawSize = surface.w * surface.h * surface.format->BytesPerPixel;
-    _rawData = malloc(_rawSize);
-
-    if (_rawData != NULL) {
-        memcpy(_rawData, surface.pixels, _rawSize);
-        return true;
-    } else {
-        return false;
-    } 
+    return (_loaded);
 }
 
 bool Texture::checkGLError(const char *errfmt, Logger::Level loglevel) {

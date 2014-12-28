@@ -13,18 +13,17 @@ class TextureRef;
 class Texture {
 friend class TextureRef;
 public:
-    static TextureRef loadBMP(const char *filename);
+    static TextureRef loadImage(const char *filename);
 
     bool isLoaded();
 private:
     Texture(SDL_Surface &surface);
     ~Texture();
 
-    bool cloneSurface(SDL_Surface &surface);
     bool checkGLError(const char *errfmt, Logger::Level loglevel);
     int _refCount;
-    void *_rawData;
-    size_t _rawSize;
+
+    bool _loaded;
 
     GLenum _GLformat, _GLtype;
     GLuint _GLtexture;

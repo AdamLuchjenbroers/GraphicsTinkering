@@ -52,7 +52,7 @@ bool TextureRef::activate(GLenum texUnit) {
         return false;
     }
 
-    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Binding GL Texture %i to Texture Unit %i\n", _texture->_GLtexture, texUnit);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Binding GL Texture %i to Texture Unit GL_TEXTURE%i\n", _texture->_GLtexture, texUnit - GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _texture->_GLtexture);
     glActiveTexture(texUnit);
 

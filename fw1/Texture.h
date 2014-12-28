@@ -25,7 +25,5 @@ private:
 
     bool _loaded;
 
-    GLenum _GLformat, _GLtype;
     GLuint _GLtexture;
-    GLint _GLfmtChannels;
 };

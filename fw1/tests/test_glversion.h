@@ -7,25 +7,25 @@
 #include "../GLVersion.h"
 
 class GLVersionComparisonTest : public CppUnit::TestFixture {
-    public:
-        void setUp();
-        void tearDown();
-    
-        void testLessThan();
-        void testGreaterThan();
-        //void testLessThanEqual();
-        //void testGreaterThanEqual();
-        void testEquality();
+public:
+    void setUp();
+    void tearDown();
 
-        static CppUnit::Test *suite() {
-            CppUnit::TestSuite *allTests = new CppUnit::TestSuite("GL Version Comparison Tests");
+    void testLessThan();
+    void testGreaterThan();
+    //void testLessThanEqual();
+    //void testGreaterThanEqual();
+    void testEquality();
 
-            allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testLessThan", &GLVersionComparisonTest::testLessThan));
-            allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testGreaterThan", &GLVersionComparisonTest::testGreaterThan));
-            allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testEquality", &GLVersionComparisonTest::testEquality));
+    static CppUnit::Test *suite() {
+        CppUnit::TestSuite *allTests = new CppUnit::TestSuite("GL Version Comparison Tests");
 
-            return allTests;
-        }
+        allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testLessThan", &GLVersionComparisonTest::testLessThan));
+        allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testGreaterThan", &GLVersionComparisonTest::testGreaterThan));
+        allTests->addTest(new CppUnit::TestCaller<GLVersionComparisonTest>("testEquality", &GLVersionComparisonTest::testEquality));
+
+        return allTests;
+    }
 };
 
 class GLVersionParsingTest : public CppUnit::TestCase {

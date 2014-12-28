@@ -3,6 +3,8 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <string>
+
 #include "tests/test_glversion.h"
 #include "tests/test_glslversion.h"
 
@@ -18,5 +20,7 @@ namespace FrameworkOneTestSuite {
 
         return allTests;
     }
+
+    std::string getName() { return "Framework One Tests"; };
 };
 

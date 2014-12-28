@@ -11,6 +11,8 @@ public:
     TextureRef(const TextureRef &ref);
     ~TextureRef();
 
+    TextureRef &operator=(const TextureRef &copy);
+
 /** Returns true if this reference currently points to a valid texture.
   * @return True if this reference object links to a valid texture
   */

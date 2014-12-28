@@ -24,6 +24,28 @@ TextureRef::~TextureRef() {
     }
 }
 
+TextureRef &TextureRef::operator=(const TextureRef &copy) {
+    if (copy._texture == _texture) {
+        //No change in referenced texture, so no need to update refcounts.
+        return *this;
+    }
+
+    if ( _texture != NULL ) {
+        _texture->_refCount--;
+
+        if (_texture->_refCount < 1) {
+            delete _texture;
+        }
+    }
+
+    _texture = copy._texture;
+    if (_texture != NULL) {
+        _texture->_refCount++;
+    }
+    
+    return *this;
+}
+
 bool TextureRef::activate(GLenum texUnit) {
     if (!isValid()) {
         return false;

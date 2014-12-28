@@ -125,7 +125,7 @@ void BasicCube::appInit() {
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 
     GLint samp_loc = program.uniformLocation("texSampler");
-    _cubeTex = Texture::loadImage("textures/rock.png");
+    _cubeTex = Texture::loadImage("textures/rock.bmp");
     _cubeTex.activate(GL_TEXTURE0);
     glEnable(GL_TEXTURE_2D);
     glUniform1i(samp_loc, 0);

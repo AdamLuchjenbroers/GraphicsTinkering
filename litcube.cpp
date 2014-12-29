@@ -14,9 +14,9 @@
 #define COLOUR_ALPHA 3
 
 
-class BasicCube : public SB6_BasicApp {
+class LitCube : public SB6_BasicApp {
 public:
-    BasicCube();
+    LitCube();
 
     bool appMain();
     void appInit();
@@ -35,8 +35,8 @@ private:
     GLfloat angle;
 };
 
-BasicCube::BasicCube() {
-    display = SDLDisplay::resizableDisplay("Textured Spinning Cube", 400, 400);
+LitCube::LitCube() {
+    display = SDLDisplay::resizableDisplay("Lit Spinning Cube", 400, 400);
     running = true;
 
     angle = 0.0f;   
@@ -46,14 +46,14 @@ BasicCube::BasicCube() {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 }
 
-void BasicCube::resizeWindow(int newX, int newY) {
+void LitCube::resizeWindow(int newX, int newY) {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
 
-void BasicCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
+void LitCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
     GLfloat ndcX, ndcY;
 
     display->toNDC(x, y, ndcX, ndcY);
@@ -109,7 +109,7 @@ const void *uvOffset = (void *) (sizeof(GLfloat) * 4);
 const void *normalOffset = (void *) (sizeof(GLfloat) * 6);
 const void *glossOffset = (void *) (sizeof(GLfloat) * 10);
 
-void BasicCube::appInit() {
+void LitCube::appInit() {
     bool shaderReady = loadVFProgram("litcube-vertex.sdr", "litcube-fragment.sdr");
 
     if (!shaderReady) {
@@ -162,7 +162,7 @@ void BasicCube::appInit() {
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
-bool BasicCube::appMain() {
+bool LitCube::appMain() {
     GLenum glerror;
     GLint offsetLocation;
     
@@ -197,7 +197,7 @@ bool BasicCube::appMain() {
 
 
 int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new BasicCube();
+  FrameworkOneApp *thisApp = new LitCube();
 
   thisApp->appInit();
 

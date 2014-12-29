@@ -41,6 +41,9 @@ cube: cube.o build/fw1.a build/math.a SB6_BasicApp.o
 texcube: texcube.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
+litcube: litcube.o build/fw1.a build/math.a SB6_BasicApp.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	 	
 sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 

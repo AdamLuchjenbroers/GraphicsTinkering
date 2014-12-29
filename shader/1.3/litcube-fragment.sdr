@@ -1,0 +1,56 @@
+#version 130
+
+in vec2 vs_texUV;
+in vec4 world_pos;
+in vec4 vs_normal;
+in float vs_gloss;
+
+uniform sampler2D texSampler;
+
+out vec4 color;
+
+vec4 specular(vec4 pos, vec4 normal, vec4 light_dir, float gloss, float spec) {
+    vec4 light_ref = reflect(light_dir, normal);
+
+    //We can assume the viewer is always at 0,0,0 for this simple program
+    vec4 world_dir = normalize(pos);
+
+    spec = dot(world_dir, light_ref) * spec;
+    spec = clamp(spec, 0.0, 1.0);
+    spec = pow(spec, gloss);
+
+    return vec4(spec, spec, spec, 1.0);
+}
+
+vec4 diffuse(float distance, vec4 light_dir, vec4 normal, vec4 color) {
+    return clamp(color * dot(normal, light_dir), 0.0, 1.0);
+}
+
+float attenuation(float distance, float dmin, float dmax) {
+    if (distance <= dmin) {
+        return 1.0;
+    } else if (distance <= dmax) {
+        //Between dmin and dmax
+        return (dmax - distance) / (dmax - dmin); 
+    } else {
+        return 0.0;
+    }
+}
+
+void main(void) {
+    float depth = world_pos.z;
+    float scale = depth - 2.0;
+
+    //Will be supplied by Uniform
+    vec4 light_pos = vec4(1.0, 0.0, 0.0, 1.0);
+
+    vec4 light_dir = light_pos - world_pos;
+    float light_dist = length(light_dir);
+    light_dir /= light_dist; 
+
+    vec4 out_color = specular(world_pos, vs_normal, light_dir, 0.8, 0.2);
+    out_color += diffuse(light_dist, light_dir, vs_normal, texture(texSampler, vs_texUV));
+    out_color *= attenuation(light_dist, 0.0, 8.0);
+
+    color = out_color;
+}

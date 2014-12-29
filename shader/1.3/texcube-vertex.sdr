@@ -2,6 +2,8 @@
 
 in vec4 offset;
 in vec2 texUV;
+in vec4 normal;
+in float gloss;
 
 uniform mat4 xform;
 uniform mat4 projection; 

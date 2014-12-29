@@ -21,6 +21,8 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
     program.bindAttribute("offset", VI_OFFSET);
     program.bindAttribute("color", VI_COLOR);
     program.bindAttribute("texUV", VI_TEXUV);
+    program.bindAttribute("normal", VI_NORMAL);
+    program.bindAttribute("gloss", VI_GLOSS);
 
     success = program.linkProgram();
 

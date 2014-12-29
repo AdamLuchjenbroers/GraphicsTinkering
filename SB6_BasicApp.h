@@ -6,6 +6,8 @@
 #define VI_OFFSET 1
 #define VI_COLOR 2
 #define VI_TEXUV 3
+#define VI_NORMAL 4
+#define VI_GLOSS 5
 
 #include <map>
 

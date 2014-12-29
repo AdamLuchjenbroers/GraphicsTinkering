@@ -56,8 +56,8 @@ public:
       * @param[out] ndcY the Y position in normalised device coordinates.
       */
     inline void toNDC(int pixelX, int pixelY, GLfloat &ndcX, GLfloat &ndcY) {
-        ndcX = ((pixelX * 2.0) / _width) - 1.0f;
-        ndcY = ((pixelY * 2.0) / _height) - 1.0f;
+        ndcX =  ((pixelX * 2.0) / _width)  - 1.0f;
+        ndcY = -((pixelY * 2.0) / _height) + 1.0f;
     }
 
     /** Creates an SDLDisplay in a basic, non-resizable window */

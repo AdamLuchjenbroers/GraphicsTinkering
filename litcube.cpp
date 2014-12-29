@@ -23,6 +23,8 @@ public:
 
     void resizeWindow(int newX, int newY);
 
+    void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY);
+
 private:
     GLuint vertexarray, vertexbuffer, colourbuffer;
 
@@ -49,6 +51,16 @@ void BasicCube::resizeWindow(int newX, int newY) {
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
+}
+
+void BasicCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
+    GLfloat ndcX, ndcY;
+
+    display->toNDC(x, y, ndcX, ndcY);
+
+    Vector3H light = Vector3H(ndcX, ndcY, 1.0, 1.0);
+    GLint light_loc = program.uniformLocation("light_pos");
+    glUniform4fv(light_loc, 1, light.mem());
 }
 
 static const float vertices[] =
@@ -141,6 +153,10 @@ void BasicCube::appInit() {
     glEnable(GL_TEXTURE_2D);
     glUniform1i(samp_loc, 0);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
+
+    GLint light_loc = program.uniformLocation("light_pos");
+    Vector3H light  = Vector3H(1.0f, 0.0f, 0.0f, 1.0f);
+    glUniform4fv(light_loc, 1, light.mem());
 
     glEnable(GL_DEPTH_TEST);
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);

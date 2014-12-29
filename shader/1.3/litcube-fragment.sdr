@@ -6,6 +6,7 @@ in vec4 vs_normal;
 in float vs_gloss;
 
 uniform sampler2D texSampler;
+uniform vec4 light_pos;
 
 out vec4 color;
 
@@ -41,14 +42,11 @@ void main(void) {
     float depth = world_pos.z;
     float scale = depth - 2.0;
 
-    //Will be supplied by Uniform
-    vec4 light_pos = vec4(1.0, 0.0, 0.0, 1.0);
-
     vec4 light_dir = light_pos - world_pos;
     float light_dist = length(light_dir);
     light_dir /= light_dist; 
 
-    vec4 out_color = specular(world_pos, vs_normal, light_dir, 0.8, 0.2);
+    vec4 out_color = specular(world_pos, vs_normal, light_dir, 2.0, 0.1);
     out_color += diffuse(light_dist, light_dir, vs_normal, texture(texSampler, vs_texUV));
     out_color *= attenuation(light_dist, 0.0, 8.0);
 

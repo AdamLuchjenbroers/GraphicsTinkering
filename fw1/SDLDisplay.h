@@ -48,6 +48,18 @@ public:
         return ((GLfloat) _width / (GLfloat) _height);
     }
 
+    /** Calculates the normalized device coordinates for a given pixel position
+      * on screen (z is assumed to be 0, and is omitted)
+      * @param[in] pixelX the X pixel position.
+      * @param[in] pixelY the Y pixel position.
+      * @param[out] ndcX the X position in normalised device coordinates.
+      * @param[out] ndcY the Y position in normalised device coordinates.
+      */
+    inline void toNDC(int pixelX, int pixelY, GLfloat &ndcX, GLfloat &ndcY) {
+        ndcX = ((pixelX * 2.0) / _width) - 1.0f;
+        ndcY = ((pixelY * 2.0) / _height) - 1.0f;
+    }
+
     /** Creates an SDLDisplay in a basic, non-resizable window */
     static SDLDisplay *basicDisplay(const char *title, int width, int height);
 

@@ -115,6 +115,9 @@ void SDLDisplay::mainLoop(FrameworkOneApp &app) {
         case SDL_KEYUP:
             app.keyEvent( event.key.keysym, false);
             break;
+        case SDL_MOUSEMOTION:
+            app.mouseMovementEvent(event.motion.state, event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+            break; 
         case SDL_WINDOWEVENT:
             processWindowEvent(event.window, app);
             break;

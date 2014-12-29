@@ -43,11 +43,13 @@ public:
 
     /**
         Called whenever the mouse is moved.
-        @param modmask Bitfield representing the current status of all mouse buttons.
+        @param buttons Bitfield representing the current status of all mouse buttons.
         @param x X co-ordinate where this button was pressed.
         @param y Y co-ordinate where this button was pressed.
+        @param offsetX Change in the X position.
+        @param offsetY Change in the Y position.
     */
-    virtual void mouseMovementEvent(unsigned int modmask, int x, int y, int oldX, int oldY) {};
+    virtual void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {};
 };
 
 /**

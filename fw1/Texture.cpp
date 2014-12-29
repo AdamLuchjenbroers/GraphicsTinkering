@@ -32,7 +32,6 @@ Texture::Texture(SDL_Surface &surface) {
     glGenTextures(1, &_GLtexture);
     Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Loading SDL Surface 0x%X (Pixel Format %s) to OpenGL name %i\n", &surface,SDL_GetPixelFormatName(surface.format->format), _GLtexture);
 
-
     switch(surface.format->format) {
     case SDL_PIXELFORMAT_ABGR8888:
         intFormat = GL_RGBA;

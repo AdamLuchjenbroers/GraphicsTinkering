@@ -41,3 +41,6 @@ basic: basic.o build/fw1.a
 sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
+%viewer: %viewer.o build/fw1.a build/math.a SB6_BasicApp.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	 	

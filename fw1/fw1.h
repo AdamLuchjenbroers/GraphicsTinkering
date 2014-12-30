@@ -16,3 +16,5 @@
 #include "GLSLVersion.h"
 #include "TextureRef.h"
 #include "Texture.h"
+#include "MeshFile.h"
+#include "STLMesh.h"

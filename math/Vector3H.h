@@ -86,6 +86,24 @@ public:
         _vector[2] *= mult;
     }
 
+/** Subtracts one vector by another 
+  * @param sub The vector to subtract from this one.
+  */
+    inline Vector3H operator-(const Vector3H &sub) {
+        return Vector3H (
+                 _vector[0] - sub[0]
+               , _vector[1] - sub[1]
+               , _vector[2] - sub[2]
+               , _vector[3]
+                );
+    }
+
+    inline void operator-=(const Vector3H &sub) {
+        _vector[0] += sub[0];
+        _vector[1] += sub[1];
+        _vector[2] += sub[2];
+    }
+
  /** Compares two vectors, and returns true if both are equal.
   *  @param comp The second vector to compare.
   *  @return True if both vectors match.

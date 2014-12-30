@@ -148,18 +148,14 @@ void SpecularCube::appInit() {
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 
-    glActiveTexture(GL_TEXTURE0);
-    _cubeTex = Texture::loadImage("textures/crate.png");
-//    _cubeTex.activate(GL_TEXTURE0);
+    _cubeTex = Texture::loadImage("textures/crate.png", GL_TEXTURE1);
     GLint samp_loc = program.uniformLocation("texSampler");
-    glUniform1i(samp_loc, 0);
+    glUniform1i(samp_loc, 1);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
     
-    glActiveTexture(GL_TEXTURE1);
-    _specTex = Texture::loadImage("textures/crate_specular.png");
-//    _specTex.activate(GL_TEXTURE1);
+    _specTex = Texture::loadImage("textures/crate_specular.png", GL_TEXTURE2);
     samp_loc = program.uniformLocation("specSampler");
-    glUniform1i(samp_loc, 1);
+    glUniform1i(samp_loc, 2);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 
     GLint light_loc = program.uniformLocation("light_pos");

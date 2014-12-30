@@ -52,10 +52,16 @@ bool TextureRef::activate(GLenum texUnit) {
         return false;
     }
 
+    GLint prevUnit;
+    glGetIntegerv(GL_ACTIVE_TEXTURE, &prevUnit);
+
     Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Binding GL Texture %i to Texture Unit GL_TEXTURE%i\n", _texture->_GLtexture, texUnit - GL_TEXTURE0);
     glActiveTexture(texUnit);
     glBindTexture(GL_TEXTURE_2D, _texture->_GLtexture);
 
+    // Restore the previous active texture so we don't 
+    // inadvertantly overwrite texture state in subsequent calls.
+    glActiveTexture((GLenum) prevUnit);
     return true;
 }
 

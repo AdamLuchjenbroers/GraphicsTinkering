@@ -18,7 +18,7 @@ public:
   */
     bool isValid();
 
-/** Maps the texture to an active texture unit.
+/** Maps the texture to an OpenGL Texture Unit.
  *  @param @texUnit The texture unit to activate.
  *  @return True if the texture could be successfully mapped
  */

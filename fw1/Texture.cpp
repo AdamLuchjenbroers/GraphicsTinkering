@@ -7,7 +7,7 @@
 #include <SDL2/SDL_image.h>
 #include <GL/glu.h>
 
-TextureRef Texture::loadImage(const char *filename) {
+TextureRef Texture::loadImage(const char *filename, GLenum texUnit) {
     SDL_Surface *bitmap = IMG_Load(filename);
  
     if (bitmap == NULL) {
@@ -16,13 +16,17 @@ TextureRef Texture::loadImage(const char *filename) {
     }
 
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_TEXTURES, "Successfully loaded texture from file %s\n", filename);
-    Texture *texture = new Texture(*bitmap);
+    Texture *texture = new Texture(*bitmap, texUnit);
     SDL_FreeSurface(bitmap);
 
     return TextureRef(*texture);
 }
 
-Texture::Texture(SDL_Surface &surface) {
+TextureRef Texture::loadImage(const char *filename) {
+    return loadImage(filename, GL_TEXTURE0);
+}
+
+Texture::Texture(SDL_Surface &surface, GLenum texUnit) {
     GLint intFormat;
     GLenum format, type;
     bool recognised;
@@ -30,7 +34,7 @@ Texture::Texture(SDL_Surface &surface) {
     _refCount = 0;
 
     glGenTextures(1, &_GLtexture);
-    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Loading SDL Surface 0x%X (Pixel Format %s) to OpenGL name %i\n", &surface,SDL_GetPixelFormatName(surface.format->format), _GLtexture);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_TEXTURES, "Loading SDL Surface 0x%X (Pixel Format %s) to OpenGL name %i and Texture Unit GL_TEXTURE%i\n", &surface,SDL_GetPixelFormatName(surface.format->format), _GLtexture, texUnit - GL_TEXTURE0);
 
     switch(surface.format->format) {
     case SDL_PIXELFORMAT_ABGR8888:
@@ -51,6 +55,7 @@ Texture::Texture(SDL_Surface &surface) {
         break;
     }
 
+    glActiveTexture(texUnit);
     glBindTexture( GL_TEXTURE_2D, _GLtexture);
     _loaded = checkGLError("glBindTexture failed: %s\n", Logger::LOG_ERROR );
 

@@ -16,7 +16,7 @@
 
 class STLViewer : public SB6_BasicApp {
 public:
-    STLViewer();
+    STLViewer(const char *filename);
 
     bool appMain();
     void appInit();
@@ -35,15 +35,15 @@ private:
     GLfloat angle, _scaleVal;
 };
 
-STLViewer::STLViewer() {
+STLViewer::STLViewer(const char *filename) {
     display = SDLDisplay::resizableDisplay("STL Model Viewer", 400, 400);
-    running = true;
 
     angle = 0.0f;   
 
     vertexarray = 0;
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
+    running = _meshData.loadSTL(filename);
 }
 
 void STLViewer::resizeWindow(int newX, int newY) {
@@ -82,8 +82,6 @@ void STLViewer::appInit() {
         exit(1);
     }
 
-    _meshData.loadSTL("/home/notavi/Dropbox/Viral backer (+)/3D models/Cyborg Colossus ver2.stl");
-
     glGenVertexArrays(1, &vertexarray);
     _meshData.loadBuffer(vertexarray);
     _meshData.mapVertices(VI_OFFSET);
@@ -100,7 +98,7 @@ void STLViewer::appInit() {
     glUniform4fv(light_loc, 1, light.mem());
 
     glEnable(GL_DEPTH_TEST);
-    checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
+    running &= checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
 bool STLViewer::appMain() {
@@ -137,13 +135,17 @@ bool STLViewer::appMain() {
 }
 
 
-int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new STLViewer();
-
-  thisApp->appInit();
-
-  while (thisApp->appMain()) { };
+int main( int argc, char* args[] ) {
+  if (argc != 2) {
+      printf("Usage: %s <filename.STL>\n", args[0]);
+      exit(1);
+  }
  
-  delete thisApp;
+  STLViewer thisApp = STLViewer(args[1]);
+
+  thisApp.appInit();
+
+  while (thisApp.appMain()) { };
+ 
   return 0;
 }

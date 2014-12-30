@@ -24,15 +24,15 @@ public:
     void resizeWindow(int newX, int newY);
 
     void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY);
-
+    void keyEvent(SDL_Keysym &key, bool press);
 private:
     GLuint vertexarray, vertexbuffer, colourbuffer;
 
-    Matrix4 _projection;
+    Matrix4 _projection, _scale;
 
     STLMesh _meshData;
 
-    GLfloat angle;
+    GLfloat angle, _scaleVal;
 };
 
 STLViewer::STLViewer() {
@@ -63,10 +63,17 @@ void STLViewer::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int
     glUniform4fv(light_loc, 1, light.mem());
 }
 
-const size_t vi_record = sizeof(GLfloat) * 11;  
-const void *uvOffset = (void *) (sizeof(GLfloat) * 4);
-const void *normalOffset = (void *) (sizeof(GLfloat) * 6);
-const void *glossOffset = (void *) (sizeof(GLfloat) * 10);
+void STLViewer::keyEvent(SDL_Keysym &key, bool press) {
+    if ((key.sym == SDLK_KP_MINUS || key.sym == SDLK_MINUS) && (_scaleVal > 1.0f)) {
+        _scaleVal -= 0.2f;
+    }
+
+    if ((key.sym == SDLK_KP_PLUS || key.sym == SDLK_PLUS) && (_scaleVal < 10.0f)) {
+        _scaleVal += 0.2f;
+    }
+
+    _scale = Matrix4::scale(_scaleVal);
+}
 
 void STLViewer::appInit() {
     bool shaderReady = loadVFProgram("litcube-vertex.sdr", "stlviewer-fragment.sdr");
@@ -81,6 +88,9 @@ void STLViewer::appInit() {
     _meshData.loadBuffer(vertexarray);
     _meshData.mapVertices(VI_OFFSET);
     _meshData.mapNormals(VI_NORMAL);
+
+    _scaleVal = 1.0f;
+    _scale = Matrix4::scale(_scaleVal);
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
@@ -104,7 +114,7 @@ bool STLViewer::appMain() {
     Matrix4 translate = Matrix4::translate(0.0f, 0.0f, 4.0f);
     Matrix4 rotate = Matrix4::rotate(angle / 2.0f, angle, 0.0f); 
 
-    Matrix4 xform = translate * rotate;
+    Matrix4 xform = translate * _scale * rotate;
 
     glUniformMatrix4fv(xform_loc, 1, false, xform.buffer());
   

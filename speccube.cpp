@@ -5,6 +5,7 @@
 #include "fw1/fw1.h"
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
+#include "primitives/Cube.h"
 
 #include <iostream>
 
@@ -32,6 +33,7 @@ private:
 
     TextureRef _cubeTex;
     TextureRef _specTex;
+    Primitives::Cube _cube;
 
     GLfloat angle;
 };
@@ -64,52 +66,6 @@ void SpecularCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, 
     glUniform4fv(light_loc, 1, light.mem());
 }
 
-static const float vertices[] =
-{
-// Pos: X      Y      Z      W|Tex:U     V|Nrml:X      Y      Z     W| Glos
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.1f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.1f,
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.1f,
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-     1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.1f,
-};
-
-const size_t vi_record = sizeof(GLfloat) * 11;  
-const void *uvOffset = (void *) (sizeof(GLfloat) * 4);
-const void *normalOffset = (void *) (sizeof(GLfloat) * 6);
-const void *glossOffset = (void *) (sizeof(GLfloat) * 10);
-
 void SpecularCube::appInit() {
     bool shaderReady = loadVFProgram("litcube-vertex.sdr", "speccube-fragment.sdr");
 
@@ -118,32 +74,11 @@ void SpecularCube::appInit() {
     }
 
     glGenVertexArrays(1, &vertexarray);
-    glBindVertexArray(vertexarray);
-    checkGLError("Error encountered creating Vertex Array: %s\n", Logger::LOG_ERROR);
-
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    checkGLError("Error encountered creating Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_OFFSET, 4, GL_FLOAT, GL_FALSE, vi_record, 0);
-    glEnableVertexAttribArray(VI_OFFSET);
-    checkGLError("Error encountered preparing Position Vertex Data: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_TEXUV, 2, GL_FLOAT, GL_FALSE, vi_record, uvOffset);
-    glEnableVertexAttribArray(VI_TEXUV);
-    checkGLError("Error encountered preparing Texture UV Vertex Data: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_NORMAL, 4, GL_FLOAT, GL_FALSE, vi_record, normalOffset);
-    glEnableVertexAttribArray(VI_NORMAL);
-    checkGLError("Error encountered preparing Vertex Normal Data: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_GLOSS, 1, GL_FLOAT, GL_FALSE, vi_record, glossOffset);
-    glEnableVertexAttribArray(VI_GLOSS);
-    checkGLError("Error encountered preparing Surface Gloss Data: %s\n", Logger::LOG_ERROR);
+    _cube.loadBuffer(vertexarray);
+    _cube.mapVertices(VI_OFFSET);
+    _cube.mapNormals(VI_NORMAL);
+    _cube.mapTexUV(VI_TEXUV);
+    _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());

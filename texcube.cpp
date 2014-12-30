@@ -5,6 +5,7 @@
 #include "fw1/fw1.h"
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
+#include "primitives/Cube.h"
 
 #include <iostream>
 
@@ -14,9 +15,9 @@
 #define COLOUR_ALPHA 3
 
 
-class BasicCube : public SB6_BasicApp {
+class TexturedCube : public SB6_BasicApp {
 public:
-    BasicCube();
+    TexturedCube();
 
     bool appMain();
     void appInit();
@@ -29,11 +30,12 @@ private:
     Matrix4 _projection;
 
     TextureRef _cubeTex;
+    Primitives::Cube _cube;
 
     GLfloat angle;
 };
 
-BasicCube::BasicCube() {
+TexturedCube::TexturedCube() {
     display = SDLDisplay::resizableDisplay("Textured Spinning Cube", 400, 400);
     running = true;
 
@@ -44,57 +46,14 @@ BasicCube::BasicCube() {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 }
 
-void BasicCube::resizeWindow(int newX, int newY) {
+void TexturedCube::resizeWindow(int newX, int newY) {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
 
-static const float vertices[] =
-{
-// Pos: X      Y      Z      W|Tex:U     V
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-     1.0f, -1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-     1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-     1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-     1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-     1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-     1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-};
-
-void *uvOffset = (void *) (sizeof(GLfloat) * 4);
-
-void BasicCube::appInit() {
+void TexturedCube::appInit() {
     bool shaderReady = loadVFProgram("texcube-vertex.sdr", "texcube-fragment.sdr");
 
     if (!shaderReady) {
@@ -102,32 +61,17 @@ void BasicCube::appInit() {
     }
 
     glGenVertexArrays(1, &vertexarray);
-    glBindVertexArray(vertexarray);
-    checkGLError("Error encountered creating Vertex Array: %s\n", Logger::LOG_ERROR);
-
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    checkGLError("Error encountered creating Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_OFFSET, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-    glEnableVertexAttribArray(VI_OFFSET);
-    checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(VI_TEXUV, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), uvOffset);
-    glEnableVertexAttribArray(VI_TEXUV);
-    checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
+    _cube.loadBuffer(vertexarray);
+    _cube.mapVertices(VI_OFFSET);
+    _cube.mapNormals(VI_NORMAL);
+    _cube.mapTexUV(VI_TEXUV);
+    _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 
     GLint samp_loc = program.uniformLocation("texSampler");
-    _cubeTex = Texture::loadImage("textures/rock.bmp");
-    _cubeTex.activate(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
+    _cubeTex = Texture::loadImage("textures/rock.bmp", GL_TEXTURE0);
     glUniform1i(samp_loc, 0);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 
@@ -135,7 +79,7 @@ void BasicCube::appInit() {
     checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
-bool BasicCube::appMain() {
+bool TexturedCube::appMain() {
     GLenum glerror;
     GLint offsetLocation;
     
@@ -170,7 +114,7 @@ bool BasicCube::appMain() {
 
 
 int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new BasicCube();
+  FrameworkOneApp *thisApp = new TexturedCube();
 
   thisApp->appInit();
 

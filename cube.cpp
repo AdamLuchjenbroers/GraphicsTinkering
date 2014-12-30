@@ -5,6 +5,7 @@
 #include "fw1/fw1.h"
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
+#include "primitives/Cube.h"
 
 #include <iostream>
 
@@ -27,6 +28,7 @@ private:
     GLuint vertexarray, vertexbuffer, colourbuffer;
 
     Matrix4 _projection;
+    Primitives::Cube _cube;
 
     GLfloat angle;
 };
@@ -48,46 +50,6 @@ void BasicCube::resizeWindow(int newX, int newY) {
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
-
-static const float vertices[] =
-{
-     1.0f,  1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,  1.0f,
-};
 
 static const float colours[] =
 {
@@ -137,20 +99,8 @@ void BasicCube::appInit() {
     }
 
     glGenVertexArrays(1, &vertexarray);
-    glBindVertexArray(vertexarray);
-    checkGLError("Error encountered creating Vertex Array: %s\n", Logger::LOG_ERROR);
-
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    checkGLError("Error encountered creating Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    checkGLError("Error encountered loading Vertex Array Buffer: %s\n", Logger::LOG_ERROR);
-
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-    glEnableVertexAttribArray(1);
-    checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
+    _cube.loadBuffer(vertexarray);
+    _cube.mapVertices(VI_OFFSET);
 
     glGenBuffers(1, &colourbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, colourbuffer);
@@ -160,8 +110,8 @@ void BasicCube::appInit() {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(colours), colours);
     checkGLError("Error encountered loading Array Buffer: %s\n", Logger::LOG_ERROR);
 
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(VI_COLOR, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(VI_COLOR);
     checkGLError("Error encountered preparing Vertex Data: %s\n", Logger::LOG_ERROR);
 
     GLint proj_loc = program.uniformLocation("projection");

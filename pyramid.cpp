@@ -15,9 +15,9 @@
 #define COLOUR_ALPHA 3
 
 
-class Pyramid : public SB6_BasicApp {
+class PyramidApp : public SB6_BasicApp {
 public:
-    Pyramid(GLfloat scale, int sides);
+    PyramidApp(GLfloat scale, int sides);
 
     bool appMain();
     void appInit();
@@ -31,13 +31,17 @@ private:
 
     Matrix4 _projection, _scale;
 
-    Primitives::Pyramid _meshData;
+    Primitives::Pyramid *pyramid;
 
     GLfloat angle, _scaleVal;
+
+    int _sides;
+
+    void createPyramid();
 };
 
-Pyramid::Pyramid(GLfloat scale, int sides) {
-    display = SDLDisplay::resizableDisplay("Pyramid", 400, 400);
+PyramidApp::PyramidApp(GLfloat scale, int sides) {
+    display = SDLDisplay::resizableDisplay("PyramidApp", 400, 400);
 
     running = true;
 
@@ -45,17 +49,19 @@ Pyramid::Pyramid(GLfloat scale, int sides) {
 
     vertexarray = 0;
 
+    pyramid = NULL;
+
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 }
 
-void Pyramid::resizeWindow(int newX, int newY) {
+void PyramidApp::resizeWindow(int newX, int newY) {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
 }
 
-void Pyramid::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
+void PyramidApp::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
     GLfloat ndcX, ndcY;
 
     display->toNDC(x, y, ndcX, ndcY);
@@ -65,29 +71,61 @@ void Pyramid::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int o
     glUniform4fv(light_loc, 1, light.mem());
 }
 
-void Pyramid::keyEvent(SDL_Keysym &key, bool press) {
-    if ((key.sym == SDLK_KP_MINUS || key.sym == SDLK_MINUS) && (_scaleVal > 1.0f)) {
-        _scaleVal -= 0.2f;
+void PyramidApp::keyEvent(SDL_Keysym &key, bool press) {
+    if (!press) {
+        return;
     }
 
-    if ((key.sym == SDLK_KP_PLUS || key.sym == SDLK_PLUS) && (_scaleVal < 10.0f)) {
-        _scaleVal += 0.2f;
+    switch(key.sym) {
+    case SDLK_KP_MINUS:
+    case SDLK_MINUS:
+        if (_scaleVal > 1.0f) {
+            _scaleVal -= 0.2f;
+            _scale = Matrix4::scale(_scaleVal);
+        }
+        break;
+    case SDLK_KP_PLUS:
+    case SDLK_PLUS:
+        if (_scaleVal < 10.f) {
+            _scaleVal += 0.2f;
+            _scale = Matrix4::scale(_scaleVal);
+        }
+        break;
+    case SDLK_a:
+        _sides++;
+        createPyramid();
+        break;
+    case SDLK_z:
+        if (_sides > 3) {
+            _sides--;
+            createPyramid();
+        }
+        break;
     }
-
-    _scale = Matrix4::scale(_scaleVal);
 }
 
-void Pyramid::appInit() {
+void PyramidApp::createPyramid() {
+    if (pyramid != NULL) {
+        delete pyramid;
+    }
+
+    pyramid = new Primitives::Pyramid(_sides);
+
+    glGenVertexArrays(1, &vertexarray);
+    pyramid->loadBuffer(vertexarray);
+    pyramid->mapVertices(VI_OFFSET);
+    pyramid->mapNormals(VI_NORMAL);
+}
+
+void PyramidApp::appInit() {
     bool shaderReady = loadVFProgram("litcube-vertex.sdr", "stlviewer-fragment.sdr");
 
     if (!shaderReady) {
         exit(1);
     }
 
-    glGenVertexArrays(1, &vertexarray);
-    _meshData.loadBuffer(vertexarray);
-    _meshData.mapVertices(VI_OFFSET);
-    _meshData.mapNormals(VI_NORMAL);
+    _sides = 3;
+    createPyramid();
 
     _scaleVal = 1.0f;
     _scale = Matrix4::scale(_scaleVal);
@@ -103,7 +141,7 @@ void Pyramid::appInit() {
     running &= checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
-bool Pyramid::appMain() {
+bool PyramidApp::appMain() {
     GLenum glerror;
     GLint offsetLocation;
     
@@ -119,7 +157,7 @@ bool Pyramid::appMain() {
     glUniformMatrix4fv(xform_loc, 1, false, xform.buffer());
   
     checkGLError("Error encountered while calling glVertexAttrib4fv: %s\n", Logger::LOG_ERROR);
-    glDrawArrays(GL_TRIANGLES, 0, _meshData.numVertices());
+    glDrawArrays(GL_TRIANGLES, 0, pyramid->numVertices());
 
     checkGLError("Error encountered while calling glDrawArrays: %s\n", Logger::LOG_ERROR);
     display->swapBuffers();
@@ -139,7 +177,7 @@ bool Pyramid::appMain() {
 
 int main( int argc, char* args[] ) {
  
-  Pyramid thisApp = Pyramid(1.0f, 3);
+  PyramidApp thisApp = PyramidApp(1.0f, 3);
 
   thisApp.appInit();
 

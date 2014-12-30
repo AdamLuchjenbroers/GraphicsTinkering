@@ -6,10 +6,10 @@ include Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: basic cube texcube litcube speccube sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
+all: basic cube texcube litcube speccube stlviewer sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
 
 clean:
-	rm -f build/* *.o
+	rm -f build/* *.o primitives/*.o
 	cd ./fw1 && $(MAKE) clean
 	cd ./math && $(MAKE) clean
 
@@ -35,7 +35,7 @@ test: tests.cpp tests/fw1.a tests/math.a
 basic: basic.o build/fw1.a
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
-%ube: %ube.o build/fw1.a build/math.a SB6_BasicApp.o
+%ube: %ube.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Cube.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
 sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o

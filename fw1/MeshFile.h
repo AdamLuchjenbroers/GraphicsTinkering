@@ -13,9 +13,9 @@ public:
     virtual void *offsetVertex() {return 0; };
 
     virtual bool hasNormal() { return false; };
-    virtual void *offsetNormal() = 0;
+    virtual void *offsetNormal() {return 0;};
     virtual bool hasTexUV() { return false; };
-    virtual void *offsetTexUV() = 0;
+    virtual void *offsetTexUV() {return 0;};
 
     virtual bool loadBuffer(GLuint vertArray);
     virtual size_t meshDataSize() { return _vertices * stride(); };

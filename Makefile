@@ -44,3 +44,6 @@ sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o
 %viewer: %viewer.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
+pyramid: pyramid.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	 	

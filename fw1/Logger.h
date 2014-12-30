@@ -13,6 +13,7 @@ namespace Logger {
     enum Channel {
         LOG_SHADERS
     ,   LOG_TEXTURES
+    ,   LOG_MESHES
     ,   LOG_APPLICATION
     ,   LOG_CONTEXT
     };

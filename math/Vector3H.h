@@ -99,6 +99,12 @@ public:
     inline GLfloat *mem() {
         return _vector;
     };
+/** Writes the contents of the vector to the memory address supplied by buffer.
+ *  @paran buffer The buffer to write data out to.
+ */
+    inline void writeTo(GLfloat *buffer) {
+        memcpy(buffer, _vector, sizeof(_vector));
+    }
 
 /** Calculates and returns the magnitude of this vector, computed based on the x, y and z co-ordinates.
  *  @return The magnitude of this vector.

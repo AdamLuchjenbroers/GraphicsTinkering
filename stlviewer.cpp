@@ -64,7 +64,7 @@ void STLViewer::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int
 }
 
 void STLViewer::keyEvent(SDL_Keysym &key, bool press) {
-    if ((key.sym == SDLK_KP_MINUS || key.sym == SDLK_MINUS) && (_scaleVal > 1.0f)) {
+    if ((key.sym == SDLK_KP_MINUS || key.sym == SDLK_MINUS) && (_scaleVal > 0.2f)) {
         _scaleVal -= 0.2f;
     }
 

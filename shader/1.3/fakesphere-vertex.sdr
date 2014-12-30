@@ -1,0 +1,24 @@
+#version 130
+
+in vec4 offset;
+in vec2 texUV;
+
+uniform mat4 xform;
+uniform mat4 rotate;
+uniform mat4 projection; 
+
+out vec2 vs_texUV;
+out vec4 world_pos;
+out vec4 vs_normal;
+out float vs_gloss;
+
+void main(void)
+{
+    vec4 position = normalize(offset);
+
+    world_pos = xform * rotate * position;
+    gl_Position = projection * world_pos;
+
+    vs_texUV = texUV;
+    vs_normal = rotate * position;
+}

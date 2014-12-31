@@ -71,7 +71,7 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
 };
 
 Shader::~Shader() {
-    if (_shader >= 0) {
+    if (_shader > 0) {
         Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Releasing shader %i\n", _shader); 
     	glDeleteShader(_shader);
     }

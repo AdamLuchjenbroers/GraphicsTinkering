@@ -19,6 +19,7 @@ public:
     /** Constructs a new 4x4 Matrix by copying from the buffer provided.
      *  The provided matrix is expected to be in the form of a single array
      *  of 16 floating point numbers in column-major order.
+     *  @param Pointer to an array of 16 floating point values in column-major order.
      */
     Matrix4(GLfloat *buffer);
 

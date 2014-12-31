@@ -18,12 +18,15 @@ public:
     void resizeWindow(int newX, int newY);
     void keyEvent(SDL_Keysym &key, bool press);
 private:
-    GLint _projectionLoc, _xformLoc, _vpsLoc;
+    GLint _projectionLoc, _xformLoc, _vpsLoc, _lightLoc, _heightLoc;
     Matrix4 _projection, _xform;
+    Vector3H _light;
     TextureRef _heightMap;
 
     int _vertsPerSide, _totalVerts;
     GLfloat _angle;
+
+    void loadUniforms(); 
 };
 
 HeightMap::HeightMap(const char *imageFile) {
@@ -49,9 +52,9 @@ void HeightMap::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    Vector3H light = Vector3H(ndcX, ndcY, 1.0, 1.0);
-    GLint light_loc = program.uniformLocation("light_pos");
-    glUniform4fv(light_loc, 1, light.mem());
+    _light = Vector3H(ndcX, ndcY, 1.0, 1.0);
+    glUniform4fv(_lightLoc, 1, _light.mem());
+    checkGLError("Error encountered updating light position: %s\n", Logger::LOG_WARN);
 }
 
 void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
@@ -72,8 +75,35 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
              glUniform1i(_vpsLoc, _vertsPerSide);
         }
         break;
+    case SDLK_d:
+        program.clearProgram();
+        running &= loadVFProgram("heightmap-vertex.sdr", "heightmap-debugfrag.sdr");
+        loadUniforms();
+        break;
+    case SDLK_c:
+        program.clearProgram();
+        running &= loadVFProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
+        loadUniforms();
+        break;
     }
 }
+
+void HeightMap::loadUniforms() {
+    _xformLoc = program.uniformLocation("xform");
+
+    _projectionLoc = program.uniformLocation("projection");
+    glUniformMatrix4fv(_projectionLoc, 1, false, _projection.buffer());
+
+    _vpsLoc = program.uniformLocation("vertsPerSide");
+    glUniform1i(_vpsLoc, _vertsPerSide);
+
+    _heightLoc = program.uniformLocation("heightMap");
+    glUniform1i(_heightLoc, 0);
+
+    _lightLoc = program.uniformLocation("light_pos");
+    glUniform4fv(_lightLoc, 1, _light.mem());
+}
+
 void HeightMap::appInit() {
     bool shaderReady = loadVFProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
     //bool shaderReady = loadVFProgram("heightmap-vertex.sdr", "sb2-fragment.sdr");
@@ -82,21 +112,12 @@ void HeightMap::appInit() {
         exit(1);
     }
 
-    _xformLoc = program.uniformLocation("xform");
-    _projectionLoc = program.uniformLocation("projection");
+    _light = Vector3H(0.0f, 0.0f, 0.0f, 1.0f);
+    loadUniforms();
 
     resizeWindow(400, 400);
 
-    _vpsLoc = program.uniformLocation("vertsPerSide");
-    glUniform1i(_vpsLoc, _vertsPerSide);
-
-    GLint uniformLoc = program.uniformLocation("heightMap");
-    glUniform1i(uniformLoc, 0);
     running &= checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
-
-    Vector3H light = Vector3H(0.0f, 0.0f, 1.0f, 1.0f);
-    GLint light_loc = program.uniformLocation("light_pos");
-    glUniform4fv(light_loc, 1, light.mem());
 
     glEnable(GL_DEPTH_TEST);
     running &= checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
@@ -113,8 +134,13 @@ bool HeightMap::appMain() {
            * Matrix4::rotate(40.0f, 0.0f, 0.0f)
            * Matrix4::rotate(0.0f, _angle, 0.0f);
 
-    glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());
+    if (_xformLoc >= 0) {
+        glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());
+        running &= checkGLError("Error encountered enabling loading Transform matrix: %s\n", Logger::LOG_ERROR);
+    }
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, _totalVerts);
+    running &= checkGLError("Error encountered calling glDrawArrays: %s\n", Logger::LOG_ERROR);
 
     display->swapBuffers();
     display->mainLoop(*this);

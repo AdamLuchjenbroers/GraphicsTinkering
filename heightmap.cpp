@@ -64,13 +64,15 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
 
     switch(key.sym) {
     case SDLK_a:
-        _vertsPerSide += 16;
-        _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
-        glUniform1i(_vpsLoc, _vertsPerSide);
+        if (_vertsPerSide < 1024) {
+            _vertsPerSide *= 2;
+            _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
+            glUniform1i(_vpsLoc, _vertsPerSide);
+        }
         break;
     case SDLK_z:
         if (_vertsPerSide > 16) {
-             _vertsPerSide -= 16;
+             _vertsPerSide /= 2;
              _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
              glUniform1i(_vpsLoc, _vertsPerSide);
         }

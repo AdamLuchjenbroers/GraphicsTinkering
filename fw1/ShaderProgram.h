@@ -23,6 +23,9 @@ public:
  *  @param location Intended attribute location
  */
     void bindAttribute(const GLchar *attrib, GLuint location);
+/** Unlink the currently loaded shader program to allow it to be re-linked.
+ */
+    void clearProgram();
 /** Link the selected shaders together to create a shader program.
  *  @return True if the link process was successful.
  */

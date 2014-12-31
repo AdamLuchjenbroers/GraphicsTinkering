@@ -12,7 +12,11 @@ ShaderProgram::ShaderProgram() {
 }
 
 ShaderProgram::~ShaderProgram() {
-
+    if (_program != 0) {
+        Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Deleting GL Shader Program %i\n", _program);
+        glDeleteProgram(_program);
+        _program = 0;
+    }
 }
 
 bool ShaderProgram::addShader(const char *name, const GLenum type) {
@@ -26,6 +30,7 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
 
     lib = ShaderLibrary::getLibrary();
     newShader = lib->getShader(name, type);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Attaching shader %s [%i] to GL Program %i\n", name, newShader.getShader(), _program);
 
     if (newShader.isValid()) {
         _shaders[type] = newShader;
@@ -38,6 +43,16 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
 
 void ShaderProgram::bindAttribute(const GLchar *attrib, GLuint location) {
     glBindAttribLocation(_program, location, attrib);
+}
+
+void ShaderProgram::clearProgram() {
+    if (_program != 0) {
+        Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Deleting GL Shader Program %i\n", _program);
+        glDeleteProgram(_program);
+        _program = 0;
+
+        _shaders.clear(); 
+    }
 }
 
 bool ShaderProgram::linkProgram() {

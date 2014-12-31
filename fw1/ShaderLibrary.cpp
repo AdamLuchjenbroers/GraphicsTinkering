@@ -47,6 +47,7 @@ void ShaderLibrary::setLibraryPath(const char *newpath) {
     if (library != NULL) {
         delete library;
     }
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Initialising Shader Library with search path %s\n", newpath);
 
     library = new ShaderLibrary(newpath);
 };
@@ -54,6 +55,7 @@ void ShaderLibrary::setLibraryPath(const char *newpath) {
 ShaderLibrary *ShaderLibrary::getLibrary() {
     if (library == NULL) {
         //Initialise with default library path
+        Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "No library loaded, initialising with default search path\n");
         char defaultPath[9] = "./shader";
         setLibraryPath(defaultPath);
     }
@@ -66,7 +68,8 @@ ShaderRef ShaderLibrary::getShader(const std::string name, GLuint stage) {
     GLSLVersion context = GLSLVersion::getContextVersion();
 
     // First, check if we've already got this shader in memory.
-    if ( _shaders.find(name) != _shaders.end() ) {
+    if ( _shaders[name].isValid() ) {
+        Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "getShader() retrieved %s from cache\n", name.c_str());
         return ShaderRef(_shaders[name]);
     }
 

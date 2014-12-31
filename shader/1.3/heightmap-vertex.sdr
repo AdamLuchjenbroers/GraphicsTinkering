@@ -1,0 +1,83 @@
+#version 130
+
+uniform sampler2D heightMap;
+uniform int vertsPerSide;
+
+uniform mat4 xform;
+//uniform mat4 rotate;
+uniform mat4 projection; 
+
+out vec4 world_pos;
+out vec4 vs_normal;
+out float vs_z;
+
+vec2 uvForIndex(int index) {
+    float steps = 1.0 / (vertsPerSide - 1);
+    int row = index / (vertsPerSide * 2);
+    bool evenRow = (mod(row, 2) == 0.0);
+
+    int inRow = int( (mod(index, (vertsPerSide * 2))));
+    int column = inRow / 2;
+    int rowPlus = int( mod(inRow, 2));
+
+    if (evenRow) {
+        return vec2( steps * column, steps * (row + rowPlus)); 
+    } else {
+        return vec2( (vertsPerSide - column - 1) * steps, (row + rowPlus) * steps); 
+    }    
+}
+
+vec4 toPosition(vec2 uv) {
+    float z = texture(heightMap, uv).r;
+ 
+    vec4 position = vec4( uv.x, z, uv.y, 1.0);
+    position.xz *= 2.0;
+    position.xz -= 1.0;
+
+    return position;
+}
+
+vec3 across(vec2 priorUV, vec2 nextUV) {
+    vec4 prior = toPosition(priorUV);
+    vec4 next  = toPosition(nextUV);
+
+    return next.xyz - prior.xyz;
+}
+
+vec3 xTangent(vec2 middle) {
+    // Computes a "Tangent" by taking the height values halfway between the
+    // previous and next points along the x axis.
+    float halfStep = 0.5 / vertsPerSide; 
+
+    vec2 priorUV = clamp( vec2( middle.x - halfStep, middle.y), 0.0, 1.0);
+    vec2 nextUV  = clamp( vec2( middle.x + halfStep, middle.y), 0.0, 1.0);
+
+    return across(priorUV, nextUV);
+}
+
+vec3 yTangent(vec2 middle) {
+    // Computes a "Tangent" by taking the height values halfway between the
+    // previous and next points along the y axis.
+    float halfStep = 0.5 / vertsPerSide; 
+
+    vec2 priorUV = clamp( vec2( middle.x, middle.y - halfStep), 0.0, 1.0);
+    vec2 nextUV  = clamp( vec2( middle.x, middle.y + halfStep), 0.0, 1.0);
+
+    return across(priorUV, nextUV);
+}
+
+void main(void) {
+    vec2 uv = uvForIndex(gl_VertexID);
+
+    vec4 position = toPosition(uv);
+
+    vs_z = position.y;
+
+    vec4 normal = normalize( cross(yTangent(uv), xTangent(uv)) ).xyzz;
+    normal.w = 0.0;
+    
+    world_pos = xform * position;
+    gl_Position = projection * world_pos;
+
+    vs_normal = xform * normal; 
+}

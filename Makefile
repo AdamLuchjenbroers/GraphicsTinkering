@@ -50,3 +50,6 @@ pyramid: pyramid.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
 fakesphere: fakesphere.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
+heightmap: heightmap.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	 	

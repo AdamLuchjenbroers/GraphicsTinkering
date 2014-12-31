@@ -11,8 +11,10 @@ out vec4 world_pos;
 out vec4 vs_normal;
 out float vs_z;
 
+float step = 1.0 / (vertsPerSide - 1);
+float halfStep = step / 2.0;
+
 vec2 uvForIndex(int index) {
-    float steps = 1.0 / (vertsPerSide - 1);
     int row = index / (vertsPerSide * 2);
     bool evenRow = (mod(row, 2) == 0.0);
 
@@ -21,9 +23,9 @@ vec2 uvForIndex(int index) {
     int rowPlus = int( mod(inRow, 2));
 
     if (evenRow) {
-        return vec2( steps * column, steps * (row + rowPlus)); 
+        return vec2( step * column, step * (row + rowPlus)); 
     } else {
-        return vec2( (vertsPerSide - column - 1) * steps, (row + rowPlus) * steps); 
+        return vec2( (vertsPerSide - column - 1) * step, (row + rowPlus) * step); 
     }    
 }
 
@@ -44,11 +46,74 @@ vec3 across(vec2 priorUV, vec2 nextUV) {
     return next.xyz - prior.xyz;
 }
 
+vec2 clockOffset(int position) {
+    //Computes an offset to the adjacent vertex, starting with the one
+    //directly above and rotating clockwise around.
+    vec2 offset = vec2(0.0, 0.0);
+
+    switch (position) {
+    case 0:
+        offset.y = step;
+        break;
+    case 1:
+        offset.x = step;
+        offset.y = step;
+        break;
+    case 2:
+        offset.x = step;
+        break;
+    case 4:
+        offset.x = step;
+        offset.y = -step;
+        break;
+    case 5:
+        offset.y = -step;
+        break;
+    case 6:
+        offset.x = -step;
+        offset.y = -step;
+        break;
+    case 7:
+        offset.x = -step;
+        break;
+    case 8:
+        offset.x = -step;
+        offset.y = step;
+        break;
+    }
+    return offset; 
+}
+
+vec4 calculateNormal(vec2 uvCenter) {
+    vec3 sumNormals = vec3(0.0, 0.0, 0.0);
+
+    vec3 center = toPosition(uvCenter).xyz;
+
+    vec2 lastOffset = clockOffset(0);
+
+    for(int i=1; i<9; i++) {
+        vec2 offset = clockOffset(i);
+
+        vec3 leftPos  = toPosition(uvCenter + lastOffset).xyz;
+        lastOffset = offset;
+        if (leftPos.x < 0.0 || leftPos.x > 1.0 || leftPos.y < 0.0 || leftPos.y > 1.0) { continue; }
+
+        vec3 rightPos = toPosition(uvCenter + offset).xyz;
+        if (rightPos.x < 0.0 || rightPos.x > 1.0 || rightPos.y < 0.0 || rightPos.y > 1.0) { continue; }
+
+        vec3 normal = cross(rightPos - center, leftPos - center);
+        sumNormals += normalize(normal);
+    };
+
+    vec3 avgNormal = normalize(sumNormals);
+    //out.w = 0.0;
+
+    return vec4(avgNormal.xyz, 0.0);
+}
+
 vec3 xTangent(vec2 middle) {
     // Computes a "Tangent" by taking the height values halfway between the
     // previous and next points along the x axis.
-    float halfStep = 0.5 / vertsPerSide; 
-
     vec2 priorUV = clamp( vec2( middle.x - halfStep, middle.y), 0.0, 1.0);
     vec2 nextUV  = clamp( vec2( middle.x + halfStep, middle.y), 0.0, 1.0);
 
@@ -58,8 +123,6 @@ vec3 xTangent(vec2 middle) {
 vec3 yTangent(vec2 middle) {
     // Computes a "Tangent" by taking the height values halfway between the
     // previous and next points along the y axis.
-    float halfStep = 0.5 / vertsPerSide; 
-
     vec2 priorUV = clamp( vec2( middle.x, middle.y - halfStep), 0.0, 1.0);
     vec2 nextUV  = clamp( vec2( middle.x, middle.y + halfStep), 0.0, 1.0);
 
@@ -73,8 +136,9 @@ void main(void) {
 
     vs_z = position.y;
 
-    vec4 normal = normalize( cross(yTangent(uv), xTangent(uv)) ).xyzz;
-    normal.w = 0.0;
+    //vec4 normal = normalize( cross(yTangent(uv), xTangent(uv)) ).xyzz;
+    //normal.w = 0.0;
+    vec4 normal = calculateNormal(uv);
     
     world_pos = xform * position;
     gl_Position = projection * world_pos;

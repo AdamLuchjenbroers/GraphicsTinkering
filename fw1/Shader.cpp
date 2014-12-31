@@ -10,7 +10,7 @@
 #include <GL/glu.h>
 
 Shader::Shader() {
-    this->_shader = 0;
+    _shader = 0;
 }
 
 bool Shader::loadShader(const std::string script, GLenum shadertype) {
@@ -33,7 +33,9 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
         return false;
     }
 
-    this->_shader = glCreateShader(shadertype);
+    _shader = glCreateShader(shadertype);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Loading %s to GL shader %i\n", script.c_str(), _shader); 
+
     std::string scriptString = scriptData.str();
     const char *glSource = scriptString.c_str();
 
@@ -70,6 +72,7 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
 
 Shader::~Shader() {
     if (_shader >= 0) {
+        Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Releasing shader %i\n", _shader); 
     	glDeleteShader(_shader);
     }
 };

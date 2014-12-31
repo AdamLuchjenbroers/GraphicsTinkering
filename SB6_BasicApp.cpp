@@ -5,7 +5,9 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
     GLuint glerror;
     bool success = true;
 
-    ShaderLibrary::setLibraryPath("./shader");
+    if ( !ShaderLibrary::isReady) {
+        ShaderLibrary::setLibraryPath("./shader");
+    }
 
     success = program.addShader(vertexName, GL_VERTEX_SHADER);
     success &= program.addShader(fragmentName, GL_FRAGMENT_SHADER);

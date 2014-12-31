@@ -29,6 +29,11 @@ public:
  *  @param newpath The new base search path for the shader library.
  */
     static void setLibraryPath(const char *newpath);
+
+/** Determines if a library has an active search path configured.
+ *  @return True if the library search path has been set
+ */
+    static bool isReady(); 
 private:
     static ShaderLibrary *library;
 

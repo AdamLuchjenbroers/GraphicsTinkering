@@ -98,3 +98,7 @@ ShaderRef ShaderLibrary::getShader(const std::string name, GLuint stage) {
     Logger::logprintf(Logger::LOG_WARN, Logger::LOG_SHADERS, "Failed to locate shader %s\n", name.c_str());
     return ShaderRef();
 };
+
+bool ShaderLibrary::isReady() {
+    return (library != NULL);
+}

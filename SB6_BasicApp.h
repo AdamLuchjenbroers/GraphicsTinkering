@@ -35,6 +35,14 @@ protected:
  */
     bool linkProgram();
 
+/** Initialises the shader library, if it has not already been initialised.
+  * @return True if the library is / was successfully initialised.
+  */
+    bool initLibrary(const char *path);
+
+/** Binds attribute locations to their assigned indices. */
+    void bindAttributes();
+
     virtual void appQuit();
 
     ShaderProgram program;

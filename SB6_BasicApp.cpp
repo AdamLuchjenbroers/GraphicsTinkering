@@ -1,13 +1,30 @@
 #include "SB6_BasicApp.h"
 
+bool SB6_BasicApp::initLibrary(const char *path) {
+
+    if ( !ShaderLibrary::isReady() ) {
+        ShaderLibrary::setLibraryPath(path);
+    }
+
+    return true;
+}
+
+void SB6_BasicApp::bindAttributes() {
+
+    // Use explicit location bindings compatibility with older GLSL versions
+    program.bindAttribute("position", VI_POSITION);
+    program.bindAttribute("offset", VI_OFFSET);
+    program.bindAttribute("color", VI_COLOR);
+    program.bindAttribute("texUV", VI_TEXUV);
+    program.bindAttribute("normal", VI_NORMAL);
+    program.bindAttribute("gloss", VI_GLOSS);
+}
 
 bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentName) {
     GLuint glerror;
     bool success = true;
 
-    if ( !ShaderLibrary::isReady) {
-        ShaderLibrary::setLibraryPath("./shader");
-    }
+    initLibrary("./shader");
 
     success = program.addShader(vertexName, GL_VERTEX_SHADER);
     success &= program.addShader(fragmentName, GL_FRAGMENT_SHADER);
@@ -18,13 +35,7 @@ bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentNam
         return false;
     }
 
-    // Use explicit location bindings compatibility with older GLSL versions
-    program.bindAttribute("position", VI_POSITION);
-    program.bindAttribute("offset", VI_OFFSET);
-    program.bindAttribute("color", VI_COLOR);
-    program.bindAttribute("texUV", VI_TEXUV);
-    program.bindAttribute("normal", VI_NORMAL);
-    program.bindAttribute("gloss", VI_GLOSS);
+    bindAttributes();
 
     success = program.linkProgram();
 

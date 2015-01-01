@@ -38,13 +38,13 @@ Texture::Texture(SDL_Surface &surface, GLenum texUnit) {
 
     switch(surface.format->format) {
     case SDL_PIXELFORMAT_ABGR8888:
-        intFormat = GL_RGBA;
+        intFormat = GL_RGBA8;
         format = GL_RGBA;
         type = GL_UNSIGNED_BYTE;
         recognised = true;
         break;
     case SDL_PIXELFORMAT_ARGB8888:
-        intFormat = GL_RGBA;
+        intFormat = GL_RGBA8;
         format = GL_BGRA;
         type = GL_UNSIGNED_BYTE;
         recognised = true;

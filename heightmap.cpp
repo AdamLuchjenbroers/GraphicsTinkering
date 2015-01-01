@@ -27,23 +27,25 @@ private:
 
     int _vertsPerSide, _totalVerts;
     GLfloat _angle;
+    GLenum _drawMode;
 
     void loadUniforms(); 
 };
 
 HeightMap::HeightMap(const char *imageFile) {
-    display = SDLDisplay::resizableDisplay("Vertex Shader Height Map", 400, 400);
+    display = SDLDisplay::resizableDisplay("Vertex Shader Height Map", 400, 400, false);
     _heightMap = Texture::loadImage(imageFile, GL_TEXTURE0);
 
     _vertsPerSide = 16;
     _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
     _angle = 0.0f;
+    _drawMode = GL_TRIANGLE_STRIP;
     running = _heightMap.isValid();
 
 }
 
 void HeightMap::resizeWindow(int newX, int newY) {
-    _projection = Matrix4::fovHorizontal( 0.1f, 6.0f, 90.0f, display->aspectRatio());
+    _projection = Matrix4::fovHorizontal( 0.2f, 6.0f, 90.0f, display->aspectRatio());
 
     glUniformMatrix4fv(_projectionLoc, 1, false, _projection.buffer());
     running &= checkGLError("Error encountered updating Projection Matrix: %s\n", Logger::LOG_ERROR);
@@ -80,11 +82,19 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
         }
         break;
     case SDLK_d:
+        _drawMode = GL_TRIANGLE_STRIP;
         running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-debugfrag.sdr");
         loadUniforms();
         break;
     case SDLK_c:
+        _drawMode = GL_TRIANGLE_STRIP;
         running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
+        loadUniforms();
+        break;
+    case SDLK_p:
+        glPointSize(2.0);
+        _drawMode = GL_POINTS;
+        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-pointdebug.sdr");
         loadUniforms();
         break;
     }
@@ -168,12 +178,10 @@ bool HeightMap::appMain() {
            * Matrix4::rotate(40.0f, 0.0f, 0.0f)
            * Matrix4::rotate(0.0f, _angle, 0.0f);
 
-    if (_xformLoc >= 0) {
-        glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());
-        running &= checkGLError("Error encountered enabling loading Transform matrix: %s\n", Logger::LOG_ERROR);
-    }
+    glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());
+    running &= checkGLError("Error encountered enabling loading Transform matrix: %s\n", Logger::LOG_ERROR);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, _totalVerts);
+    glDrawArrays(_drawMode, 0, _totalVerts);
     running &= checkGLError("Error encountered calling glDrawArrays: %s\n", Logger::LOG_ERROR);
 
     display->swapBuffers();

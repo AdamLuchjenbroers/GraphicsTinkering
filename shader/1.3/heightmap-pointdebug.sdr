@@ -1,0 +1,8 @@
+#version 130
+in float vs_z;
+
+out vec4 color;
+
+void main(void) {
+  color = vec4(vs_z, 0.2, 1.0 - vs_z, 1.0);
+}

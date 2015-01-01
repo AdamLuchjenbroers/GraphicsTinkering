@@ -17,6 +17,8 @@ public:
     void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY);
     void resizeWindow(int newX, int newY);
     void keyEvent(SDL_Keysym &key, bool press);
+
+    bool buildShaderProgram(const char *vertMain, const char *fragMain);
 private:
     GLint _projectionLoc, _xformLoc, _vpsLoc, _lightLoc, _heightLoc;
     Matrix4 _projection, _xform;
@@ -78,13 +80,11 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
         }
         break;
     case SDLK_d:
-        program.clearProgram();
-        running &= loadVFProgram("heightmap-vertex.sdr", "heightmap-debugfrag.sdr");
+        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-debugfrag.sdr");
         loadUniforms();
         break;
     case SDLK_c:
-        program.clearProgram();
-        running &= loadVFProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
+        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
         loadUniforms();
         break;
     }
@@ -106,9 +106,40 @@ void HeightMap::loadUniforms() {
     glUniform4fv(_lightLoc, 1, _light.mem());
 }
 
+bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
+    bool success = true;
+    GLuint glerror;
+
+    program.clearProgram();
+
+    success = program.addShader(mainVert, GL_VERTEX_SHADER);
+    success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
+    success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
+
+        return false;
+    }
+
+    bindAttributes();
+
+    success = program.linkProgram();
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
+
+        return false;
+    }
+    
+    glUseProgram(program.programID());
+
+    return success;
+}
+
 void HeightMap::appInit() {
-    bool shaderReady = loadVFProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
-    //bool shaderReady = loadVFProgram("heightmap-vertex.sdr", "sb2-fragment.sdr");
+    bool shaderReady = buildShaderProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
+    //bool shaderReady = buildShaderProgram("heightmap-vertex.sdr", "sb2-fragment.sdr");
 
     if (!shaderReady) {
         exit(1);

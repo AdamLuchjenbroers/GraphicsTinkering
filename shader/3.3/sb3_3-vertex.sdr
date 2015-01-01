@@ -1,8 +1,7 @@
-#version 430 core
+#version 330
 
-// "offset" is an input vertex attribute
-layout (location = 1) in vec4 offset;
-layout (location = 2) in vec4 color;
+in vec4 offset;
+in vec4 color;
 
 out VS_OUT {
     vec4 color;
@@ -20,8 +19,6 @@ void main(void)
     const vec4 adjust[3] = vec4[3](vec4( 0.2, 1.0, 1.0, 1.0),
                                      vec4( 1.0, 0.2, 1.0, 1.0),
                                      vec4( 1.0, 1.0, 0.2, 1.0));
-                                     
-   
 
     // Index into our array using gl_VertexID
     gl_Position = vertices[gl_VertexID] + offset;

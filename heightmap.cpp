@@ -115,6 +115,7 @@ bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
     success = program.addShader(mainVert, GL_VERTEX_SHADER);
     success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
     success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
+    success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
 
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
@@ -186,20 +187,19 @@ bool HeightMap::appMain() {
     return true;
 }
 
-int main( int argc, char* args[] ) { 
-    char *defaultMap = "textures/HeightMap.png";
-    char *map;
+int main( int argc, char* args[] ) {
+    std::string map; 
 
     if (argc == 1) {
-        map = defaultMap;
+        map = std::string("textures/HeightMap.png");
     } else if (argc == 2) {
-        map = args[1];
+        map = std::string(args[1]);
     } else {
         printf("Usage: %s [<Height Map>]\n", args[0]);
         exit(1);
     }
 
-    HeightMap thisApp = HeightMap(map);
+    HeightMap thisApp = HeightMap(map.c_str());
 
     thisApp.appInit();
     while ( thisApp.appMain() ) {};

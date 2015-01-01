@@ -2,7 +2,7 @@
 
 #include "fw1.h"
 
-#include <map>
+#include <list>
 
 /** Constructs a shader program from a selected set of shader objects.
  */
@@ -46,5 +46,5 @@ private:
     GLuint _program;
     bool _linked;
 
-    std::map<GLenum, ShaderRef> _shaders;
+    std::list<ShaderRef> _shaders;
 };

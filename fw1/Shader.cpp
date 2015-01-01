@@ -25,6 +25,8 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
     if ( _shader != 0 ) {
         //Release the previous shader
         glDeleteShader(_shader);
+        _shader = 0;
+        _shaderType = 0;
     }
 
     if ( scriptFile.fail() ) {
@@ -33,7 +35,8 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
         return false;
     }
 
-    _shader = glCreateShader(shadertype);
+    _shaderType = shadertype;
+    _shader = glCreateShader(_shaderType);
     Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Loading %s to GL shader %i\n", script.c_str(), _shader); 
 
     std::string scriptString = scriptData.str();
@@ -44,6 +47,7 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
     if (glerror != GL_NO_ERROR) {
         glDeleteShader(_shader);
         _shader = 0;
+        _shaderType = 0;
 
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_SHADERS, "glShaderSource failed to load shader: %s\n", gluErrorString(glerror));
         return false;
@@ -62,6 +66,7 @@ bool Shader::loadShader(const std::string script, GLenum shadertype) {
 
         glDeleteShader(_shader);
         _shader = 0;
+        _shaderType = 0;
         return false;
     } else {
         Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully compiled shader [%i]: %s\n", _shader, script.c_str());

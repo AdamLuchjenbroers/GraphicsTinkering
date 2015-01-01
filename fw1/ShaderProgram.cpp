@@ -33,7 +33,7 @@ bool ShaderProgram::addShader(const char *name, const GLenum type) {
     Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_SHADERS, "Attaching shader %s [%i] to GL Program %i\n", name, newShader.getShader(), _program);
 
     if (newShader.isValid()) {
-        _shaders[type] = newShader;
+        _shaders.push_back( newShader );
 
         return true;
     } else {
@@ -56,14 +56,12 @@ void ShaderProgram::clearProgram() {
 }
 
 bool ShaderProgram::linkProgram() {
-    std::map<GLenum, ShaderRef>::iterator itr;
+    std::list<ShaderRef>::iterator itr;
     GLuint glerror;
     GLint linkState;
 
     for (itr = _shaders.begin(); itr != _shaders.end(); itr++) {
-
-
-        GLuint shader = itr->second.getShader();
+        GLuint shader = itr->getShader();
 
         glAttachShader(_program, shader);
 

@@ -64,6 +64,7 @@ public:
     static SDLDisplay *basicDisplay(const char *title, int width, int height);
 
     /** Creates an SDLDisplay in a basic, resizable window */
+    static SDLDisplay *resizableDisplay(const char *title, int width, int height, bool coreProfile);
     static SDLDisplay *resizableDisplay(const char *title, int width, int height);
 protected:
     int _width, _height, _offsetX, _offsetY;
@@ -73,7 +74,7 @@ protected:
 
     SDLDisplay();
 
-    bool createWindow();
+    bool createWindow(bool coreProfile);
 private:
     SDL_Window *app_window;
     SDL_GLContext app_glcontext;

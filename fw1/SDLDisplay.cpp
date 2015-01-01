@@ -28,13 +28,13 @@ SDLDisplay *SDLDisplay::basicDisplay(const char *title, int width, int height) {
 
     strncpy(newDisplay->_title, title, 64);
 
-    newDisplay->createWindow();
+    newDisplay->createWindow(true);
     newDisplay->logRendererInfo();
     
     return newDisplay;
 }
 
-SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int height) {
+SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int height, bool coreProfile) {
     SDLDisplay *newDisplay = new SDLDisplay();
 
     newDisplay->_width = width;
@@ -44,18 +44,27 @@ SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int heigh
 
     newDisplay->setResizable(true);
 
-    newDisplay->createWindow();
+    newDisplay->createWindow(coreProfile);
     newDisplay->logRendererInfo();
     
     return newDisplay;
 }
 
-bool SDLDisplay::createWindow() {
+SDLDisplay *SDLDisplay::resizableDisplay(const char *title, int width, int height) {
+    return resizableDisplay(title, width, height, true);    
+}
+
+bool SDLDisplay::createWindow(bool coreProfile) {
     if ( SDL_WasInit(SDL_INIT_VIDEO) == 0 ) {
 	SDL_Init( SDL_INIT_VIDEO );
     } 
 
     app_window = SDL_CreateWindow(_title, _offsetX, _offsetY, _width, _height, _sdlFlags);
+    if (coreProfile) {
+        //Use OpenGL 3.x core 
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 ); 
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
+    }
     app_glcontext = SDL_GL_CreateContext(this->app_window);
 
     SDL_GL_MakeCurrent(this->app_window, this->app_glcontext);

@@ -60,6 +60,7 @@ bool SB6_BasicApp::linkProgram() {
 }
 
 void SB6_BasicApp::appQuit() {
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Quit request received\n");
     running = false;
 };
 

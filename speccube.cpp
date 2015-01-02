@@ -114,7 +114,7 @@ bool SpecularCube::buildShaderProgram(const char *mainVert, const char *mainFrag
     success = program.addShader(mainVert, GL_VERTEX_SHADER);
     //success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
     success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
-    //success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
+    success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
 
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");

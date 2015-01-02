@@ -2,14 +2,17 @@
 
 in vec4 world_pos;
 in vec4 vs_normal;
-in float vs_z;
+in vec2 vs_uv;
 
 out vec4 color;
+
+uniform sampler2D heightMap;
 
 vec3 light(vec4 objPosition, vec4 objNormal, float gloss, vec3 specularColor, vec3 diffuseColor);
 
 void main(void) {
-    vec3 vertColor = vec3(vs_z, 0.2, 1.0 - vs_z);
+    float z = texture(heightMap, vs_uv).r;
+    vec3 vertColor = vec3(z, 0.0, 1.0 - z);
 
     vec3 lightColor = light(world_pos, vs_normal, 10.0, vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0));
     vertColor.rgb *= lightColor;

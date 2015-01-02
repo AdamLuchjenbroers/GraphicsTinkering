@@ -9,7 +9,7 @@ uniform mat4 projection;
 
 out vec4 world_pos;
 out vec4 vs_normal;
-out float vs_z;
+out vec2 vs_uv;
 
 vec2 uvForIndex(int index);
 vec4 toPosition(vec2 uv);
@@ -20,10 +20,8 @@ void main(void) {
 
     vec4 position = toPosition(uv);
 
-    vs_z = position.y;
+    vs_uv = uv;
 
-    //vec4 normal = normalize( cross(yTangent(uv), xTangent(uv)) ).xyzz;
-    //normal.w = 0.0;
     vec4 normal = calculateNormal(uv);
     
     world_pos = xform * position;

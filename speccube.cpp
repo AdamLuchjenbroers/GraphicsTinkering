@@ -112,7 +112,6 @@ bool SpecularCube::buildShaderProgram(const char *mainVert, const char *mainFrag
     program.clearProgram();
 
     success = program.addShader(mainVert, GL_VERTEX_SHADER);
-    //success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
     success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
     success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
 

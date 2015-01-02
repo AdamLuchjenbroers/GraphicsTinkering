@@ -6,7 +6,9 @@ include Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: basic cube texcube litcube speccube stlviewer pyramid fakesphere sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
+all: basic cube texcube litcube speccube stlviewer pyramid fakesphere 
+all: sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
+all: heightmap
 
 clean:
 	rm -f build/* *.o primitives/*.o
@@ -50,6 +52,6 @@ pyramid: pyramid.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
 fakesphere: fakesphere.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
-heightmap: heightmap.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyramid.o
+height%: height%.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
-	 	
+

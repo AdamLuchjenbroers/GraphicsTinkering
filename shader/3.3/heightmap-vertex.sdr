@@ -1,0 +1,30 @@
+#version 330
+
+uniform int vertsPerSide;
+uniform sampler2D heightMap;
+
+uniform mat4 projection; 
+uniform mat4 xform;
+
+out vec4 world_pos;
+out vec4 vs_normal;
+out vec2 vs_uv;
+
+vec2 uvForIndex(int index);
+vec4 toPosition(vec2 uv);
+vec4 calculateNormal(vec2 uv);
+
+void main(void) {
+    vec2 uv = uvForIndex(gl_VertexID);
+
+    vec4 position = toPosition(uv);
+
+    vs_uv = uv;
+
+    vec4 normal = calculateNormal(uv);
+    
+    world_pos = xform * position;
+    gl_Position = projection * world_pos;
+
+    vs_normal = xform * normal; 
+}

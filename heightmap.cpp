@@ -6,6 +6,10 @@
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
 
+#define VERTEX_SHADER "heightmap-vertex.sdr"
+#define FRAGMENT_SHADER "heightmap-fragment.sdr"
+
+#define CORE_PROFILE true
 
 class HeightMap : public SB6_BasicApp {
 public:
@@ -21,6 +25,7 @@ public:
     bool buildShaderProgram(const char *vertMain, const char *fragMain);
 private:
     GLint _projectionLoc, _xformLoc, _vpsLoc, _lightLoc, _heightLoc;
+    GLuint _vertexArray;
     Matrix4 _projection, _xform;
     Vector3H _light;
     TextureRef _heightMap;
@@ -33,8 +38,8 @@ private:
 };
 
 HeightMap::HeightMap(const char *imageFile) {
-    display = SDLDisplay::resizableDisplay("Vertex Shader Height Map", 400, 400, false);
-    _heightMap = Texture::loadImage(imageFile, GL_TEXTURE0);
+    display = SDLDisplay::resizableDisplay("Vertex Shader Height Map", 400, 400, CORE_PROFILE);
+    _heightMap = Texture::loadImage(imageFile, GL_TEXTURE1);
 
     _vertsPerSide = 16;
     _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
@@ -72,29 +77,31 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
             _vertsPerSide *= 2;
             _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
             glUniform1i(_vpsLoc, _vertsPerSide);
+            checkGLError("Error encountered updating Vertices Per Side count: %s\n", Logger::LOG_WARN);
         }
         break;
     case SDLK_z:
-        if (_vertsPerSide > 16) {
+        if (_vertsPerSide > 4) {
              _vertsPerSide /= 2;
              _totalVerts = _vertsPerSide * 2 * (_vertsPerSide - 1);
              glUniform1i(_vpsLoc, _vertsPerSide);
+             checkGLError("Error encountered updating Vertices Per Side count: %s\n", Logger::LOG_WARN);
         }
         break;
     case SDLK_d:
         _drawMode = GL_TRIANGLE_STRIP;
-        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-debugfrag.sdr");
+        running &= buildShaderProgram(VERTEX_SHADER, "heightmap-debugfrag.sdr");
         loadUniforms();
         break;
     case SDLK_c:
         _drawMode = GL_TRIANGLE_STRIP;
-        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
+        running &= buildShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
         loadUniforms();
         break;
     case SDLK_p:
         glPointSize(2.0);
         _drawMode = GL_POINTS;
-        running &= buildShaderProgram("heightmap-vertex.sdr", "heightmap-pointdebug.sdr");
+        running &= buildShaderProgram(VERTEX_SHADER, "heightmap-pointdebug.sdr");
         loadUniforms();
         break;
     }
@@ -110,7 +117,7 @@ void HeightMap::loadUniforms() {
     glUniform1i(_vpsLoc, _vertsPerSide);
 
     _heightLoc = program.uniformLocation("heightMap");
-    glUniform1i(_heightLoc, 0);
+    glUniform1i(_heightLoc, 1);
 
     _lightLoc = program.uniformLocation("light_pos");
     glUniform4fv(_lightLoc, 1, _light.mem());
@@ -124,6 +131,7 @@ bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
 
     success = program.addShader(mainVert, GL_VERTEX_SHADER);
     success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
+    //success &= program.addShader("heightmap-fixedverts.sdr", GL_VERTEX_SHADER);
     success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
     success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
 
@@ -144,13 +152,12 @@ bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
     }
     
     glUseProgram(program.programID());
-
+    success &= checkGLError("Error encountered enabling Shader Program\n", Logger::LOG_ERROR);
     return success;
 }
 
 void HeightMap::appInit() {
-    bool shaderReady = buildShaderProgram("heightmap-vertex.sdr", "heightmap-fragment.sdr");
-    //bool shaderReady = buildShaderProgram("heightmap-vertex.sdr", "sb2-fragment.sdr");
+    bool shaderReady = buildShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
 
     if (!shaderReady) {
         exit(1);
@@ -159,20 +166,27 @@ void HeightMap::appInit() {
     _light = Vector3H(0.0f, 0.0f, 0.0f, 1.0f);
     loadUniforms();
 
+    glGenVertexArrays(1, &_vertexArray);
+    glBindVertexArray(_vertexArray);
+
     resizeWindow(400, 400);
 
     running &= checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 
     glEnable(GL_DEPTH_TEST);
     running &= checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
+
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 }
 
 bool HeightMap::appMain() {
     if (!running) {
         return false;
     }
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(program.programID());
+    running &= checkGLError("Error encountered enabling Shader Program\n", Logger::LOG_ERROR);
 
     _xform = Matrix4::translate(0.0f, -1.0f, 2.0f) 
            * Matrix4::rotate(40.0f, 0.0f, 0.0f)
@@ -199,7 +213,7 @@ int main( int argc, char* args[] ) {
     std::string map; 
 
     if (argc == 1) {
-        map = std::string("textures/HeightMap.png");
+        map = std::string("textures/HeightMap2.png");
     } else if (argc == 2) {
         map = std::string(args[1]);
     } else {

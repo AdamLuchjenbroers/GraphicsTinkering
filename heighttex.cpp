@@ -40,7 +40,7 @@ private:
 };
 
 HeightMap::HeightMap(const char *imageFile) {
-    display = SDLDisplay::resizableDisplay("Vertex Shader Height Map", 400, 400, CORE_PROFILE);
+    display = SDLDisplay::resizableDisplay("Textured Height Map", 400, 400, CORE_PROFILE);
     _heightMap = Texture::loadImage(imageFile, GL_TEXTURE1);
     _texture = Texture::loadImage("textures/rock.png", GL_TEXTURE2);
 

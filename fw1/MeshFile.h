@@ -16,6 +16,8 @@ public:
     virtual void *offsetNormal() {return 0;};
     virtual bool hasTexUV() { return false; };
     virtual void *offsetTexUV() {return 0;};
+    virtual bool hasTangent() { return false; };
+    virtual void *offsetTangent() {return 0;};
 
     virtual bool loadBuffer(GLuint vertArray);
     virtual size_t meshDataSize() { return _vertices * stride(); };
@@ -24,6 +26,7 @@ public:
     virtual bool mapVertices(GLuint attribute);
     virtual bool mapNormals(GLuint attribute);
     virtual bool mapTexUV(GLuint attribute);
+    virtual bool mapTangents(GLuint attribute);
 
     virtual size_t stride() = 0; 
     virtual unsigned long numVertices() { return _vertices; };

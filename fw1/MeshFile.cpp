@@ -43,6 +43,14 @@ bool MeshFile::mapNormals(GLuint attribute) {
     }
 }
 
+bool MeshFile::mapTangents(GLuint attribute) {
+    if ( hasTangent() ) {
+        return mapAttribute(attribute, 4, offsetTangent());
+    } else {
+        return false;
+    }
+}
+
 bool MeshFile::mapTexUV(GLuint attribute) {
     if ( hasTexUV() ) {
         return mapAttribute(attribute, 2, offsetTexUV());

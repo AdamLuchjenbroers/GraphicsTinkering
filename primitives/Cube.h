@@ -21,7 +21,10 @@ public:
     bool hasTexUV() { return true; };
     void *offsetTexUV() { return (void *)(sizeof(GLfloat) * 4); };
 
-    size_t stride() { return sizeof(GLfloat) * 11; };
+    bool hasTangent() { return true; };
+    void *offsetTangent() { return (void *)(sizeof(GLfloat) * 11); };
+
+    size_t stride() { return sizeof(GLfloat) * 15; };
 private:
     static const float vertexData[];
 };

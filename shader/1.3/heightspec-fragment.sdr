@@ -1,0 +1,20 @@
+#version 130
+
+in vec4 world_pos;
+in vec4 vs_normal;
+in vec2 vs_uv;
+
+out vec4 color;
+
+uniform sampler2D texSampler;
+uniform sampler2D specSampler;
+
+vec3 light(vec4 objPosition, vec4 objNormal, float gloss, vec3 specularColor, vec3 diffuseColor);
+vec3 diffuse(vec3 lightVector, vec4 normal, vec3 color);
+
+void main(void) {
+    vec3 vertColor = texture(texSampler, vs_uv).rgb;
+    vec3 vertSpecular = texture(specSampler, vs_uv).rgb;
+
+    color = vec4(light(world_pos, vs_normal, 10.0, vertSpecular, vertColor), 1.0);
+}

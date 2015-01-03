@@ -16,5 +16,5 @@ void main(void) {
 
     gl_Position = vec4( position.xz, 0.5, 1.0);
 
-    vs_normal = calculateNormal(uv);
+    vs_normal = calculateNormal(uv).xzyw;
 }

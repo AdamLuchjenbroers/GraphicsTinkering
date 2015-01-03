@@ -18,6 +18,7 @@ void SB6_BasicApp::bindAttributes() {
     program.bindAttribute("texUV", VI_TEXUV);
     program.bindAttribute("normal", VI_NORMAL);
     program.bindAttribute("gloss", VI_GLOSS);
+    program.bindAttribute("tangent", VI_TANGENT);
 }
 
 bool SB6_BasicApp::loadVFProgram(const char *vertexName, const char *fragmentName) {

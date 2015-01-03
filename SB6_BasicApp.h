@@ -8,6 +8,7 @@
 #define VI_TEXUV 3
 #define VI_NORMAL 4
 #define VI_GLOSS 5
+#define VI_TANGENT 6
 
 #include <map>
 

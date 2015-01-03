@@ -4,8 +4,9 @@ uniform sampler2D heightMap;
 uniform int vertsPerSide;
 
 uniform mat4 xform;
-//uniform mat4 rotate;
 uniform mat4 projection; 
+
+uniform bool flatten;
 
 out vec4 world_pos;
 out vec4 vs_normal;
@@ -19,6 +20,9 @@ void main(void) {
     vec2 uv = uvForIndex(gl_VertexID);
 
     vec4 position = toPosition(uv);
+    if (flatten) {
+        position.y = 0.5;
+    }
 
     vs_uv = uv;
 

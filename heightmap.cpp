@@ -24,7 +24,8 @@ public:
 
     bool buildShaderProgram(const char *vertMain, const char *fragMain);
 private:
-    GLint _projectionLoc, _xformLoc, _vpsLoc, _lightLoc, _heightLoc;
+    GLint _projectionLoc, _xformLoc, _vpsLoc, _lightLoc, _heightLoc, _flattenLoc;
+    bool _flatten;
     GLuint _vertexArray;
     Matrix4 _projection, _xform;
     Vector3H _light;
@@ -46,7 +47,7 @@ HeightMap::HeightMap(const char *imageFile) {
     _angle = 0.0f;
     _drawMode = GL_TRIANGLE_STRIP;
     running = _heightMap.isValid();
-
+    _flatten = false;
 }
 
 void HeightMap::resizeWindow(int newX, int newY) {
@@ -104,6 +105,10 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
         running &= buildShaderProgram(VERTEX_SHADER, "heightmap-pointdebug.sdr");
         loadUniforms();
         break;
+    case SDLK_f:
+        _flatten = !_flatten;
+        glUniform1i(_flattenLoc, _flatten);
+        break;
     }
 }
 
@@ -121,6 +126,9 @@ void HeightMap::loadUniforms() {
 
     _lightLoc = program.uniformLocation("light_pos");
     glUniform4fv(_lightLoc, 1, _light.mem());
+
+    _flattenLoc = program.uniformLocation("flatten");
+    glUniform1i(_flattenLoc, _flatten);
 }
 
 bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
@@ -131,7 +139,6 @@ bool HeightMap::buildShaderProgram(const char *mainVert, const char *mainFrag) {
 
     success = program.addShader(mainVert, GL_VERTEX_SHADER);
     success &= program.addShader("heightmap-vertfuncs.sdr", GL_VERTEX_SHADER);
-    //success &= program.addShader("heightmap-fixedverts.sdr", GL_VERTEX_SHADER);
     success &= program.addShader(mainFrag, GL_FRAGMENT_SHADER);
     success &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
 

@@ -32,7 +32,7 @@ private:
     TextureRef _heightMap;
 
     int _vertsPerSide, _totalVerts;
-    GLfloat _angle;
+    GLfloat _angle, _zPlane;
     GLenum _drawMode;
 
     void loadUniforms(); 
@@ -48,6 +48,7 @@ HeightMap::HeightMap(const char *imageFile) {
     _drawMode = GL_TRIANGLE_STRIP;
     running = _heightMap.isValid();
     _flatten = false;
+    _zPlane = 2.0f;
 }
 
 void HeightMap::resizeWindow(int newX, int newY) {
@@ -62,7 +63,7 @@ void HeightMap::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    _light = Vector3H(ndcX, ndcY, 1.0, 1.0);
+    _light = Vector3H(ndcX, ndcY, 0.0, 1.0);
     glUniform4fv(_lightLoc, 1, _light.mem());
     checkGLError("Error encountered updating light position: %s\n", Logger::LOG_WARN);
 }
@@ -108,6 +109,16 @@ void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
     case SDLK_f:
         _flatten = !_flatten;
         glUniform1i(_flattenLoc, _flatten);
+        break;
+    case SDLK_s:
+        if (_zPlane < 4.0f) {
+            _zPlane += 0.1f;
+        }
+        break;
+    case SDLK_x:
+        if (_zPlane > 0.0f) {
+            _zPlane -= 0.1f;
+        }
         break;
     }
 }
@@ -195,7 +206,7 @@ bool HeightMap::appMain() {
     glUseProgram(program.programID());
     running &= checkGLError("Error encountered enabling Shader Program\n", Logger::LOG_ERROR);
 
-    _xform = Matrix4::translate(0.0f, -1.0f, 2.0f) 
+    _xform = Matrix4::translate(0.0f, -1.0f, _zPlane) 
            * Matrix4::rotate(40.0f, 0.0f, 0.0f)
            * Matrix4::rotate(0.0f, _angle, 0.0f);
 

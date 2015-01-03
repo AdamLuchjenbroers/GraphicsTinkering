@@ -1,0 +1,13 @@
+#version 130
+
+in vec4 world_pos;
+in vec4 vs_normal;
+in float vs_z;
+
+uniform vec4 light_pos;
+
+out vec4 color;
+
+void main(void) {
+    color = (vs_normal + 1.0) / 2.0;
+}

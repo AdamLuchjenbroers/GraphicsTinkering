@@ -54,4 +54,6 @@ fakesphere: fakesphere.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Pyra
 	 	
 height%: height%.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
-
+	 	
+bumptest: bumptest.o build/fw1.a build/math.a SB6_BasicApp.o 
+	$(CC) $(incs) $^ -o build/$@ $(libs) 

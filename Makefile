@@ -6,9 +6,15 @@ include Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: basic cube texcube litcube speccube stlviewer pyramid fakesphere 
-all: sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
-all: heightmap heighttex
+all: cube_demos heightmap_demos superbible6_demos misc_demos 
+all: utilities
+
+cube_demos: cube texcube litcube speccube bumpcube 
+heightmap_demos: heightmap heighttex heightspec
+superbible6_demos: basic sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
+misc_demos: fakesphere pyramid
+
+utilities: height2normal stlviewer
 
 clean:
 	rm -f build/* *.o primitives/*.o

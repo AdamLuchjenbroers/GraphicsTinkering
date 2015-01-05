@@ -14,6 +14,7 @@ namespace Logger {
         LOG_SHADERS
     ,   LOG_TEXTURES
     ,   LOG_MESHES
+    ,   LOG_LIGHTING
     ,   LOG_APPLICATION
     ,   LOG_CONTEXT
     };

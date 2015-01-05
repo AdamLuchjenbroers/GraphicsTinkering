@@ -1,0 +1,88 @@
+#version 330
+
+uniform int vertsPerSide;
+uniform sampler2D heightMap;
+
+uniform mat4 projection; 
+uniform mat4 xform;
+
+uniform float edgeHeight;
+
+uniform bool flatten;
+
+out vec4 world_pos;
+out vec4 vs_normal;
+out vec2 vs_uv;
+
+vec2 uvForIndex(int index);
+vec4 toPosition(vec2 uv);
+vec4 calculateNormal(vec2 uv);
+
+void main(void) {
+    vec2 uv = uvForIndex(gl_VertexID);
+
+    vec4 facePosition = toPosition(uv);
+    vec4 faceNormal = calculateNormal(uv);
+
+    if (flatten) {
+        facePosition.y = 0.0;
+    } else {
+        //Use the position at the edge as 0, so that the cube
+        //edges align properly.
+        facePosition.y -= toPosition(vec2(0.0, 0.0)).y;
+    }
+
+    vec4 cubePosition;
+    vec4 cubeNormal;
+
+    switch (gl_InstanceID) {
+    case 0:
+        // Top Face
+        cubePosition.xzw = facePosition.xzw;
+        cubePosition.y = 1.0 + facePosition.y;
+        cubeNormal = faceNormal;
+        break;
+    case 1:
+        //Bottom Face
+        cubePosition.xzw = facePosition.xzw;
+        cubePosition.y = -1.0 - facePosition.y;
+        cubeNormal.xzw = faceNormal.xzw;
+        cubeNormal.y = -faceNormal.y;
+        //cubeNormal = vec4(0,-1, 0,0);
+        break;
+    case 2:
+        //Front Face
+        cubePosition.xyw = facePosition.xzw;
+        cubePosition.z = 1.0 + facePosition.y;
+        cubeNormal.xyzw = faceNormal.xzyw;
+        break;
+    case 3:
+        //Back Face
+        cubePosition.xyw = facePosition.xzw;
+        cubePosition.z = -1.0 - facePosition.y;
+        cubeNormal.xyw = faceNormal.xzw;
+        cubeNormal.z = -faceNormal.y;
+        break;
+    case 4:
+        //Left Face
+        cubePosition.zyw = facePosition.xzw;
+        cubePosition.x = 1.0 + facePosition.y;
+        cubeNormal.xyzw = faceNormal.yzxw;
+        break;
+    case 5:
+        //Right Face
+        cubePosition.zyw = facePosition.xzw;
+        cubePosition.x = -1.0 - facePosition.y;
+        cubeNormal.yzw = faceNormal.zxw;
+        cubeNormal.x = -faceNormal.y;
+        break;
+    }
+
+    vs_uv = uv;
+
+    
+    world_pos = xform * cubePosition;
+    gl_Position = projection * world_pos;
+
+    vs_normal = xform * cubeNormal; 
+}

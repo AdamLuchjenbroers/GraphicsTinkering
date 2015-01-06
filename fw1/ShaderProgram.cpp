@@ -53,6 +53,7 @@ void ShaderProgram::clearProgram() {
 
         _shaders.clear(); 
     }
+    _linked = false;
 }
 
 bool ShaderProgram::linkProgram() {
@@ -94,6 +95,10 @@ bool ShaderProgram::linkProgram() {
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_SHADERS, "Successfully linked Shader Program %i\n", _program);
     _linked = true;
     return true;
+}
+
+bool ShaderProgram::isLinked() {
+    return _linked;
 }
 
 GLint ShaderProgram::uniformLocation(const GLchar *uniform) {

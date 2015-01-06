@@ -36,6 +36,11 @@ public:
  */
     GLint uniformLocation(const GLchar *uniform);
 
+/** Returns true if this shader program is linked and ready for use.
+ *  @return True if this shader program has been properly linked.
+ */
+    bool isLinked();
+
 /** Returns the location index of the specified Uniform block
  *  @param uniform The name of the uniform block being queried.
  *  @return The location index of the specified Uniform block

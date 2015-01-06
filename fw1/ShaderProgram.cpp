@@ -104,6 +104,14 @@ GLint ShaderProgram::uniformLocation(const GLchar *uniform) {
     }
 }
 
+GLint ShaderProgram::uniformBlockLocation(const GLchar *uniform) {
+    if ( _linked ) {
+        return glGetUniformBlockIndex( _program, uniform );
+    } else {
+        return -1;
+    }
+}
+
 GLuint ShaderProgram::programID() {
     if ( _linked ) {
         return _program;

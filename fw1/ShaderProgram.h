@@ -36,6 +36,12 @@ public:
  */
     GLint uniformLocation(const GLchar *uniform);
 
+/** Returns the location index of the specified Uniform block
+ *  @param uniform The name of the uniform block being queried.
+ *  @return The location index of the specified Uniform block
+ */
+    GLint uniformBlockLocation(const GLchar *uniform);
+
 /** Retrieves the OpenGL object ID for the compiled shader program. Returns -1
  *  if the shader program has not been successfully linked.
  *  @return The OpenGL object ID for the compiled shader program or -1 of the shader

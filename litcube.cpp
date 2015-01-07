@@ -3,6 +3,7 @@
  */
 
 #include "fw1/fw1.h"
+#include "fw1/SingleLightRig.h"
 #include "SB6_BasicApp.h"
 #include "math/Matrix4.h"
 #include "primitives/Cube.h"
@@ -33,6 +34,7 @@ private:
 
     TextureRef _cubeTex;
     Primitives::Cube _cube;
+    SingleLightRig _lighting;
 
     GLfloat angle;
 };
@@ -60,13 +62,22 @@ void LitCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int o
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    Vector3H light = Vector3H(ndcX, ndcY, 1.0, 1.0);
-    GLint light_loc = program.uniformLocation("light_pos");
-    glUniform4fv(light_loc, 1, light.mem());
+    _lighting.setPosition(1, ndcX, ndcY, 1.0);
 }
 
 void LitCube::appInit() {
-    bool shaderReady = loadVFProgram("litcube-vertex.sdr", "litcube-fragment.sdr");
+    bool shaderReady = true;
+
+    initLibrary("./shader");
+
+    shaderReady &= program.addShader("litcube-vertex.sdr", GL_VERTEX_SHADER);
+    shaderReady &= program.addShader("litcube-fragment.sdr", GL_FRAGMENT_SHADER);
+    shaderReady &= program.addShader("single-light.sdr", GL_FRAGMENT_SHADER);
+
+    bindAttributes();
+    shaderReady &= program.linkProgram();
+
+    glUseProgram(program.programID());
 
     if (!shaderReady) {
         exit(1);
@@ -78,6 +89,12 @@ void LitCube::appInit() {
     _cube.mapNormals(VI_NORMAL);
     _cube.mapTexUV(VI_TEXUV);
     _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
+
+    _lighting.setPosition(1, 0.0f, 0.0f, 0.0f);
+    _lighting.setColor(1, 1.0f, 1.0f, 1.0f);
+    _lighting.setAmbient(1, 0.2f, 0.2f, 0.2f);
+    _lighting.setBinding(1);
+    _lighting.loadRig(program);
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());

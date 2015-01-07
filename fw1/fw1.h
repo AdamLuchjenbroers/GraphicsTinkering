@@ -18,3 +18,5 @@
 #include "Texture.h"
 #include "MeshFile.h"
 #include "STLMesh.h"
+#include "LightRig.h"
+#include "SingleLightRig.h"

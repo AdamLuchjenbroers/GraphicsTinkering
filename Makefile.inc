@@ -28,7 +28,7 @@ endif
 .SUFFIXES: 
 
 %.o : %.cpp
-	$(CC) $(incs) $< -c -o $@
+	$(CC) -std=c++11 $(incs) $< -c -o $@
 	
 %.o : %.cpp %.h
 	$(CC) $(incs) $< -c -o $@

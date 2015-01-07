@@ -14,7 +14,7 @@ clean:
 
 ../build/fw1.a: SDLDisplay.o Shader.o ShaderLibrary.o ShaderProgram.o ShaderRef.o VersionNumber.o
 ../build/fw1.a: GLVersion.o GLSLVersion.o Logger.o TextureRef.o Texture.o MeshFile.o
-../build/fw1.a: STLMesh.o 
+../build/fw1.a: STLMesh.o LightRig.o SingleLightRig.o 
 	ld -r $^ -o $@
 
 # Test Cases

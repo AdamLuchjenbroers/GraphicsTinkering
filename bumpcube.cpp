@@ -33,7 +33,7 @@ private:
 
     TextureRef _cubeTex, _specTex, _bumpTex;
     Primitives::Cube _cube;
-
+    SingleLightRig _lighting;
 
     void loadUniforms(); 
 };
@@ -60,9 +60,8 @@ void BumpCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int 
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    _light = Vector3H(ndcX, ndcY, 0.0, 1.0);
-    glUniform4fv(_lightLoc, 1, _light.mem());
-    checkGLError("Error encountered updating light position: %s\n", Logger::LOG_WARN);
+    _lighting.setPosition(1, ndcX, ndcY, 1.0);
+    _lighting.updateBuffer();
 }
 
 void BumpCube::keyEvent(SDL_Keysym &key, bool press) {
@@ -107,6 +106,12 @@ void BumpCube::loadUniforms() {
 
     _bumpMapLoc = program.uniformLocation("bumpSampler");
     glUniform1i(_bumpMapLoc, 3);
+
+    _lighting.setBinding(1);
+    _lighting.setPosition(1, 0.0f, 0.0f, 1.0f);
+    _lighting.setColor(1, 1.0f, 1.0f, 1.0f);
+    _lighting.setAmbient(1, 0.2f, 0.2f, 0.2f);
+    _lighting.loadRig(program);
 }
 
 bool BumpCube::buildShaderProgram(const char *mainVert, const char *mainFrag) {
@@ -181,7 +186,7 @@ bool BumpCube::appMain() {
     glUseProgram(program.programID());
     running &= checkGLError("Error encountered enabling Shader Program\n", Logger::LOG_ERROR);
 
-    _xform = Matrix4::translate(0.0f, 0.0f, 2.0f) 
+    _xform = Matrix4::translate(0.0f, 0.0f, 3.0f) 
            * Matrix4::rotate(_angle / 2.0, _angle, 0.0f);
 
     glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());

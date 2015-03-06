@@ -1,0 +1,22 @@
+#version 330
+
+in vec2 vs_texUV;
+in vec4 world_pos;
+in vec4 vs_normal;
+in float vs_gloss;
+
+uniform sampler2D texSampler;
+
+out vec4 color;
+
+vec3 light(vec4 objPosition, vec4 objNormal, float gloss, vec3 specularColor, vec3 diffuseColor);
+vec4 debug_position();
+
+void main(void) {
+    vec3 texColor = texture(texSampler, vs_texUV).rgb;
+
+    color = (debug_position() + 1.0) / 2.0;
+    color.a = 1.0;
+    //color.xyz = light(world_pos, vs_normal, 2.0, vec3(0.2, 0.2, 0.2), texColor); 
+    //color.a = 1.0;
+}

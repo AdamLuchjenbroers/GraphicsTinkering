@@ -6,6 +6,8 @@ SingleLightRig::SingleLightRig() {
     writeValues(_light.position, 0.0f, 0.0f, 0.0f);
     _light.position[3] = 1.0f;
 
+    _rigBuffer = -1;
+
     writeValues(_light.color, 1.0f, 1.0f, 1.0f);
     writeValues(_light.ambient, 0.0f, 0.0f, 0.0f);
 }
@@ -73,14 +75,19 @@ bool SingleLightRig::loadRig(ShaderProgram &program) {
     }
 
     rigLoc = program.uniformBlockLocation("SingleLight");
-    glUniformBlockBinding(progID, rigLoc, _rigBuffer);
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_LIGHTING, "Block index in program %i for Single Light Data is %i\n", progID, rigLoc);
+
+    glUniformBlockBinding(progID, rigLoc, _binding);
+
+    glGenBuffers(1, &_rigBuffer);
 
     return updateBuffer();
 }
 
 bool SingleLightRig::updateBuffer() {
-    glGenBuffers(1, &_rigBuffer);
     glBindBuffer(GL_UNIFORM_BUFFER, _rigBuffer);
+
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_LIGHTING, "Binding lighting data to UBO %i, Binding Point %i\n", _rigBuffer, _binding);
 
     glBufferData(GL_UNIFORM_BUFFER, sizeof(_light), &_light, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, _binding, _rigBuffer);

@@ -63,6 +63,7 @@ void LitCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int o
     display->toNDC(x, y, ndcX, ndcY);
 
     _lighting.setPosition(1, ndcX, ndcY, 1.0);
+    _lighting.updateBuffer();
 }
 
 void LitCube::appInit() {
@@ -90,10 +91,10 @@ void LitCube::appInit() {
     _cube.mapTexUV(VI_TEXUV);
     _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
 
-    _lighting.setPosition(1, 0.0f, 0.0f, 0.0f);
+    _lighting.setBinding(1);
+    _lighting.setPosition(1, 0.0f, 0.0f, 1.0f);
     _lighting.setColor(1, 1.0f, 1.0f, 1.0f);
     _lighting.setAmbient(1, 0.2f, 0.2f, 0.2f);
-    _lighting.setBinding(1);
     _lighting.loadRig(program);
 
     GLint proj_loc = program.uniformLocation("projection");

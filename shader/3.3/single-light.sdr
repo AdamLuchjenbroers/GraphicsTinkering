@@ -3,11 +3,15 @@
 
 uniform vec4 eyePosition;
 
-layout (std140, location = 1) uniform SingleLight {
+layout (std140) uniform SingleLight {
     vec4 position;
     vec3 color;
     vec3 ambient;
 } lightData;
+
+vec4 debug_position() {
+    return lightData.position;
+}
 
 vec3 specular(vec4 objPosition, vec3 normal, vec3 lightVector, float gloss, vec3 color) {
     vec3 lightReflect = reflect(lightVector, normal);

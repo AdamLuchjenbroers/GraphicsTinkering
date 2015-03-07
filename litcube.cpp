@@ -62,9 +62,6 @@ void LitCube::appInit() {
     _cubeTex = Texture::loadImage("textures/crate.png", GL_TEXTURE0);
     glUniform1i(samp_loc, 0);
     checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
-
-    glEnable(GL_DEPTH_TEST);
-    checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
 }
 
 

@@ -17,7 +17,7 @@ public:
     void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY);
     void keyEvent(SDL_Keysym &key, bool press);
 
-    bool buildShaderProgram(const char *vertMain, const char *fragMain);
+    bool buildSpecCubeProgram(const char *vertMain, const char *fragMain);
 private:
     GLint _projectionLoc, _xformLoc, _texLoc, _specMapLoc;
     GLenum _drawMode;
@@ -45,18 +45,18 @@ void SpecularCube::keyEvent(SDL_Keysym &key, bool press) {
     switch(key.sym) {
     case SDLK_d:
         _drawMode = GL_TRIANGLES;
-        running &= buildShaderProgram(VERTEX_SHADER, "litdebug-fragment.sdr");
+        running &= buildSpecCubeProgram(VERTEX_SHADER, "litdebug-fragment.sdr");
         loadUniforms();
         break;
     case SDLK_c:
         _drawMode = GL_TRIANGLES;
-        running &= buildShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
+        running &= buildSpecCubeProgram(VERTEX_SHADER, FRAGMENT_SHADER);
         loadUniforms();
         break;
     case SDLK_p:
         glPointSize(2.0);
         _drawMode = GL_POINTS;
-        running &= buildShaderProgram(VERTEX_SHADER, "heightmap-pointdebug.sdr");
+        running &= buildSpecCubeProgram(VERTEX_SHADER, "heightmap-pointdebug.sdr");
         loadUniforms();
         break;
     }
@@ -84,7 +84,7 @@ void SpecularCube::loadUniforms() {
     glUniform1i(_specMapLoc, 2);
 }
 
-bool SpecularCube::buildShaderProgram(const char *mainVert, const char *mainFrag) {
+bool SpecularCube::buildSpecCubeProgram(const char *mainVert, const char *mainFrag) {
     bool success = true;
     GLuint glerror;
 
@@ -116,7 +116,7 @@ bool SpecularCube::buildShaderProgram(const char *mainVert, const char *mainFrag
 }
 
 void SpecularCube::appInit() {
-    bool shaderReady = buildShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
+    bool shaderReady = buildSpecCubeProgram(VERTEX_SHADER, FRAGMENT_SHADER);
 
     if (!shaderReady) {
         exit(1);

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * Framework 1 
  *
@@ -10,11 +11,11 @@
 #include "Shader.h"
 #include "ShaderRef.h"
 #include "SDLDisplay.h"
-#include "ShaderLibrary.h"
-#include "ShaderProgram.h"
 #include "GLVersion.h"
 #include "GLSLVersion.h"
 #include "TextureRef.h"
+#include "ShaderLibrary.h"
+#include "ShaderProgram.h"
 #include "Texture.h"
 #include "MeshFile.h"
 #include "STLMesh.h"

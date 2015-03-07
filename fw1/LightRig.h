@@ -22,3 +22,4 @@ public:
 protected:
     GLuint _binding;
 };
+

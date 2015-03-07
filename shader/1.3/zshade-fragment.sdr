@@ -1,21 +1,22 @@
 #version 130
 
 in vec4 vs_color;
-in vec4 world_pos;
 
 out vec4 color;
 
 void main(void) {
-    float depth = world_pos.z;
-    float scale = depth - 2.0;
+    float depth = gl_FragCoord.z;
+    float scale = depth / 4.0;
     // + gl_FragDepth;
 
     if (scale < 1.0) {
         scale = 1.0;
     }
 
-    vec4 out_color = vs_color / scale;
-    out_color.a = 0.5;
+    vec4 out_color = vs_color * scale;
+    out_color.a = 1.0;
 
-    color = out_color;
+    //color = out_color;
+     color = vec4(scale, scale, scale, 1.0);
+    gl_FragDepth = gl_FragCoord.z;
 }

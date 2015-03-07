@@ -1,5 +1,6 @@
 /* 
- * Generates and renders a heightmap using a vertex shader
+ * Renders a spinning cube with specular highlights using
+ * a second texture as a specular map. 
  */
 
 #include "fw1/fw1.h"
@@ -23,24 +24,25 @@ public:
 
     bool buildShaderProgram(const char *vertMain, const char *fragMain);
 private:
-    GLint _projectionLoc, _xformLoc, _texLoc, _lightLoc, _specMapLoc;
+    GLint _projectionLoc, _xformLoc, _texLoc, _specMapLoc;
     GLuint _vertexArray;
     GLenum _drawMode;
 
     GLfloat _angle;
     Matrix4 _projection, _xform;
-    Vector3H _light;
 
     TextureRef _cubeTex;
     TextureRef _specTex;
     Primitives::Cube _cube;
-
+    SingleLightRig _lighting;
 
     void loadUniforms(); 
 };
 
 SpecularCube::SpecularCube() {
     display = SDLDisplay::resizableDisplay("Specular Mapped Spinning Cube", 400, 400, true);
+
+    running = true;
 
     _angle = 0.0f;
     _drawMode = GL_TRIANGLES;
@@ -59,9 +61,8 @@ void SpecularCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, 
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    _light = Vector3H(ndcX, ndcY, 1.0, 1.0);
-    glUniform4fv(_lightLoc, 1, _light.mem());
-    checkGLError("Error encountered updating light position: %s\n", Logger::LOG_WARN);
+    _lighting.setPosition(1, ndcX, ndcY, 1.0);
+    _lighting.updateBuffer();
 }
 
 void SpecularCube::keyEvent(SDL_Keysym &key, bool press) {
@@ -94,9 +95,6 @@ void SpecularCube::loadUniforms() {
 
     _projectionLoc = program.uniformLocation("projection");
     glUniformMatrix4fv(_projectionLoc, 1, false, _projection.buffer());
-
-    _lightLoc = program.uniformLocation("light_pos");
-    glUniform4fv(_lightLoc, 1, _light.mem());
 
     _texLoc = program.uniformLocation("texSampler");
     glUniform1i(_texLoc, 1);
@@ -153,7 +151,12 @@ void SpecularCube::appInit() {
     _cubeTex = Texture::loadImage("textures/crate.png", GL_TEXTURE1);
     _specTex = Texture::loadImage("textures/crate_specular.png", GL_TEXTURE2);
 
-    _light = Vector3H(0.0f, 0.0f, 0.0f, 1.0f);
+    _lighting.setBinding(1);
+    _lighting.setPosition(1, 0.0f, 0.0f, 1.0f);
+    _lighting.setColor(1, 1.0f, 1.0f, 1.0f);
+    _lighting.setAmbient(1, 0.2f, 0.2f, 0.2f);
+    _lighting.loadRig(program);
+
     loadUniforms();
 
     resizeWindow(400, 400);

@@ -43,7 +43,7 @@ test: tests.cpp tests/fw1.a tests/math.a
 basic: basic.o build/fw1.a
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
-%ube: %ube.o build/fw1.a build/math.a SB6_BasicApp.o primitives/Cube.o
+%ube: %ube.o build/fw1.a build/math.a SB6_BasicApp.o CubeApp.o primitives/Cube.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 	 	
 sb%: sb%.o build/fw1.a build/math.a SB6_BasicApp.o

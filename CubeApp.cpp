@@ -5,7 +5,8 @@
 CubeApp::CubeApp() {
     running = true;
 
-    angle = 0.0f;   
+    _angle = 0.0f;   
+    _speed = 0.2f;
 
     vertexarray = 0;
 }
@@ -41,7 +42,7 @@ bool CubeApp::appMain() {
 
     GLint xform_loc = program.uniformLocation("xform");
     Matrix4 translate = Matrix4::translate(0.0f, 0.0f, 4.0f);
-    Matrix4 rotate = Matrix4::rotate(angle / 2.0f, angle, 0.0f); 
+    Matrix4 rotate = Matrix4::rotate(_angle / 2.0f, _angle, 0.0f); 
 
     Matrix4 xform = translate * rotate;
 
@@ -57,9 +58,9 @@ bool CubeApp::appMain() {
 
     SDL_Delay(10);
 
-    angle += 0.5f;
-    if (angle >= 720.0f) {
-        angle -= 720.0f;
+    _angle += _speed;
+    if (_angle >= 720.0f) {
+        _angle -= 720.0f;
     }
 
     return running;

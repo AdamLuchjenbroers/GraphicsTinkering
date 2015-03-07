@@ -26,5 +26,5 @@ protected:
     Matrix4 _projection;
     Primitives::Cube _cube;
 
-    GLfloat angle;
+    GLfloat _angle, _speed;
 };

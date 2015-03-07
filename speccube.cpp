@@ -19,10 +19,8 @@ public:
 
     bool buildSpecCubeProgram(const char *vertMain, const char *fragMain);
 private:
-    GLint _projectionLoc, _xformLoc, _texLoc, _specMapLoc;
+    GLint _texLoc, _specMapLoc;
     GLenum _drawMode;
-
-    GLfloat _angle;
 
     TextureRef _cubeTex;
     TextureRef _specTex;
@@ -72,11 +70,6 @@ void SpecularCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, 
 }
 
 void SpecularCube::loadUniforms() {
-    _xformLoc = program.uniformLocation("xform");
-
-    _projectionLoc = program.uniformLocation("projection");
-    glUniformMatrix4fv(_projectionLoc, 1, false, _projection.buffer());
-
     _texLoc = program.uniformLocation("texSampler");
     glUniform1i(_texLoc, 1);
 

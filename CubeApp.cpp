@@ -21,6 +21,9 @@ void CubeApp::appInit() {
     glGenVertexArrays(1, &vertexarray);
     _cube.loadBuffer(vertexarray);
     _cube.mapVertices(VI_OFFSET);
+    _cube.mapNormals(VI_NORMAL);
+    _cube.mapTexUV(VI_TEXUV);
+    _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
 
     GLint proj_loc = program.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());

@@ -3,37 +3,29 @@
  * a second texture as a specular map. 
  */
 
-#include "fw1/fw1.h"
-#include "SB6_BasicApp.h"
-#include "math/Matrix4.h"
-#include "primitives/Cube.h"
+#include "CubeApp.h"
 
 #define VERTEX_SHADER "litcube-vertex.sdr"
 #define FRAGMENT_SHADER "speccube-fragment.sdr"
 
-class SpecularCube : public SB6_BasicApp {
+class SpecularCube : public CubeApp {
 public:
     SpecularCube();
 
-    bool appMain();
     void appInit();
 
     void mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY);
-    void resizeWindow(int newX, int newY);
     void keyEvent(SDL_Keysym &key, bool press);
 
     bool buildShaderProgram(const char *vertMain, const char *fragMain);
 private:
     GLint _projectionLoc, _xformLoc, _texLoc, _specMapLoc;
-    GLuint _vertexArray;
     GLenum _drawMode;
 
     GLfloat _angle;
-    Matrix4 _projection, _xform;
 
     TextureRef _cubeTex;
     TextureRef _specTex;
-    Primitives::Cube _cube;
     SingleLightRig _lighting;
 
     void loadUniforms(); 
@@ -42,27 +34,7 @@ private:
 SpecularCube::SpecularCube() {
     display = SDLDisplay::resizableDisplay("Specular Mapped Spinning Cube", 400, 400, true);
 
-    running = true;
-
-    _angle = 0.0f;
     _drawMode = GL_TRIANGLES;
-
-}
-
-void SpecularCube::resizeWindow(int newX, int newY) {
-    _projection = Matrix4::fovHorizontal( 0.2f, 6.0f, 90.0f, display->aspectRatio());
-
-    glUniformMatrix4fv(_projectionLoc, 1, false, _projection.buffer());
-    running &= checkGLError("Error encountered updating Projection Matrix: %s\n", Logger::LOG_ERROR);
-}
-
-void SpecularCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
-    GLfloat ndcX, ndcY;
-
-    display->toNDC(x, y, ndcX, ndcY);
-
-    _lighting.setPosition(1, ndcX, ndcY, 1.0);
-    _lighting.updateBuffer();
 }
 
 void SpecularCube::keyEvent(SDL_Keysym &key, bool press) {
@@ -88,6 +60,15 @@ void SpecularCube::keyEvent(SDL_Keysym &key, bool press) {
         loadUniforms();
         break;
     }
+}
+
+void SpecularCube::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int offsetY) {
+    GLfloat ndcX, ndcY;
+
+    display->toNDC(x, y, ndcX, ndcY);
+
+    _lighting.setPosition(1, ndcX, ndcY, 1.0);
+    _lighting.updateBuffer();
 }
 
 void SpecularCube::loadUniforms() {
@@ -141,15 +122,11 @@ void SpecularCube::appInit() {
         exit(1);
     }
 
-    glGenVertexArrays(1, &_vertexArray);
-    _cube.loadBuffer(_vertexArray);
-    _cube.mapVertices(VI_OFFSET);
-    _cube.mapNormals(VI_NORMAL);
-    _cube.mapTexUV(VI_TEXUV);
-    _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10));
+    CubeApp::appInit();
  
     _cubeTex = Texture::loadImage("textures/crate.png", GL_TEXTURE1);
     _specTex = Texture::loadImage("textures/crate_specular.png", GL_TEXTURE2);
+    running &= checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
 
     _lighting.setBinding(1);
     _lighting.setPosition(1, 0.0f, 0.0f, 1.0f);
@@ -161,41 +138,7 @@ void SpecularCube::appInit() {
 
     resizeWindow(400, 400);
 
-    running &= checkGLError("Error encountered binding Texture Sampler: %s\n", Logger::LOG_ERROR);
-
-    glEnable(GL_DEPTH_TEST);
-    running &= checkGLError("Error encountered enabling Depth Buffer: %s\n", Logger::LOG_ERROR);
-
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-}
-
-bool SpecularCube::appMain() {
-    if (!running) {
-        return false;
-    }
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glUseProgram(program.programID());
-    running &= checkGLError("Error encountered enabling Shader Program\n", Logger::LOG_ERROR);
-
-    _xform = Matrix4::translate(0.0f, 0.0f, 3.0f) 
-           * Matrix4::rotate(_angle / 2.0, _angle, 0.0f);
-
-    glUniformMatrix4fv(_xformLoc, 1, false, _xform.buffer());
-    running &= checkGLError("Error encountered enabling loading Transform matrix: %s\n", Logger::LOG_ERROR);
-
-    glDrawArrays(_drawMode, 0, _cube.numVertices());
-    running &= checkGLError("Error encountered calling glDrawArrays: %s\n", Logger::LOG_ERROR);
-
-    display->swapBuffers();
-    display->mainLoop(*this);
-
-    _angle += 0.5f;
-    if (_angle >= 720.0f) {
-        _angle -= 720.0f;
-    };
-
-    return true;
 }
 
 int main( int argc, char* args[] ) {

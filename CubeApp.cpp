@@ -23,6 +23,7 @@ void CubeApp::appInit() {
     _cube.loadBuffer(vertexarray);
     _cube.mapVertices(VI_OFFSET);
     _cube.mapNormals(VI_NORMAL);
+    _cube.mapTangents(VI_TANGENT);
     _cube.mapTexUV(VI_TEXUV);
     _cube.mapAttribute(VI_GLOSS, 1, (void *)(sizeof(GLfloat) * 10)); 
 

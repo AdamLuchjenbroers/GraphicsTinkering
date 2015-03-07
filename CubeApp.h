@@ -9,9 +9,14 @@
   */
 class CubeApp : public SB6_BasicApp {
 public:
+    /** The constructor for a CubeApp performs basic setup of internal variables and the creation of
+      * a cube mesh.
+      */
     CubeApp();
 
+    /** The main app loop renders a spinning cube using the selected active shader objects */
     bool appMain();
+
     void appInit();
 
     void resizeWindow(int newX, int newY);

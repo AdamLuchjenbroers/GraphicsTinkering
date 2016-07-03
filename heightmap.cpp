@@ -28,7 +28,7 @@ private:
     bool _flatten;
     GLuint _vertexArray;
     Matrix4 _projection, _xform;
-    Vector3H _light;
+    SingleLightRig _lighting;
     TextureRef _heightMap;
 
     int _vertsPerSide, _totalVerts;
@@ -63,9 +63,8 @@ void HeightMap::mouseMovementEvent(Uint8 buttons, int x, int y, int offsetX, int
 
     display->toNDC(x, y, ndcX, ndcY);
 
-    _light = Vector3H(ndcX, ndcY, 0.0, 1.0);
-    glUniform4fv(_lightLoc, 1, _light.mem());
-    checkGLError("Error encountered updating light position: %s\n", Logger::LOG_WARN);
+    _lighting.setPosition(1, ndcX, ndcY, 1.0);
+    _lighting.updateBuffer();
 }
 
 void HeightMap::keyEvent(SDL_Keysym &key, bool press) {
@@ -135,8 +134,11 @@ void HeightMap::loadUniforms() {
     _heightLoc = program.uniformLocation("heightMap");
     glUniform1i(_heightLoc, 1);
 
-    _lightLoc = program.uniformLocation("light_pos");
-    glUniform4fv(_lightLoc, 1, _light.mem());
+    _lighting.setBinding(1);
+    _lighting.setPosition(1, 0.0f, 0.0f, 1.0f);
+    _lighting.setColor(1, 1.0f, 1.0f, 1.0f);
+    _lighting.setAmbient(1, 0.2f, 0.2f, 0.2f);
+    _lighting.loadRig(program);
 
     _flattenLoc = program.uniformLocation("flatten");
     glUniform1i(_flattenLoc, _flatten);
@@ -181,7 +183,6 @@ void HeightMap::appInit() {
         exit(1);
     }
 
-    _light = Vector3H(0.0f, 0.0f, 0.0f, 1.0f);
     loadUniforms();
 
     glGenVertexArrays(1, &_vertexArray);

@@ -10,6 +10,6 @@ all: ../build/philosopher.a
 clean:
 	rm -f *.o 
 
-../build/philosopher.a: PhilosopherCore.o
+../build/philosopher.a: PhilosopherCore.o TableState.o
 	ld -r $^ -o $@
 

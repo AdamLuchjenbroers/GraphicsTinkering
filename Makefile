@@ -7,12 +7,13 @@ include Makefile.inc
 opts = $(libs) $(defs) $(incs)
 
 all: cube_demos heightmap_demos superbible6_demos misc_demos 
-all: utilities
+all: utilities threading
 
 cube_demos: cube texcube litcube speccube bumpcube heightcube
 heightmap_demos: heightmap heighttex heightspec
 superbible6_demos: basic sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
 misc_demos: fakesphere pyramid
+threading: philosopher
 
 utilities: height2normal stlviewer
 
@@ -24,11 +25,14 @@ clean:
 doc:
 	doxygen doxygen.cfg
 
-build/fw1.a: 
+build/fw1.a: fw1/* 
 	cd fw1 && $(MAKE)
 
 build/math.a: 
 	cd math && $(MAKE)
+
+build/philosopher.a: philosopher/* 
+	cd philosopher && ${MAKE}
 
 tests/fw1.a:
 	cd ./fw1 && $(MAKE) tests
@@ -63,3 +67,7 @@ height%: height%.o build/fw1.a build/math.a SB6_BasicApp.o
 	 	
 bumptest: bumptest.o build/fw1.a build/math.a SB6_BasicApp.o 
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
+
+philosopher: philosopher.o build/philosopher.a build/fw1.a build/math.a
+	$(CC) $(incs) $^ -o build/$@ $(libs) 
+

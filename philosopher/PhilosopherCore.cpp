@@ -32,11 +32,27 @@ void PhilosopherCore::appInit() {
       _running = false;
       return;
    }
+
+    success = _shader.linkProgram();
+
+    if (success == false) {
+        Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
+
+        _running = false;
+       return;
+    }
+    
+    glUseProgram(_shader.programID());
+
+    glGenVertexArrays(1, &_vertexarray);
+    glBindVertexArray(_vertexarray);
 }
 
 bool PhilosopherCore::appMain() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
     display->swapBuffers();
     display->mainLoop(*this);

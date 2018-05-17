@@ -4,6 +4,8 @@
 #include "../math/Matrix4.h"
 #include "TableState.h"
 
+#include <SDL2/SDL.h>
+
 class PhilosopherCore : public FrameworkOneApp {
 public:
    PhilosopherCore();
@@ -24,4 +26,5 @@ protected:
     Matrix4 _projection;
 
     ShaderProgram _shader;
+    GLuint _vertexarray;
 };

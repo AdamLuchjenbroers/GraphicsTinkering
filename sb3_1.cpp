@@ -44,7 +44,7 @@ void SB6_Chapter3::appInit() {
     GLuint glerror;
     bool success;
 
-    loadVFProgram("sb3_1-vertex.sdr", "sb3-fragment.sdr");
+    running = loadVFProgram("sb3_1-vertex.sdr", "sb3-fragment.sdr");
 
     glGenVertexArrays(1, &vertexarray);
     glBindVertexArray(vertexarray);

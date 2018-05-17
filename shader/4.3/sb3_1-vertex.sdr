@@ -3,6 +3,8 @@
 // "offset" is an input vertex attribute
 layout (location = 0) in vec4 offset;
 
+out vec4 vs_color;
+
 void main(void)
 {
     // Declare a hard-coded array of positions
@@ -12,4 +14,6 @@ void main(void)
 
     // Index into our array using gl_VertexID
     gl_Position = vertices[gl_VertexID] + offset;
+
+    vs_color = vec4(0.4, 0.4, 1.0, 1.0);
 }

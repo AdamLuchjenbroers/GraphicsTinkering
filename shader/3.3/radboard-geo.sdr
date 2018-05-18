@@ -1,0 +1,51 @@
+#version 330
+
+layout (points) in;
+layout (triangle_strip, max_vertices=4) out;
+
+in VS_OUT {
+  vec2 size;
+  float angle;
+} board[];
+
+out vec2 vs_uv;
+
+mat2 rotation(float angle) {
+  float rad = radians(angle);
+
+  // Call Cos and Sin once and save the result
+  vec2 cs = vec2( cos(rad), sin (rad));
+
+  return mat2(
+    cs.x, -cs.y,
+    cs.y,  cs.x
+  );
+}
+
+vec4 corner(vec4 centre, vec2 size, float angle) {
+  centre.xy += rotation(angle) * size;
+
+  return centre;
+}
+
+void main(void) {
+  vec4 centre = gl_in[0].gl_Position;
+
+  gl_Position = corner(centre, board[0].size.yx, board[0].angle + 270.0);
+  vs_uv = vec2(1.0, -1.0);
+  EmitVertex();
+  
+  gl_Position = corner(centre, board[0].size, board[0].angle + 0.0);
+  vs_uv = vec2(1.0, 1.0);
+  EmitVertex();
+
+  gl_Position = corner(centre, board[0].size, board[0].angle + 180.0);
+  vs_uv = vec2(-1.0, -1.0);
+  EmitVertex();
+
+  gl_Position = corner(centre, board[0].size.yx, board[0].angle + 90.0);
+  vs_uv = vec2(-1.0, 1.0);
+  EmitVertex();
+
+  EndPrimitive();
+}

@@ -8,11 +8,37 @@ PhilosopherCore::PhilosopherCore() {
     _running = true;
 }
 
+PhilosopherCore::~PhilosopherCore() {
+    delete display;
+}
+
 void PhilosopherCore::resizeWindow(int newX, int newY) {
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 
     GLint proj_loc = _shader.uniformLocation("projection");
     glUniformMatrix4fv(proj_loc, 1, false, _projection.buffer());
+}
+
+void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
+  if (!press) {
+    return;
+  }
+    
+  int n = tableState.num_diners();
+
+  switch(key.sym) {
+  case SDLK_a:
+    tableState = TableState(n+1);
+    break;
+  case SDLK_z:
+    if (n > 1) {
+      tableState = TableState(n-1);
+    }
+    break;
+  }
+
+  GLint loc = _shader.uniformLocation("num_philosophers");
+  glUniform1i(loc, tableState.num_diners());
 }
 
 void PhilosopherCore::appInit() {
@@ -45,6 +71,9 @@ void PhilosopherCore::appInit() {
     
     glUseProgram(_shader.programID());
 
+    GLint loc = _shader.uniformLocation("num_philosophers");
+    glUniform1i(loc, tableState.num_diners());
+
     glGenVertexArrays(1, &_vertexarray);
     glBindVertexArray(_vertexarray);
 
@@ -59,7 +88,7 @@ bool PhilosopherCore::appMain() {
     glVertexAttrib1f(0, _angle);
     _angle += 0.1f;
 
-    glDrawArrays(GL_POINTS, 0, 5);
+    glDrawArrays(GL_POINTS, 0, tableState.num_diners());
 
     display->swapBuffers();
     display->mainLoop(*this);

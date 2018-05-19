@@ -23,7 +23,8 @@ void PhilosopherCore::appInit() {
        ShaderLibrary::setLibraryPath("./shader"); 
    }
 
-   success = _shader.addShader("billboard-vertex.sdr", GL_VERTEX_SHADER);   
+   success = _shader.addShader("philosopher.sdr", GL_VERTEX_SHADER);   
+   success &= _shader.addShader("radboard-geo.sdr", GL_GEOMETRY_SHADER);   
    success &= _shader.addShader("billboard-fragment.sdr", GL_FRAGMENT_SHADER);   
 
    if (success == false) {
@@ -46,13 +47,19 @@ void PhilosopherCore::appInit() {
 
     glGenVertexArrays(1, &_vertexarray);
     glBindVertexArray(_vertexarray);
+
+    _angle = 0.0f;
 }
 
 bool PhilosopherCore::appMain() {
+
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glVertexAttrib1f(0, _angle);
+    _angle += 0.1f;
+
+    glDrawArrays(GL_POINTS, 0, 5);
 
     display->swapBuffers();
     display->mainLoop(*this);

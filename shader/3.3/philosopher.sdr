@@ -2,6 +2,8 @@
 
 uniform mat4 xform;
 uniform mat4 projection;
+uniform int num_philosophers = 5;
+uniform float radius = 0.75;
 
 in float angle;
 
@@ -10,8 +12,25 @@ out VS_OUT {
   float angle;
 } board;
 
+mat2 rotation(float angle) {
+  float rad = radians(angle);
+
+  // Call Cos and Sin once and save the result
+  vec2 cs = vec2( cos(rad), sin (rad));
+
+  return mat2(
+    cs.x, -cs.y,
+    cs.y,  cs.x
+  );
+}
+
 void main(void) {
+  float degrees = (360.0 / num_philosophers) * gl_VertexID;
+  vec2 offset = vec2(0.0, radius) * rotation(-degrees);
+
   gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
-  board.size = vec2(0.2, 0.5);
-  board.angle = angle;
+  gl_Position.xy = offset;
+
+  board.size = vec2(0.2, 0.2);
+  board.angle = degrees;
 }

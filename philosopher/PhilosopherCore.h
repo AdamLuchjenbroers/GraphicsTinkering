@@ -21,6 +21,7 @@ public:
 
 protected:
     bool _running;
+    GLfloat _angle;
 
     SDLDisplay *display;
     Matrix4 _projection;

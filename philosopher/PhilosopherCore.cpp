@@ -49,8 +49,8 @@ void PhilosopherCore::appInit() {
        ShaderLibrary::setLibraryPath("./shader"); 
    }
 
-   success = _shader.addShader("philosopher.sdr", GL_VERTEX_SHADER);   
-   success &= _shader.addShader("radboard-geo.sdr", GL_GEOMETRY_SHADER);   
+   success = _shader.addShader("philosopher-vertex.sdr", GL_VERTEX_SHADER);   
+   success &= _shader.addShader("philosopher-geo.sdr", GL_GEOMETRY_SHADER);   
    success &= _shader.addShader("philosopher-fragment.sdr", GL_FRAGMENT_SHADER);   
 
    if (success == false) {

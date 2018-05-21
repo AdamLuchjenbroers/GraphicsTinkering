@@ -29,7 +29,9 @@ mat2 rotation(float angle) {
 }
 
 void main(void) {
-  float degrees = (360 / (num_philosophers * 2.0)) * gl_VertexID;
+  float deg_inc = (360.0 / num_philosophers);
+  float degrees = deg_inc * (gl_VertexID / 2);
+
   gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 
   if (mod(gl_VertexID, 2) == 0) {
@@ -39,10 +41,11 @@ void main(void) {
     board.size = vec2(0.2, 0.2);
     board.type = TYPE_PHILOSOPHER;
   } else {
-    vec2 offset = vec2(0.0, radius / 2.0) * rotation(-degrees);
+    degrees += deg_inc / 2.0;
+    vec2 offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
     gl_Position.xy = offset;
 
-    board.size = vec2(0.05, 0.3);
+    board.size = vec2(0.03, 0.24);
     board.type = TYPE_CHOPSTICK;
   }
 

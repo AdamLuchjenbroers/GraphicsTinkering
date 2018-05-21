@@ -11,7 +11,7 @@ in VS_OUT {
 
 flat out int type;
 
-out vec2 vs_uv;
+out vec2 texture_uv;
 
 mat2 rotation(float angle) {
   float rad = radians(angle);
@@ -36,19 +36,19 @@ void main(void) {
   type = board[0].type;
  
   gl_Position = corner(centre, board[0].size.yx, board[0].angle + 270.0);
-  vs_uv = vec2(1.0, 0.0);
+  texture_uv = vec2(1.0, 0.0);
   EmitVertex();
   
   gl_Position = corner(centre, board[0].size, board[0].angle + 0.0);
-  vs_uv = vec2(1.0, 1.0);
+  texture_uv = vec2(1.0, 1.0);
   EmitVertex();
 
   gl_Position = corner(centre, board[0].size, board[0].angle + 180.0);
-  vs_uv = vec2(0.0, 0.0);
+  texture_uv = vec2(0.0, 0.0);
   EmitVertex();
 
   gl_Position = corner(centre, board[0].size.yx, board[0].angle + 90.0);
-  vs_uv = vec2(0.0, 1.0);
+  texture_uv = vec2(0.0, 1.0);
   EmitVertex();
 
   EndPrimitive();

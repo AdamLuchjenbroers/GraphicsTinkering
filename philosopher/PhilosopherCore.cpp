@@ -51,7 +51,7 @@ void PhilosopherCore::appInit() {
 
    success = _shader.addShader("philosopher.sdr", GL_VERTEX_SHADER);   
    success &= _shader.addShader("radboard-geo.sdr", GL_GEOMETRY_SHADER);   
-   success &= _shader.addShader("billboard-fragment.sdr", GL_FRAGMENT_SHADER);   
+   success &= _shader.addShader("philosopher-fragment.sdr", GL_FRAGMENT_SHADER);   
 
    if (success == false) {
       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");

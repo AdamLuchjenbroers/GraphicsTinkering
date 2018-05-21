@@ -7,9 +7,13 @@ uniform float radius = 0.75;
 
 in float angle;
 
+#define TYPE_PHILOSOPHER 1
+#define TYPE_CHOPSTICK 2
+
 out VS_OUT { 
   vec2 size;
   float angle;
+  int type;
 } board;
 
 mat2 rotation(float angle) {
@@ -26,17 +30,20 @@ mat2 rotation(float angle) {
 
 void main(void) {
   float degrees = (360 / (num_philosophers * 2.0)) * gl_VertexID;
+  gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 
   if (mod(gl_VertexID, 2) == 0) {
     vec2 offset = vec2(0.0, radius) * rotation(-degrees);
-    gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
     gl_Position.xy = offset;
+
     board.size = vec2(0.2, 0.2);
+    board.type = TYPE_PHILOSOPHER;
   } else {
     vec2 offset = vec2(0.0, radius / 2.0) * rotation(-degrees);
-    gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
     gl_Position.xy = offset;
+
     board.size = vec2(0.05, 0.3);
+    board.type = TYPE_CHOPSTICK;
   }
 
   board.angle = degrees;

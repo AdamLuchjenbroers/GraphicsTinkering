@@ -6,7 +6,10 @@ layout (triangle_strip, max_vertices=4) out;
 in VS_OUT {
   vec2 size;
   float angle;
+  int type;
 } board[];
+
+flat out int type;
 
 out vec2 vs_uv;
 
@@ -30,7 +33,8 @@ vec4 corner(vec4 centre, vec2 size, float angle) {
 
 void main(void) {
   vec4 centre = gl_in[0].gl_Position;
-
+  type = board[0].type;
+ 
   gl_Position = corner(centre, board[0].size.yx, board[0].angle + 270.0);
   vs_uv = vec2(1.0, -1.0);
   EmitVertex();

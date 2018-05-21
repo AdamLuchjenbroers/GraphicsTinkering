@@ -30,4 +30,7 @@ protected:
 
     ShaderProgram _shader;
     GLuint _vertexarray;
+
+    TextureRef _tx_philosopher;
+    TextureRef _tx_chopstick;
 };

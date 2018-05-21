@@ -6,10 +6,14 @@
 out vec4 color;
 
 flat in int type;
+in vec2 vs_uv;
+
+uniform sampler2D tex_philosopher;
+uniform sampler2D tex_chopstick;
 
 void main(void) {
   if (type == TYPE_PHILOSOPHER) {
-    color = vec4(0.0, 0.8, 1.0, 1.0);
+    color = texture(tex_philosopher, vs_uv);
   } else if (type == TYPE_CHOPSTICK) {
     color = vec4(0.6, 0.2, 0.2, 1.0);
   } else {

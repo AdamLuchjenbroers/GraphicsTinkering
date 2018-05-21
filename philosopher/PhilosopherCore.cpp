@@ -78,6 +78,18 @@ void PhilosopherCore::appInit() {
     glBindVertexArray(_vertexarray);
 
     _angle = 0.0f;
+
+
+    GLint samp_loc = _shader.uniformLocation("tex_philosopher");
+    _tx_philosopher = Texture::loadImage("textures/philosopher.png", GL_TEXTURE0);
+    glUniform1i(samp_loc, 0);
+
+    samp_loc = _shader.uniformLocation("tex_chopstick");
+    _tx_chopstick = Texture::loadImage("textures/rock.bmp", GL_TEXTURE1);
+    glUniform1i(samp_loc, 1);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 }
 
 bool PhilosopherCore::appMain() {

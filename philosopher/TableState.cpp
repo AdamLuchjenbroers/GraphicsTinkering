@@ -12,3 +12,4 @@ TableState::~TableState() {
   delete philosophers;
   delete chopsticks;
 }
+

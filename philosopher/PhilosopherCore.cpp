@@ -88,7 +88,7 @@ bool PhilosopherCore::appMain() {
     glVertexAttrib1f(0, _angle);
     _angle += 0.1f;
 
-    glDrawArrays(GL_POINTS, 0, tableState.num_diners());
+    glDrawArrays(GL_POINTS, 0, 2 * tableState.num_diners());
 
     display->swapBuffers();
     display->mainLoop(*this);

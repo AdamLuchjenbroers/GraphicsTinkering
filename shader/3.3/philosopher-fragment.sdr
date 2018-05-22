@@ -15,7 +15,7 @@ void main(void) {
   if (type == TYPE_PHILOSOPHER) {
     color = texture(tex_philosopher, texture_uv);
   } else if (type == TYPE_CHOPSTICK) {
-    color = vec4(0.6, 0.2, 0.2, 1.0);
+    color = texture(tex_chopstick, texture_uv);
   } else {
     color = vec4(0.2, 0.2, 0.2, 1.0);
   }

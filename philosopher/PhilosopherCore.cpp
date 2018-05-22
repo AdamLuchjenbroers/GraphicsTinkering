@@ -85,7 +85,7 @@ void PhilosopherCore::appInit() {
     glUniform1i(samp_loc, 0);
 
     samp_loc = _shader.uniformLocation("tex_chopstick");
-    _tx_chopstick = Texture::loadImage("textures/rock.bmp", GL_TEXTURE1);
+    _tx_chopstick = Texture::loadImage("textures/chopstick.png", GL_TEXTURE1);
     glUniform1i(samp_loc, 1);
 
     glEnable(GL_BLEND);

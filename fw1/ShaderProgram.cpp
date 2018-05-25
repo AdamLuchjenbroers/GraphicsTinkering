@@ -118,6 +118,11 @@ GLint ShaderProgram::uniformBlockLocation(const GLchar *uniform) {
     }
 }
 
+
+GLint ShaderProgram::attributeLocation(const GLchar *name) {
+  return glGetAttribLocation(_program, name);
+}
+
 GLuint ShaderProgram::programID() {
     if ( _linked ) {
         return _program;

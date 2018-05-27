@@ -5,7 +5,7 @@ uniform mat4 projection;
 uniform int num_philosophers = 5;
 uniform float radius = 0.75;
 
-in float angle;
+layout (location = 0) in int type;
 
 #define TYPE_PHILOSOPHER 1
 #define TYPE_CHOPSTICK 2
@@ -34,20 +34,19 @@ void main(void) {
 
   gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 
-  if (mod(gl_VertexID, 2) == 0) {
+  if (type < 4) {
     vec2 offset = vec2(0.0, radius) * rotation(-degrees);
     gl_Position.xy = offset;
 
     board.size = vec2(0.2, 0.2);
-    board.type = TYPE_PHILOSOPHER;
   } else {
     degrees += deg_inc / 2.0;
     vec2 offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
     gl_Position.xy = offset;
 
     board.size = vec2(0.03, 0.24);
-    board.type = TYPE_CHOPSTICK;
   }
 
+  board.type = type;
   board.angle = degrees;
 }

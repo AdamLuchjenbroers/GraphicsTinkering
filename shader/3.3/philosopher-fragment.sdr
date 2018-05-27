@@ -12,11 +12,12 @@ uniform sampler2D tex_philosopher;
 uniform sampler2D tex_chopstick;
 
 void main(void) {
-  if (type == TYPE_PHILOSOPHER) {
+
+  if (type >= 0 && type < 4) {
     color = texture(tex_philosopher, texture_uv);
-  } else if (type == TYPE_CHOPSTICK) {
+  } else if (type >= 4 && type < 8) { 
     color = texture(tex_chopstick, texture_uv);
   } else {
-    color = vec4(0.2, 0.2, 0.2, 1.0);
+    color = vec4(1.0, 0.0, 0.0, 1.0);
   }
 }

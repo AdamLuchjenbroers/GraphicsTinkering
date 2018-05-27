@@ -90,7 +90,7 @@ void PhilosopherCore::appInit() {
 
     loc = _shader.attributeLocation("type");
 
-    glVertexAttribPointer(loc, 1, GL_INT, GL_FALSE, 0, 0);
+    glVertexAttribIPointer(loc, 1, GL_INT, GL_FALSE, 0);
     glEnableVertexAttribArray(loc);    
     checkGLError("Error encountering setting up vertex array: %s\n", Logger::LOG_ERROR);
 
@@ -112,17 +112,12 @@ void PhilosopherCore::appInit() {
 
 void PhilosopherCore::updateTable() {
     size_t buf_size;
-    GLint *buf = tableState.state_buffer();
+    GLvoid *buf;
  
-    buf_size = tableState.num_diners() * 2 * sizeof(GLint);
-
-    for(int i = 0; i < (2*tableState.num_diners()); i++) {
-      printf("-%i-", buf[i]);
-    }
-    printf("\n");
-  
     glBindBuffer(GL_ARRAY_BUFFER, _buffer);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, buf_size, buf);
+    buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    tableState.write_state(buf);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
 bool PhilosopherCore::appMain() {

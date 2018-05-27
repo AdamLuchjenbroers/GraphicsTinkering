@@ -30,7 +30,11 @@ protected:
 
     ShaderProgram _shader;
     GLuint _vertexarray;
+    GLuint _buffer;
 
     TextureRef _tx_philosopher;
     TextureRef _tx_chopstick;
+
+    void updateTable();
+    bool checkGLError(const char *errfmt, Logger::Level loglevel);
 };

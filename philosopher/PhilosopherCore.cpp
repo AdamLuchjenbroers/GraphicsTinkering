@@ -1,7 +1,8 @@
 #include "PhilosopherCore.h"
+#include <stdio.h>
 
 PhilosopherCore::PhilosopherCore() {
-    display = SDLDisplay::resizableDisplay("Dining Philosophers", 400, 400);
+    display = SDLDisplay::resizableDisplay("Dining Philosophers", 600, 600);
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 
@@ -28,14 +29,18 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
 
   switch(key.sym) {
   case SDLK_a:
-    tableState = TableState(n+1);
+    if (n < 8) {
+      tableState = TableState(n+1);
+    }
     break;
   case SDLK_z:
-    if (n > 1) {
+    if (n > 3) {
       tableState = TableState(n-1);
     }
     break;
   }
+    
+  updateTable();
 
   GLint loc = _shader.uniformLocation("num_philosophers");
   glUniform1i(loc, tableState.num_diners());
@@ -44,6 +49,7 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
 void PhilosopherCore::appInit() {
    GLuint glerror;
    bool success = true;
+   size_t buf_size;
 
    if (!ShaderLibrary::isReady()) {
        ShaderLibrary::setLibraryPath("./shader"); 
@@ -77,8 +83,20 @@ void PhilosopherCore::appInit() {
     glGenVertexArrays(1, &_vertexarray);
     glBindVertexArray(_vertexarray);
 
-    _angle = 0.0f;
+    glGenBuffers(1, &_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+    glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(GLint), NULL, GL_DYNAMIC_DRAW);
+    checkGLError("Error encountering creating buffer: %s\n", Logger::LOG_ERROR);
 
+    loc = _shader.attributeLocation("type");
+
+    glVertexAttribPointer(loc, 1, GL_INT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(loc);    
+    checkGLError("Error encountering setting up vertex array: %s\n", Logger::LOG_ERROR);
+
+    updateTable();
+
+    _angle = 0.0f;
 
     GLint samp_loc = _shader.uniformLocation("tex_philosopher");
     _tx_philosopher = Texture::loadImage("textures/philosopher.png", GL_TEXTURE0);
@@ -92,6 +110,21 @@ void PhilosopherCore::appInit() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 }
 
+void PhilosopherCore::updateTable() {
+    size_t buf_size;
+    GLint *buf = tableState.state_buffer();
+ 
+    buf_size = tableState.num_diners() * 2 * sizeof(GLint);
+
+    for(int i = 0; i < (2*tableState.num_diners()); i++) {
+      printf("-%i-", buf[i]);
+    }
+    printf("\n");
+  
+    glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, buf_size, buf);
+}
+
 bool PhilosopherCore::appMain() {
 
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -100,10 +133,24 @@ bool PhilosopherCore::appMain() {
     glVertexAttrib1f(0, _angle);
     _angle += 0.1f;
 
+
     glDrawArrays(GL_POINTS, 0, 2 * tableState.num_diners());
 
     display->swapBuffers();
     display->mainLoop(*this);
 
     return _running;
+}
+
+bool PhilosopherCore::checkGLError(const char *errfmt, Logger::Level loglevel) {
+    GLenum glerror;
+
+    glerror = glGetError();
+
+    if (glerror == GL_NO_ERROR) {
+       return true;
+    } else {
+       Logger::logprintf(loglevel, Logger::LOG_APPLICATION, errfmt, gluErrorString(glerror));
+       return false;
+    }
 }

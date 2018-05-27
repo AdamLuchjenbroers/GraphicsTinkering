@@ -1,8 +1,5 @@
 #version 330
 
-#define TYPE_PHILOSOPHER 1
-#define TYPE_CHOPSTICK 2
-
 out vec4 color;
 
 flat in int type;
@@ -11,13 +8,30 @@ in vec2 texture_uv;
 uniform sampler2D tex_philosopher;
 uniform sampler2D tex_chopstick;
 
-void main(void) {
+#define PHILOSOPHER_THINKING 0
+#define PHILOSOPHER_WAITING  1
+#define PHILOSOPHER_EATING   2
+#define CHOPSTICK_FREE       4
+#define CHOPSTICK_LEFT       5
+#define CHOPSTICK_RIGHT      6
 
-  if (type >= 0 && type < 4) {
+void main(void) {
+  switch(type) {
+  case PHILOSOPHER_THINKING:
     color = texture(tex_philosopher, texture_uv);
-  } else if (type >= 4 && type < 8) { 
+    break;
+  case PHILOSOPHER_WAITING:
+    color = texture(tex_philosopher, texture_uv) * vec4(0.5, 0.5, 0.5, 1.0);
+    break;
+  case PHILOSOPHER_EATING: 
+    color = texture(tex_philosopher, texture_uv) * vec4(1.0, 0.2, 0.2, 1.0);
+    break;
+  case CHOPSTICK_FREE:
+  case CHOPSTICK_LEFT:
+  case CHOPSTICK_RIGHT:
     color = texture(tex_chopstick, texture_uv);
-  } else {
+    break;
+  default:
     color = vec4(1.0, 0.0, 0.0, 1.0);
   }
 }

@@ -7,8 +7,12 @@ uniform float radius = 0.75;
 
 layout (location = 0) in int type;
 
-#define TYPE_PHILOSOPHER 1
-#define TYPE_CHOPSTICK 2
+#define PHILOSOPHER_THINKING 0
+#define PHILOSOPHER_WAITING  1
+#define PHILOSOPHER_EATING   2
+#define CHOPSTICK_FREE       4
+#define CHOPSTICK_LEFT       5
+#define CHOPSTICK_RIGHT      6
 
 out VS_OUT { 
   vec2 size;
@@ -31,22 +35,42 @@ mat2 rotation(float angle) {
 void main(void) {
   float deg_inc = (360.0 / num_philosophers);
   float degrees = deg_inc * (gl_VertexID / 2);
+  vec2 offset;
 
   gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 
-  if (type < 4) {
-    vec2 offset = vec2(0.0, radius) * rotation(-degrees);
+  switch(type) {
+  case PHILOSOPHER_THINKING: 
+  case PHILOSOPHER_WAITING:
+  case PHILOSOPHER_EATING:
+    offset = vec2(0.0, radius) * rotation(-degrees);
     gl_Position.xy = offset;
 
     board.size = vec2(0.2, 0.2);
-  } else {
+    break;
+  case CHOPSTICK_FREE:
     degrees += deg_inc / 2.0;
-    vec2 offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
+    offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
     gl_Position.xy = offset;
 
     board.size = vec2(0.03, 0.24);
-  }
+    break;
+  case CHOPSTICK_LEFT:
+    degrees += deg_inc;
+    offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
+    gl_Position.xy = offset;
 
+    board.size = vec2(0.03, 0.24);
+    degrees -= 70.0;
+    break;
+  case CHOPSTICK_RIGHT:
+    offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
+    gl_Position.xy = offset;
+
+    board.size = vec2(0.03, 0.24);
+    degrees += 70.0;
+    break;
+  }
   board.type = type;
   board.angle = degrees;
 }

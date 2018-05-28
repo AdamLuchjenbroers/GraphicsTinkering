@@ -4,6 +4,7 @@
 
 TableState::TableState(int diners) {
   _diners = diners;
+  _running = true;
 }
 
 
@@ -17,4 +18,13 @@ void TableState::write_state(GLvoid *target) {
     buf[2*i]     = TableState::PHILOSOPHER_THINKING; 
     buf[(2*i)+1] = TableState::CHOPSTICK_FREE; 
   }
+}
+
+bool TableState::is_running() {
+  return _running;
+}
+
+bool TableState::stop_running() {
+  _running = false;
+  return _running;
 }

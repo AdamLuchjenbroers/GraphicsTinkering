@@ -5,8 +5,6 @@ PhilosopherCore::PhilosopherCore() {
     display = SDLDisplay::resizableDisplay("Dining Philosophers", 600, 600);
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
-
-    _running = true;
 }
 
 PhilosopherCore::~PhilosopherCore() {
@@ -62,7 +60,7 @@ void PhilosopherCore::appInit() {
    if (success == false) {
       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
 
-      _running = false;
+      tableState.stop_running();
       return;
    }
 
@@ -71,7 +69,7 @@ void PhilosopherCore::appInit() {
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
 
-        _running = false;
+       tableState.stop_running();
        return;
     }
     
@@ -134,7 +132,7 @@ bool PhilosopherCore::appMain() {
     display->swapBuffers();
     display->mainLoop(*this);
 
-    return _running;
+    return tableState.is_running();
 }
 
 bool PhilosopherCore::checkGLError(const char *errfmt, Logger::Level loglevel) {

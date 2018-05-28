@@ -27,6 +27,10 @@ public:
 
   void write_state(GLvoid *target);
 
+  bool is_running();
+  bool stop_running();
+
 private:
   int _diners;
+  bool _running;
 };

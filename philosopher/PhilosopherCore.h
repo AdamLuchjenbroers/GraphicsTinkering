@@ -22,7 +22,6 @@ public:
    TableState tableState = TableState(7);
 
 protected:
-    bool _running;
     GLfloat _angle;
 
     SDLDisplay *display;

@@ -24,6 +24,8 @@ public:
   bool is_running();
   bool stop_running();
 
+  void start_dinner();
+
 private:
   int _diners;
   bool _running;

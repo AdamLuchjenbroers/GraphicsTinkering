@@ -13,10 +13,6 @@ TableState::TableState(int diners) {
   }
 
   _chopsticks = new Chopstick[_diners];
-
-  for(int i=0;i<_diners;i++) {
-     _philosophers[i].start();
-  }
 }
 
 
@@ -31,6 +27,12 @@ void TableState::write_state(GLvoid *target) {
   for(int i = 0;i < _diners;i++) {
     buf[2*i]     = _philosophers[i].get_state(); 
     buf[(2*i)+1] = _chopsticks[i].get_state();
+  }
+}
+
+void TableState::start_dinner() {
+  for(int i=0;i<_diners;i++) {
+     _philosophers[i].start();
   }
 }
 

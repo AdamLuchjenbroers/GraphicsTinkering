@@ -69,5 +69,5 @@ bumptest: bumptest.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
 philosopher: philosopher.o build/philosopher.a build/fw1.a build/math.a
-	$(CC) $(incs) $^ -o build/$@ $(libs) 
+	$(CC) $(incs) -pthread $^ -o build/$@ $(libs) 
 

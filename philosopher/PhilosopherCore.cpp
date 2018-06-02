@@ -37,8 +37,6 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
     }
     break;
   }
-    
-  updateTable();
 
   GLint loc = _shader.uniformLocation("num_philosophers");
   glUniform1i(loc, tableState.num_diners());
@@ -92,10 +90,6 @@ void PhilosopherCore::appInit() {
     glEnableVertexAttribArray(loc);    
     checkGLError("Error encountering setting up vertex array: %s\n", Logger::LOG_ERROR);
 
-    updateTable();
-
-    _angle = 0.0f;
-
     GLint samp_loc = _shader.uniformLocation("tex_philosopher");
     _tx_philosopher = Texture::loadImage("textures/philosopher.png", GL_TEXTURE0);
     glUniform1i(samp_loc, 0);
@@ -125,8 +119,8 @@ bool PhilosopherCore::appMain() {
 
     glVertexAttrib1f(0, _angle);
     _angle += 0.1f;
-
-
+  
+    updateTable();
     glDrawArrays(GL_POINTS, 0, 2 * tableState.num_diners());
 
     display->swapBuffers();

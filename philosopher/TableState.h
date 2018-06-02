@@ -1,22 +1,16 @@
 #pragma once
 
 #include "../fw1/fw1.h"
+#include "constants.h"
+#include "Philosopher.h"
+#include "Chopstick.h"
+
+class Philosopher;
 
 class TableState {
 public: 
   TableState(int diners);
   ~TableState();
-
-  // Use explicit assignment here and in GLSL
-  // so we can easily ensure / verify alignment.
-  enum ItemState {
-      PHILOSOPHER_THINKING = 0
-  ,   PHILOSOPHER_WAITING  = 1
-  ,   PHILOSOPHER_EATING   = 2
-  ,   CHOPSTICK_FREE       = 4
-  ,   CHOPSTICK_LEFT       = 5
-  ,   CHOPSTICK_RIGHT      = 6
-  };
 
   enum ItemType {
       PHILOSOPHER = 1
@@ -33,4 +27,7 @@ public:
 private:
   int _diners;
   bool _running;
+
+  Philosopher *_philosophers; 
+  Chopstick *_chopsticks;
 };

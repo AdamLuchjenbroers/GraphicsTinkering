@@ -21,6 +21,7 @@ clean:
 	rm -f build/* *.o primitives/*.o
 	cd ./fw1 && $(MAKE) clean
 	cd ./math && $(MAKE) clean
+	cd ./philosopher && ${MAKE} clean
 
 doc:
 	doxygen doxygen.cfg

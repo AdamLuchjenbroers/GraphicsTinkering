@@ -28,12 +28,12 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
   switch(key.sym) {
   case SDLK_a:
     if (n < 8) {
-      tableState = TableState(n+1);
+      tableState = NaiveTable(n+1);
     }
     break;
   case SDLK_z:
     if (n > 3) {
-      tableState = TableState(n-1);
+      tableState = NaiveTable(n-1);
     }
     break;
   }

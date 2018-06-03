@@ -1,4 +1,4 @@
-#include "Philosopher.h"
+#include "PhilosopherCore.h"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -25,8 +25,12 @@ ItemState Philosopher::get_state() {
 }
 
 void Philosopher::start() {
-  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Creating thread for philosopher %i\n", _seat); 
-  pthread_create(&_thread, NULL, (THREADFUNCPTR) &Philosopher::run, this);
+  if (_ready) {
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Creating thread for philosopher %i\n", _seat); 
+    pthread_create(&_thread, NULL, (THREADFUNCPTR) &Philosopher::run, this);
+  } else {
+    Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to start thread for philosopher %i - not initialized\n", _seat); 
+  }
 }
 
 void *Philosopher::run() {

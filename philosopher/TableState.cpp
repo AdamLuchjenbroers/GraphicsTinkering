@@ -1,24 +1,17 @@
 
-#include "TableState.h"
+#include "PhilosopherCore.h"
 #include <stdio.h>
 #include <unistd.h>
 
-TableState::TableState(int diners) {
+TableState::TableState(int diners)
+: _philosophers(diners)
+, _chopsticks(diners)
+{
   _diners = diners;
   _running = true;
-
-  _philosophers = new Philosopher[_diners];
-  for(int i=0;i<_diners;i++) {
-     _philosophers[i].setup(this, i);
-  }
-
-  _chopsticks = new Chopstick[_diners];
 }
 
-
 TableState::~TableState() {
-  delete[] _philosophers;
-  delete[] _chopsticks;
 }
 
 void TableState::write_state(GLvoid *target) {
@@ -31,7 +24,9 @@ void TableState::write_state(GLvoid *target) {
 }
 
 void TableState::start_dinner() {
-  for(int i=0;i<_diners;i++) {
+  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Starting Dinner: \n");
+
+  for(int i=0;i<_diners;i++) { 
      _philosophers[i].start();
   }
 }

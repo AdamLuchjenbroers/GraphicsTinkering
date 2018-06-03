@@ -1,15 +1,10 @@
 #pragma once
 
 #include "../fw1/fw1.h"
-#include "constants.h"
-#include "Philosopher.h"
-#include "Chopstick.h"
-
-class Philosopher;
+#include <vector>
 
 class TableState {
 public: 
-  TableState(int diners);
   ~TableState();
 
   enum ItemType {
@@ -26,10 +21,12 @@ public:
 
   void start_dinner();
 
-private:
+protected:
+  TableState(int diners);
+
   int _diners;
   bool _running;
 
-  Philosopher *_philosophers; 
-  Chopstick *_chopsticks;
+  std::vector<Philosopher> _philosophers; 
+  std::vector<Chopstick>   _chopsticks;
 };

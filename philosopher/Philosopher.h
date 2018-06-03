@@ -2,7 +2,6 @@
 
 #include <pthread.h>
 #include "constants.h"
-#include "TableState.h"
 
 class TableState;
 

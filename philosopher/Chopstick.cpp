@@ -1,4 +1,4 @@
-#include "Chopstick.h"
+#include "PhilosopherCore.h"
 
 Chopstick::Chopstick() {
   pthread_mutex_init( &_mtx_held, NULL );

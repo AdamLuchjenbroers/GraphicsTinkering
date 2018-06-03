@@ -2,7 +2,13 @@
 
 #include "../fw1/fw1.h"
 #include "../math/Matrix4.h"
+
+#include "constants.h"
+
+#include "Chopstick.h"
+#include "Philosopher.h"
 #include "TableState.h"
+#include "NaiveTable.h"
 
 #include <SDL2/SDL.h>
 
@@ -19,7 +25,7 @@ public:
    void keyEvent(SDL_Keysym &key, bool press);
 
    // FIXME: Scaffolding, remove when no longer needed
-   TableState tableState = TableState(7);
+   TableState tableState = NaiveTable(7);
 
 protected:
     GLfloat _angle;

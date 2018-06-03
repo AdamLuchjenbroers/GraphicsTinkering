@@ -1,7 +1,6 @@
 #pragma once
 
 #include <pthread.h>
-#include "constants.h"
 
 class Chopstick {
 public:

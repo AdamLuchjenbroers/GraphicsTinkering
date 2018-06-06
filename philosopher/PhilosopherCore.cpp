@@ -34,11 +34,13 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
   case SDLK_a:
     if (n < 8) {
       setupTable(n+1);
+      _table->start_dinner();
     }
     break;
   case SDLK_z:
     if (n > 3) {
       setupTable(n-1);
+      _table->start_dinner();
     }
     break;
   }

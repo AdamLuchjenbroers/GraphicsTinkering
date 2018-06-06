@@ -3,16 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-Philosopher::Philosopher() {
-  _ready = false;
-  _controller = NULL;
-}
-
 Philosopher::Philosopher(TableState *controller, int seat) {
-  this->setup(controller, seat);
-}
-
-void Philosopher::setup(TableState* controller, int seat) {
   _seat = seat;
   _controller = controller;
 

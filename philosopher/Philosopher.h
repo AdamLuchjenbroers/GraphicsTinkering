@@ -7,10 +7,7 @@ class TableState;
 
 class Philosopher {
 public:
-  Philosopher(TableState* controller, int seat);
-  Philosopher();
-  
-  void setup(TableState* controller, int seat);
+  Philosopher(TableState *controller, int seat);
 
   ItemState get_state();
 

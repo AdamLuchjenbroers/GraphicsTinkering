@@ -27,6 +27,6 @@ protected:
   int _diners;
   bool _running;
 
-  std::vector<Philosopher> _philosophers; 
+  std::vector<PhilosopherRef> _philosophers; 
   std::vector<Chopstick>   _chopsticks;
 };

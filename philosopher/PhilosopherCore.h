@@ -7,6 +7,7 @@
 
 #include "Chopstick.h"
 #include "Philosopher.h"
+#include "PhilosopherRef.h"
 #include "TableState.h"
 #include "NaiveTable.h"
 
@@ -24,9 +25,6 @@ public:
    void resizeWindow(int newX, int newY); 
    void keyEvent(SDL_Keysym &key, bool press);
 
-   // FIXME: Scaffolding, remove when no longer needed
-   TableState tableState = NaiveTable(7);
-
 protected:
     GLfloat _angle;
 
@@ -40,6 +38,10 @@ protected:
     TextureRef _tx_philosopher;
     TextureRef _tx_chopstick;
 
+    virtual void setupTable(int diners);
+
     void updateTable();
     bool checkGLError(const char *errfmt, Logger::Level loglevel);
+
+    TableState *_table = NULL;
 };

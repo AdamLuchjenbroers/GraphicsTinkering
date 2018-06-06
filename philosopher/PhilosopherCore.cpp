@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 PhilosopherCore::PhilosopherCore() {
+    setupTable(7);
     display = SDLDisplay::resizableDisplay("Dining Philosophers", 600, 600);
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
@@ -9,6 +10,10 @@ PhilosopherCore::PhilosopherCore() {
 
 PhilosopherCore::~PhilosopherCore() {
     delete display;
+
+    if (_table) {
+        delete _table;
+    }
 }
 
 void PhilosopherCore::resizeWindow(int newX, int newY) {
@@ -23,23 +28,23 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
     return;
   }
     
-  int n = tableState.num_diners();
+  int n = _table->num_diners();
 
   switch(key.sym) {
   case SDLK_a:
     if (n < 8) {
-      tableState = NaiveTable(n+1);
+      setupTable(n+1);
     }
     break;
   case SDLK_z:
     if (n > 3) {
-      tableState = NaiveTable(n-1);
+      setupTable(n-1);
     }
     break;
   }
 
   GLint loc = _shader.uniformLocation("num_philosophers");
-  glUniform1i(loc, tableState.num_diners());
+  glUniform1i(loc, _table->num_diners());
 }
 
 void PhilosopherCore::appInit() {
@@ -58,7 +63,7 @@ void PhilosopherCore::appInit() {
    if (success == false) {
       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
 
-      tableState.stop_running();
+      _table->stop_running();
       return;
    }
 
@@ -67,14 +72,14 @@ void PhilosopherCore::appInit() {
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
 
-       tableState.stop_running();
+       _table->stop_running();
        return;
     }
     
     glUseProgram(_shader.programID());
 
     GLint loc = _shader.uniformLocation("num_philosophers");
-    glUniform1i(loc, tableState.num_diners());
+    glUniform1i(loc, _table->num_diners());
 
     glGenVertexArrays(1, &_vertexarray);
     glBindVertexArray(_vertexarray);
@@ -101,7 +106,15 @@ void PhilosopherCore::appInit() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
-    tableState.start_dinner();
+    _table->start_dinner();
+}
+
+void PhilosopherCore::setupTable(int diners) {
+    if (_table) {
+        delete _table;
+    }
+
+    _table = new NaiveTable(diners);
 }
 
 void PhilosopherCore::updateTable() {
@@ -110,7 +123,7 @@ void PhilosopherCore::updateTable() {
  
     glBindBuffer(GL_ARRAY_BUFFER, _buffer);
     buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    tableState.write_state(buf);
+    _table->write_state(buf);
     glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
@@ -123,12 +136,12 @@ bool PhilosopherCore::appMain() {
     _angle += 0.1f;
   
     updateTable();
-    glDrawArrays(GL_POINTS, 0, 2 * tableState.num_diners());
+    glDrawArrays(GL_POINTS, 0, 2 * _table->num_diners());
 
     display->swapBuffers();
     display->mainLoop(*this);
 
-    return tableState.is_running();
+    return _table->is_running();
 }
 
 bool PhilosopherCore::checkGLError(const char *errfmt, Logger::Level loglevel) {

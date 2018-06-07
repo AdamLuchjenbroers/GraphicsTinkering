@@ -28,25 +28,25 @@ void PhilosopherCore::keyEvent(SDL_Keysym &key, bool press) {
     return;
   }
     
-  int n = _table->num_diners();
+  int n = _table->numDiners();
 
   switch(key.sym) {
   case SDLK_a:
     if (n < 8) {
       setupTable(n+1);
-      _table->start_dinner();
+      _table->startDinner();
     }
     break;
   case SDLK_z:
     if (n > 3) {
       setupTable(n-1);
-      _table->start_dinner();
+      _table->startDinner();
     }
     break;
   }
 
   GLint loc = _shader.uniformLocation("num_philosophers");
-  glUniform1i(loc, _table->num_diners());
+  glUniform1i(loc, _table->numDiners());
 }
 
 void PhilosopherCore::appInit() {
@@ -65,7 +65,7 @@ void PhilosopherCore::appInit() {
    if (success == false) {
       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
 
-      _table->stop_running();
+      _table->stopRunning();
       return;
    }
 
@@ -74,14 +74,14 @@ void PhilosopherCore::appInit() {
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
 
-       _table->stop_running();
+       _table->stopRunning();
        return;
     }
     
     glUseProgram(_shader.programID());
 
     GLint loc = _shader.uniformLocation("num_philosophers");
-    glUniform1i(loc, _table->num_diners());
+    glUniform1i(loc, _table->numDiners());
 
     glGenVertexArrays(1, &_vertexarray);
     glBindVertexArray(_vertexarray);
@@ -108,7 +108,7 @@ void PhilosopherCore::appInit() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
-    _table->start_dinner();
+    _table->startDinner();
 }
 
 void PhilosopherCore::setupTable(int diners) {
@@ -126,7 +126,7 @@ void PhilosopherCore::updateTable() {
  
     glBindBuffer(GL_ARRAY_BUFFER, _buffer);
     buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    _table->write_state(buf);
+    _table->writeState(buf);
     glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
@@ -139,12 +139,12 @@ bool PhilosopherCore::appMain() {
     _angle += 0.1f;
   
     updateTable();
-    glDrawArrays(GL_POINTS, 0, 2 * _table->num_diners());
+    glDrawArrays(GL_POINTS, 0, 2 * _table->numDiners());
 
     display->swapBuffers();
     display->mainLoop(*this);
 
-    return _table->is_running();
+    return _table->isRunning();
 }
 
 bool PhilosopherCore::checkGLError(const char *errfmt, Logger::Level loglevel) {

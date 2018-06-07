@@ -24,7 +24,7 @@ void TableState::seatDiners() {
   }
 }
 
-void TableState::write_state(GLvoid *target) {
+void TableState::writeState(GLvoid *target) {
   GLint *buf = (GLint *)target;
 
   for(int i = 0;i < _diners;i++) {
@@ -33,7 +33,7 @@ void TableState::write_state(GLvoid *target) {
   }
 }
 
-void TableState::start_dinner() {
+void TableState::startDinner() {
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Starting Dinner: \n");
 
   for(int i=0;i<_diners;i++) { 
@@ -41,11 +41,11 @@ void TableState::start_dinner() {
   }
 }
 
-bool TableState::is_running() {
+bool TableState::isRunning() {
   return _running;
 }
 
-bool TableState::stop_running() {
+bool TableState::stopRunning() {
   _running = false;
   return _running;
 }

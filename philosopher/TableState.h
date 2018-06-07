@@ -13,16 +13,16 @@ public:
   ,   CHOPSTICK   = 2
   };
 
-  int num_diners() { return _diners; };
+  int numDiners() { return _diners; };
 
   virtual void seatDiners();
 
-  void write_state(GLvoid *target);
+  void writeState(GLvoid *target);
 
-  bool is_running();
-  bool stop_running();
+  bool isRunning();
+  bool stopRunning();
 
-  void start_dinner();
+  void startDinner();
 protected:
 
   int _diners;

@@ -12,6 +12,7 @@ public:
   ItemState get_state();
 
   void start();
+  void stop();
   void *run();
 
 protected:

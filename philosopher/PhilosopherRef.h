@@ -12,6 +12,7 @@ public:
   void set_reference(Philosopher *ref);
 
   void start() { _ref->start(); }
+  void stop() { _ref->stop(); }
   ItemState get_state() { return _ref->get_state(); }
 
 protected:

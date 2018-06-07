@@ -24,6 +24,12 @@ void Philosopher::start() {
   }
 }
 
+void Philosopher::stop() {
+  pthread_cancel(_thread);
+
+  pthread_join(_thread, NULL);
+}
+
 void *Philosopher::run() {
   int delay;
 

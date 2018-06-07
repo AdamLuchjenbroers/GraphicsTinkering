@@ -12,6 +12,9 @@ TableState::TableState(int diners)
 }
 
 TableState::~TableState() {
+  for(int i = 0;i < _diners;i++) {   
+     _philosophers[i].stop();
+  }
 }
 
 void TableState::write_state(GLvoid *target) {

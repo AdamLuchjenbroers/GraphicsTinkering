@@ -9,7 +9,6 @@
 #include "Philosopher.h"
 #include "PhilosopherRef.h"
 #include "TableState.h"
-#include "NaiveTable.h"
 
 #include <SDL2/SDL.h>
 

@@ -116,7 +116,8 @@ void PhilosopherCore::setupTable(int diners) {
         delete _table;
     }
 
-    _table = new NaiveTable(diners);
+    _table = new TableState(diners);
+    _table->seatDiners();
 }
 
 void PhilosopherCore::updateTable() {

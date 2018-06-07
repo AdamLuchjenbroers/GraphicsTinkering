@@ -5,6 +5,7 @@
 
 class TableState {
 public: 
+  TableState(int diners);
   ~TableState();
 
   enum ItemType {
@@ -14,15 +15,15 @@ public:
 
   int num_diners() { return _diners; };
 
+  virtual void seatDiners();
+
   void write_state(GLvoid *target);
 
   bool is_running();
   bool stop_running();
 
   void start_dinner();
-
 protected:
-  TableState(int diners);
 
   int _diners;
   bool _running;

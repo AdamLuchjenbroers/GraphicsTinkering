@@ -32,11 +32,11 @@ void Philosopher::stop() {
 }
 
 void *Philosopher::run() {
-  int delay;
+  useconds_t delay;
 
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
-  delay = rand() % 7;
-  sleep(delay);
+  delay = 3000000 + (rand() % 4000000);
+  usleep(delay);
 
   _state = ItemState::PHILOSOPHER_EATING;
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Philosopher %i is eating\n", _seat); 

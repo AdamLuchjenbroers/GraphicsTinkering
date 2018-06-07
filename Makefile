@@ -7,13 +7,13 @@ include Makefile.inc
 opts = $(libs) $(defs) $(incs)
 
 all: cube_demos heightmap_demos superbible6_demos misc_demos 
-all: utilities threading
+all: utilities philosopher
 
 cube_demos: cube texcube litcube speccube bumpcube heightcube
 heightmap_demos: heightmap heighttex heightspec
 superbible6_demos: basic sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
 misc_demos: fakesphere pyramid
-philosopher: philosopher-test
+philosopher: philosopher-test philosopher-naive
 
 utilities: height2normal stlviewer
 
@@ -33,7 +33,10 @@ build/math.a:
 	cd math && $(MAKE)
 
 build/philosopher.a: philosopher/* 
-	cd philosopher && ${MAKE}
+	cd philosopher && ${MAKE} 
+
+build/philosopher-naive.a: philosopher/* 
+	cd philosopher && ${MAKE} 
 
 tests/fw1.a:
 	cd ./fw1 && $(MAKE) tests
@@ -70,5 +73,8 @@ bumptest: bumptest.o build/fw1.a build/math.a SB6_BasicApp.o
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
 philosopher-test: philosopher-test.o build/philosopher.a build/fw1.a build/math.a
+	$(CC) $(incs) -pthread $^ -o build/$@ $(libs) 
+
+philosopher-naive: philosopher-naive.o build/philosopher.a build/philosopher-naive.a build/fw1.a build/math.a
 	$(CC) $(incs) -pthread $^ -o build/$@ $(libs) 
 

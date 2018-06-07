@@ -14,4 +14,5 @@ clean:
 	ld -r $^ -o $@
 
 ../build/philosopher-naive.a: NaiveTable.o NaiveCore.o
+	ld -r $^ -o $@
 

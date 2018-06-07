@@ -13,7 +13,7 @@ cube_demos: cube texcube litcube speccube bumpcube heightcube
 heightmap_demos: heightmap heighttex heightspec
 superbible6_demos: basic sb2 sb2_2 sb3_1 sb3_1ff sb3_2 sb3_3 sb3_4 sb5_1 sb5_1-spin
 misc_demos: fakesphere pyramid
-threading: philosopher
+philosopher: philosopher-test
 
 utilities: height2normal stlviewer
 
@@ -69,6 +69,6 @@ height%: height%.o build/fw1.a build/math.a SB6_BasicApp.o
 bumptest: bumptest.o build/fw1.a build/math.a SB6_BasicApp.o 
 	$(CC) $(incs) $^ -o build/$@ $(libs) 
 
-philosopher: philosopher.o build/philosopher.a build/fw1.a build/math.a
+philosopher-test: philosopher-test.o build/philosopher.a build/fw1.a build/math.a
 	$(CC) $(incs) -pthread $^ -o build/$@ $(libs) 
 

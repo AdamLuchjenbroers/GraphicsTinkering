@@ -28,6 +28,7 @@ void Philosopher::stop() {
   pthread_cancel(_thread);
 
   pthread_join(_thread, NULL);
+  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Ended for philosopher %i\n", _seat); 
 }
 
 void *Philosopher::run() {

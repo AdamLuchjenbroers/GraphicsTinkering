@@ -8,7 +8,7 @@ NaiveTable::NaiveTable(int diners)
 
 void NaiveTable::seatDiners() {
   for(int i=0;i<_diners;i++) {
-     Philosopher *p = new Philosopher(this, i);
+     Philosopher *p = new NaivePhilosopher(this, i);
      _philosophers[i].set_reference(p);
   }
 }

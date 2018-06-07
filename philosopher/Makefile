@@ -13,6 +13,6 @@ clean:
 ../build/philosopher.a: PhilosopherRef.o Philosopher.o PhilosopherCore.o TableState.o Chopstick.o
 	ld -r $^ -o $@
 
-../build/philosopher-naive.a: NaiveTable.o NaiveCore.o
+../build/philosopher-naive.a: NaiveTable.o NaiveCore.o NaivePhilosopher.o
 	ld -r $^ -o $@
 

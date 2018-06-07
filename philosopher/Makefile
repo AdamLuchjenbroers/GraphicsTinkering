@@ -5,7 +5,7 @@ include ../Makefile.inc
 
 opts = $(libs) $(defs) $(incs)
 
-all: ../build/philosopher.a
+all: ../build/philosopher.a ../build/philosopher-naive.a
 
 clean:
 	rm -f *.o 

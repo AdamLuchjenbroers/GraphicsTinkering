@@ -7,5 +7,5 @@ class NaiveTable : public TableState {
 public:
   NaiveTable(int diners);
 
-
+  virtual void seatDiners();
 };

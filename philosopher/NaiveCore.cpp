@@ -1,5 +1,5 @@
 
-#include "NaivePhilosophers.h"
+#include "NaiveCore.h"
 
 NaiveCore::NaiveCore()
  : PhilosopherCore() {

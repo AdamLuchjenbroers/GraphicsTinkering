@@ -1,4 +1,4 @@
-#include "philosopher/NaivePhilosophers.h"
+#include "philosopher/NaiveCore.h"
 
 int main( int argc, char* args[] ) { 
   FrameworkOneApp *thisApp = new NaiveCore();

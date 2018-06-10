@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 PhilosopherCore::PhilosopherCore() {
-    display = SDLDisplay::resizableDisplay("Dining Philosophers", 600, 600);
+    display = SDLDisplay::resizableDisplay("Dining Philosophers - Framework Test", 800, 800);
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
 }

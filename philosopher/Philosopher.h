@@ -8,6 +8,7 @@ class TableState;
 class Philosopher {
 public:
   Philosopher(TableState *controller, int seat);
+  ~Philosopher();
 
   ItemState get_state();
 
@@ -16,6 +17,8 @@ public:
   void *run();
 
 protected:
+  void set_state(ItemState val);
+
   int _seat;
   ItemState _state;
 
@@ -23,6 +26,8 @@ protected:
 
   TableState *_controller;
   pthread_t _thread;
+
+  pthread_mutex_t _mtx_access;
 };
 
 	

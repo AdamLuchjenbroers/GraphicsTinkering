@@ -7,12 +7,30 @@ Philosopher::Philosopher(TableState *controller, int seat) {
   _seat = seat;
   _controller = controller;
 
-  _state = ItemState::PHILOSOPHER_WAITING;
+  _state = ItemState::PHILOSOPHER_THINKING;
+  pthread_mutex_init(&_mtx_access, NULL);
+
   _ready = true;
 }
 
+Philosopher::~Philosopher() {
+  pthread_mutex_destroy(&_mtx_access);
+}
+
 ItemState Philosopher::get_state() {
-  return _state;
+  ItemState val;
+
+  pthread_mutex_lock(&_mtx_access);
+  val = _state;
+  pthread_mutex_unlock(&_mtx_access);
+
+  return val;
+}
+
+void Philosopher::set_state(ItemState val) {
+  pthread_mutex_lock(&_mtx_access);
+  _state = val;
+  pthread_mutex_unlock(&_mtx_access);
 }
 
 void Philosopher::start() {
@@ -38,7 +56,7 @@ void *Philosopher::run() {
   delay = 3000000 + (rand() % 4000000);
   usleep(delay);
 
-  _state = ItemState::PHILOSOPHER_EATING;
+  set_state( ItemState::PHILOSOPHER_EATING );
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Philosopher %i is eating\n", _seat); 
 }
 

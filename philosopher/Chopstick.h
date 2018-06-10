@@ -21,11 +21,12 @@ protected:
      _mtx_held is held by the philosopher currently holding the chopstick. and
         is held for the duration of the chopstick being held.
 
-     Locks should always be acquired in the order: access, held.
+     Locks should always be acquired in the order: held, access
   */
 
   pthread_mutex_t _mtx_held;
   pthread_mutex_t _mtx_access;
 
+  void set_state(ItemState val);
   ItemState _state;
 };

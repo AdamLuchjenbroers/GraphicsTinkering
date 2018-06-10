@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 PhilosopherCore::PhilosopherCore() {
-    setupTable(7);
     display = SDLDisplay::resizableDisplay("Dining Philosophers", 600, 600);
 
     _projection = Matrix4::fovHorizontal( 1.0f, 6.0f, 90.0f, display->aspectRatio());
@@ -53,6 +52,8 @@ void PhilosopherCore::appInit() {
    GLuint glerror;
    bool success = true;
    size_t buf_size;
+
+   setupTable(7);
 
    if (!ShaderLibrary::isReady()) {
        ShaderLibrary::setLibraryPath("./shader"); 

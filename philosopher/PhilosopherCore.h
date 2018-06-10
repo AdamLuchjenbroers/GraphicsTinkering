@@ -43,4 +43,6 @@ protected:
     bool checkGLError(const char *errfmt, Logger::Level loglevel);
 
     TableState *_table = NULL;
+
+    const char *title = "Dining Philosophers - Framework Test";
 };

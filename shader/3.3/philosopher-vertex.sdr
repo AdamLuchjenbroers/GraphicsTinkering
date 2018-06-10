@@ -55,7 +55,7 @@ void main(void) {
 
     board.size = vec2(0.03, 0.24);
     break;
-  case CHOPSTICK_LEFT:
+  case CHOPSTICK_RIGHT:
     degrees += deg_inc;
     offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
     gl_Position.xy = offset;
@@ -63,7 +63,7 @@ void main(void) {
     board.size = vec2(0.03, 0.24);
     degrees -= 70.0;
     break;
-  case CHOPSTICK_RIGHT:
+  case CHOPSTICK_LEFT:
     offset = vec2(0.0, radius / 1.8) * rotation(-degrees);
     gl_Position.xy = offset;
 

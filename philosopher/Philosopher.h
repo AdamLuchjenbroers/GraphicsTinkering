@@ -12,7 +12,7 @@ public:
 
   ItemState get_state();
 
-  void start();
+  virtual void start();
   void stop();
   void *run();
 

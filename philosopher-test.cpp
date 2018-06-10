@@ -2,7 +2,7 @@
 #include "philosopher/TableState.h"
 
 int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new PhilosopherCore();
+  PhilosopherCore *thisApp = new PhilosopherCore();
 
   thisApp->appInit();
 

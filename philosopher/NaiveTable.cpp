@@ -12,4 +12,3 @@ void NaiveTable::seatDiners() {
      _philosophers[i].set_reference(p);
   }
 }
-

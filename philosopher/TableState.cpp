@@ -24,6 +24,23 @@ void TableState::seatDiners() {
   }
 }
 
+Chopstick *TableState::left_of(int seat) {
+  return &_chopsticks[seat];
+}
+
+Chopstick *TableState::right_of(int seat) {
+  int idx;
+
+  if (idx > 0) {
+    idx = seat - 1;
+  } else {
+    idx = _diners - 1;
+  }
+
+  return &_chopsticks[idx];
+}
+
+
 void TableState::writeState(GLvoid *target) {
   GLint *buf = (GLint *)target;
 

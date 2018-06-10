@@ -1,7 +1,7 @@
 #include "philosopher/NaiveCore.h"
 
 int main( int argc, char* args[] ) { 
-  FrameworkOneApp *thisApp = new NaiveCore();
+  PhilosopherCore *thisApp = new NaiveCore();
 
   thisApp->appInit();
 

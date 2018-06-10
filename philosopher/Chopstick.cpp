@@ -22,24 +22,26 @@ ItemState Chopstick::get_state() {
   return state;
 }
 
-void Chopstick::grab(bool left) {
+void Chopstick::set_state(ItemState val) {
   pthread_mutex_lock(&_mtx_access);
-  
-  pthread_mutex_lock(&_mtx_held);
-
-  if (left) {
-    _state = ItemState::CHOPSTICK_LEFT;
-  } else {
-    _state = ItemState::CHOPSTICK_RIGHT;
-  }
+  _state = val;
   pthread_mutex_unlock(&_mtx_access);
 }
 
-void Chopstick::release() {
-  pthread_mutex_lock(&_mtx_access);
+void Chopstick::grab(bool left) {
+  pthread_mutex_lock(&_mtx_held);
   
-  _state = ItemState::CHOPSTICK_FREE;
+  if (left) {
+    set_state(ItemState::CHOPSTICK_LEFT);
+  } else {
+    set_state(ItemState::CHOPSTICK_RIGHT);
+  }
+}
 
+void Chopstick::release() {
   pthread_mutex_unlock(&_mtx_held);
+
+  pthread_mutex_lock(&_mtx_access);
+  _state = ItemState::CHOPSTICK_FREE;
   pthread_mutex_unlock(&_mtx_access);
 } 

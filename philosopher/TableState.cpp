@@ -31,7 +31,7 @@ Chopstick *TableState::left_of(int seat) {
 Chopstick *TableState::right_of(int seat) {
   int idx;
 
-  if (idx > 0) {
+  if (seat > 0) {
     idx = seat - 1;
   } else {
     idx = _diners - 1;

@@ -9,12 +9,18 @@ TableState::TableState(int diners)
 {
   _diners = diners;
   _running = true;
+
+  pthread_cond_init(&_cond_changed, NULL);
+  pthread_mutex_init(&_mtx_changed, NULL);
 }
 
 TableState::~TableState() {
   for(int i = 0;i < _diners;i++) {   
      _philosophers[i].stop();
   }
+
+  pthread_cond_destroy(&_cond_changed);
+  pthread_mutex_destroy(&_mtx_changed);
 }
 
 void TableState::seatDiners() {
@@ -66,3 +72,15 @@ bool TableState::stopRunning() {
   _running = false;
   return _running;
 }
+
+void TableState::awaitChange() {
+  pthread_mutex_lock(&_mtx_changed);
+  pthread_cond_wait(&_cond_changed, &_mtx_changed);
+  pthread_mutex_unlock(&_mtx_changed);
+}
+
+void TableState::sendChange() {
+  pthread_cond_broadcast(&_cond_changed);
+}
+
+

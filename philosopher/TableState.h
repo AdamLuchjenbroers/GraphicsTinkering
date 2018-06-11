@@ -26,10 +26,15 @@ public:
   bool stopRunning();
 
   void startDinner();
-protected:
 
+  void awaitChange();
+  void sendChange();
+protected:
   int _diners;
   bool _running;
+
+  pthread_cond_t _cond_changed;
+  pthread_mutex_t _mtx_changed;
 
   std::vector<PhilosopherRef> _philosophers; 
   std::vector<Chopstick>   _chopsticks;

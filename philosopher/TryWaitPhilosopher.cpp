@@ -35,12 +35,12 @@ void *TryWaitPhilosopher::run() {
         _right->release();
         has_right = false;
 
-        usleep( (rand() % 1000000) + 500000);
+        _controller->awaitChange();
       } else if ( (!has_right) && has_left) {
         _left->release();
         has_left = false;
 
-        usleep( (rand() % 1000000) + 500000);
+        _controller->awaitChange();
       }
     }
     setState(ItemState::PHILOSOPHER_EATING);
@@ -50,6 +50,7 @@ void *TryWaitPhilosopher::run() {
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is sated\n", _seat); 
     _left->release();
     _right->release();
+    _controller->sendChange();
     pthread_cleanup_pop(false);
 
     setState(ItemState::PHILOSOPHER_THINKING);

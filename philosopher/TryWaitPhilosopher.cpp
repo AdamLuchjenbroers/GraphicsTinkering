@@ -26,23 +26,28 @@ void *TryWaitPhilosopher::run() {
 
     has_left  = false;
     has_right = false;
- 
+
+    _controller->lockTable();  
     while (! (has_left && has_right)) {
+
       has_left  =  _left->tryGrab(true);
       has_right = _right->tryGrab(false);
+
 
       if ( (!has_left) && has_right ) {
         _right->release();
         has_right = false;
-
-        _controller->awaitChange();
       } else if ( (!has_right) && has_left) {
         _left->release();
         has_left = false;
+      } 
 
+      if (! (has_left && has_right) ) { 
         _controller->awaitChange();
       }
     }
+    _controller->unlockTable();
+
     setState(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is eating\n", _seat); 
  

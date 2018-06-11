@@ -74,8 +74,14 @@ bool TableState::stopRunning() {
 }
 
 void TableState::awaitChange() {
-  pthread_mutex_lock(&_mtx_changed);
   pthread_cond_wait(&_cond_changed, &_mtx_changed);
+}
+
+void TableState::lockTable() {
+  pthread_mutex_lock(&_mtx_changed);
+}
+
+void TableState::unlockTable() {
   pthread_mutex_unlock(&_mtx_changed);
 }
 

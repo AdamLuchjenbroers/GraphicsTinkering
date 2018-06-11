@@ -27,6 +27,9 @@ public:
 
   void startDinner();
 
+  void lockTable();
+  void unlockTable();
+
   void awaitChange();
   void sendChange();
 protected:

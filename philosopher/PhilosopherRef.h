@@ -9,7 +9,7 @@ public:
 
   ~PhilosopherRef();
 
-  void set_reference(Philosopher *ref);
+  void setReference(Philosopher *ref);
 
   void start() { _ref->start(); }
   void stop() { _ref->stop(); }

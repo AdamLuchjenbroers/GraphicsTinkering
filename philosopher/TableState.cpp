@@ -20,7 +20,7 @@ TableState::~TableState() {
 void TableState::seatDiners() {
   for(int i=0;i<_diners;i++) {
      Philosopher *p = new Philosopher(this, i, 3.0, 7.0);
-     _philosophers[i].set_reference(p);
+     _philosophers[i].setReference(p);
   }
 }
 

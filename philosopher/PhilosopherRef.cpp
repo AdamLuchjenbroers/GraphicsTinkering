@@ -6,7 +6,7 @@ PhilosopherRef::~PhilosopherRef() {
   }
 }
 
-void PhilosopherRef::set_reference(Philosopher *ref) {
+void PhilosopherRef::setReference(Philosopher *ref) {
   if (_ref) {
     delete _ref;
   }

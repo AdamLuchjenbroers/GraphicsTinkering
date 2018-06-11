@@ -13,6 +13,8 @@ void TryWaitPhilosopher::start() {
 }
 
 void *TryWaitPhilosopher::run() {
+  bool has_left, has_right;
+
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
   while (1) {
     wait();
@@ -21,12 +23,30 @@ void *TryWaitPhilosopher::run() {
     setState(ItemState::PHILOSOPHER_WAITING);
 
     pthread_cleanup_push( releaseAllChopsticks , this);
-    _left->grab(true);
-    _right->grab(false);
+
+    has_left  = false;
+    has_right = false;
+ 
+    while (! (has_left && has_right)) {
+      has_left  =  _left->tryGrab(true);
+      has_right = _right->tryGrab(false);
+
+      if ( (!has_left) && has_right ) {
+        _right->release();
+        has_right = false;
+
+        usleep( (rand() % 1000000) + 500000);
+      } else if ( (!has_right) && has_left) {
+        _left->release();
+        has_left = false;
+
+        usleep( (rand() % 1000000) + 500000);
+      }
+    }
     setState(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is eating\n", _seat); 
  
-   wait();
+     wait();
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is sated\n", _seat); 
     _left->release();
     _right->release();

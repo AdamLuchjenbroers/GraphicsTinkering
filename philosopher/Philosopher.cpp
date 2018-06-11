@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-Philosopher::Philosopher(TableState *controller, int seat) {
+Philosopher::Philosopher(TableState *controller, int seat, float min_wait, float max_wait) {
   _seat = seat;
   _controller = controller;
 
@@ -13,11 +13,22 @@ Philosopher::Philosopher(TableState *controller, int seat) {
   _left  = _controller->left_of(_seat);
   _right = _controller->right_of(_seat);
 
+  // Convert these values into micro-seconds for use with usleep
+  _wait_base = (int) (min_wait * 1000000);
+  _wait_range = (int) ((max_wait - min_wait) * 1000000);
+
   _ready = true; 
 }
 
 Philosopher::~Philosopher() {
   pthread_mutex_destroy(&_mtx_access);
+}
+
+void Philosopher::wait() {
+  useconds_t delay;
+
+  delay = _wait_base + (rand() % _wait_range);
+  usleep(delay);
 }
 
 ItemState Philosopher::get_state() {
@@ -53,12 +64,9 @@ void Philosopher::stop() {
 }
 
 void *Philosopher::run() {
-  useconds_t delay;
-
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
-  delay = 3000000 + (rand() % 4000000);
-  usleep(delay);
 
+  wait();
   set_state( ItemState::PHILOSOPHER_EATING );
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Philosopher %i is eating\n", _seat); 
 }

@@ -7,7 +7,7 @@ class TableState;
 
 class Philosopher {
 public:
-  Philosopher(TableState *controller, int seat);
+  Philosopher(TableState *controller, int seat, float min_wait, float max_wait);
   ~Philosopher();
 
   ItemState get_state();
@@ -21,6 +21,8 @@ public:
 protected:
   void set_state(ItemState val);
 
+  void wait();
+
   int _seat;
   ItemState _state;
 
@@ -28,6 +30,9 @@ protected:
 
   TableState *_controller;
   Chopstick *_left, *_right;
+
+  int _wait_base;
+  int _wait_range;
 
   pthread_t _thread;
   pthread_mutex_t _mtx_access;

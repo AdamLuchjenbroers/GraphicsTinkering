@@ -13,14 +13,10 @@ void NaivePhilosopher::start() {
 }
 
 void *NaivePhilosopher::run() {
-  useconds_t delay;
-
-
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
   while (1) {
-    delay = 3000000 + (rand() % 4000000);
-    usleep(delay);
-  
+    wait();
+
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is hungry\n", _seat); 
     set_state(ItemState::PHILOSOPHER_WAITING);
 
@@ -29,10 +25,8 @@ void *NaivePhilosopher::run() {
     _right->grab(false);
     set_state(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is eating\n", _seat); 
-
-    delay = 3000000 + (rand() % 4000000);
-    usleep(delay);
-  
+ 
+   wait();
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is sated\n", _seat); 
     _left->release();
     _right->release();

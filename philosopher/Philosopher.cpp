@@ -10,8 +10,8 @@ Philosopher::Philosopher(TableState *controller, int seat, float min_wait, float
   _state = ItemState::PHILOSOPHER_THINKING;
   pthread_mutex_init(&_mtx_access, NULL);
 
-  _left  = _controller->left_of(_seat);
-  _right = _controller->right_of(_seat);
+  _left  = _controller->leftOf(_seat);
+  _right = _controller->rightOf(_seat);
 
   // Convert these values into micro-seconds for use with usleep
   _wait_base = (int) (min_wait * 1000000);

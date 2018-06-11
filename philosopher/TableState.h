@@ -19,8 +19,8 @@ public:
 
   void writeState(GLvoid *target);
 
-  Chopstick *left_of(int seat);
-  Chopstick *right_of(int seat);
+  Chopstick *leftOf(int seat);
+  Chopstick *rightOf(int seat);
 
   bool isRunning();
   bool stopRunning();

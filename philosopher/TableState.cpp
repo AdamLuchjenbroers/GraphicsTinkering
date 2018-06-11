@@ -24,11 +24,11 @@ void TableState::seatDiners() {
   }
 }
 
-Chopstick *TableState::left_of(int seat) {
+Chopstick *TableState::leftOf(int seat) {
   return &_chopsticks[seat];
 }
 
-Chopstick *TableState::right_of(int seat) {
+Chopstick *TableState::rightOf(int seat) {
   int idx;
 
   if (seat > 0) {

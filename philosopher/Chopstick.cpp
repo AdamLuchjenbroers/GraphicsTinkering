@@ -25,7 +25,25 @@ ItemState Chopstick::getState() {
 
 void Chopstick::grab(bool left) {
   pthread_mutex_lock(&_mtx_held);
-  
+
+  grabbed(left);  
+}
+
+bool Chopstick::tryGrab(bool left) {
+  int result;
+
+  result = pthread_mutex_trylock(&_mtx_held);
+
+  if ( result == 0 ) {
+    grabbed(left);  
+    return true;
+  } else {
+    // Lock failed
+    return false;
+  }
+}
+
+void Chopstick::grabbed(bool left) {
   pthread_mutex_lock(&_mtx_access);
   if (left) {
     _state = ItemState::CHOPSTICK_LEFT;

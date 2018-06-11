@@ -10,6 +10,8 @@ public:
   ItemState getState();
 
   void grab(bool left);
+  bool tryGrab(bool left);
+
   void release();
 
   bool iHold();
@@ -33,4 +35,6 @@ protected:
   pthread_t _held_by;
 
   ItemState _state;
+private:
+  void grabbed(bool left);
 };

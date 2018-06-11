@@ -13,7 +13,7 @@ public:
 
   void start() { _ref->start(); }
   void stop() { _ref->stop(); }
-  ItemState get_state() { return _ref->get_state(); }
+  ItemState getState() { return _ref->getState(); }
 
 protected:
   Philosopher *_ref;

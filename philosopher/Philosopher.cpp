@@ -31,7 +31,7 @@ void Philosopher::wait() {
   usleep(delay);
 }
 
-ItemState Philosopher::get_state() {
+ItemState Philosopher::getState() {
   ItemState val;
 
   pthread_mutex_lock(&_mtx_access);
@@ -41,7 +41,7 @@ ItemState Philosopher::get_state() {
   return val;
 }
 
-void Philosopher::set_state(ItemState val) {
+void Philosopher::setState(ItemState val) {
   pthread_mutex_lock(&_mtx_access);
   _state = val;
   pthread_mutex_unlock(&_mtx_access);
@@ -67,7 +67,7 @@ void *Philosopher::run() {
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
 
   wait();
-  set_state( ItemState::PHILOSOPHER_EATING );
+  setState( ItemState::PHILOSOPHER_EATING );
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Philosopher %i is eating\n", _seat); 
 }
 

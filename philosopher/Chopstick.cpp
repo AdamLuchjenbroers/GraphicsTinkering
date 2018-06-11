@@ -13,7 +13,7 @@ Chopstick::~Chopstick() {
   pthread_mutex_destroy( &_mtx_access );
 }
 
-ItemState Chopstick::get_state() {
+ItemState Chopstick::getState() {
   ItemState state;
 
   pthread_mutex_lock(&_mtx_access);

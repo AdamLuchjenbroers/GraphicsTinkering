@@ -7,7 +7,7 @@ public:
   Chopstick();
   ~Chopstick();
 
-  ItemState get_state();
+  ItemState getState();
 
   void grab(bool left);
   void release();
@@ -32,6 +32,5 @@ protected:
   bool _held;
   pthread_t _held_by;
 
-  void set_state(ItemState val);
   ItemState _state;
 };

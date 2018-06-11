@@ -45,8 +45,8 @@ void TableState::writeState(GLvoid *target) {
   GLint *buf = (GLint *)target;
 
   for(int i = 0;i < _diners;i++) {
-    buf[2*i]     = _philosophers[i].get_state(); 
-    buf[(2*i)+1] = _chopsticks[i].get_state();
+    buf[2*i]     = _philosophers[i].getState(); 
+    buf[(2*i)+1] = _chopsticks[i].getState();
   }
 }
 

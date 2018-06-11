@@ -18,12 +18,12 @@ void *NaivePhilosopher::run() {
     wait();
 
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is hungry\n", _seat); 
-    set_state(ItemState::PHILOSOPHER_WAITING);
+    setState(ItemState::PHILOSOPHER_WAITING);
 
     pthread_cleanup_push( releaseAllChopsticks , this);
     _left->grab(true);
     _right->grab(false);
-    set_state(ItemState::PHILOSOPHER_EATING);
+    setState(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is eating\n", _seat); 
  
    wait();
@@ -32,6 +32,6 @@ void *NaivePhilosopher::run() {
     _right->release();
     pthread_cleanup_pop(false);
 
-    set_state(ItemState::PHILOSOPHER_THINKING);
+    setState(ItemState::PHILOSOPHER_THINKING);
   }
 }

@@ -10,7 +10,7 @@ public:
   Philosopher(TableState *controller, int seat, float min_wait, float max_wait);
   ~Philosopher();
 
-  ItemState get_state();
+  ItemState getState();
 
   virtual void start();
   void stop();
@@ -19,7 +19,7 @@ public:
   friend void releaseAllChopsticks(void *arg);
 
 protected:
-  void set_state(ItemState val);
+  void setState(ItemState val);
 
   void wait();
 

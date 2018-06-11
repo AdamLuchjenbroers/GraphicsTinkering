@@ -12,6 +12,8 @@ public:
   void grab(bool left);
   void release();
 
+  bool iHold();
+
 protected:
   /* Two Mutexes are used to control access to Chopstick:
 
@@ -26,6 +28,9 @@ protected:
 
   pthread_mutex_t _mtx_held;
   pthread_mutex_t _mtx_access;
+
+  bool _held;
+  pthread_t _held_by;
 
   void set_state(ItemState val);
   ItemState _state;

@@ -14,10 +14,7 @@ void NaivePhilosopher::start() {
 
 void *NaivePhilosopher::run() {
   useconds_t delay;
-  Chopstick *left, *right;
 
-  left  = _controller->left_of(_seat);
-  right = _controller->right_of(_seat);
 
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Started for philosopher %i\n", _seat); 
   while (1) {
@@ -27,8 +24,9 @@ void *NaivePhilosopher::run() {
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is hungry\n", _seat); 
     set_state(ItemState::PHILOSOPHER_WAITING);
 
-    left->grab(true);
-    right->grab(false);
+    pthread_cleanup_push( releaseAllChopsticks , this);
+    _left->grab(true);
+    _right->grab(false);
     set_state(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is eating\n", _seat); 
 
@@ -36,10 +34,10 @@ void *NaivePhilosopher::run() {
     usleep(delay);
   
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is sated\n", _seat); 
-    left->release();
-    right->release();
+    _left->release();
+    _right->release();
+    pthread_cleanup_pop(false);
+
     set_state(ItemState::PHILOSOPHER_THINKING);
   }
 }
-
-

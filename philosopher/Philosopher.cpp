@@ -10,7 +10,10 @@ Philosopher::Philosopher(TableState *controller, int seat) {
   _state = ItemState::PHILOSOPHER_THINKING;
   pthread_mutex_init(&_mtx_access, NULL);
 
-  _ready = true;
+  _left  = _controller->left_of(_seat);
+  _right = _controller->right_of(_seat);
+
+  _ready = true; 
 }
 
 Philosopher::~Philosopher() {
@@ -60,4 +63,14 @@ void *Philosopher::run() {
   Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Philosopher %i is eating\n", _seat); 
 }
 
+void releaseAllChopsticks(void *arg) {
+  Philosopher *p = (Philosopher *)arg; 
 
+  if (p->_left->iHold()) {
+    p->_left->release(); 
+  }
+
+  if (p->_right->iHold()) {
+    p->_right->release(); 
+  }
+}

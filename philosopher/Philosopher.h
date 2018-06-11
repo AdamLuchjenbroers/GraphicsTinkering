@@ -16,6 +16,8 @@ public:
   void stop();
   void *run();
 
+  friend void releaseAllChopsticks(void *arg);
+
 protected:
   void set_state(ItemState val);
 
@@ -25,8 +27,9 @@ protected:
   bool _ready;
 
   TableState *_controller;
-  pthread_t _thread;
+  Chopstick *_left, *_right;
 
+  pthread_t _thread;
   pthread_mutex_t _mtx_access;
 };
 

@@ -44,3 +44,5 @@ protected:
 
     TableState *_table = NULL;
 };
+
+void releaseAllChopsticks(void *arg);

@@ -5,6 +5,7 @@ Chopstick::Chopstick() {
   pthread_mutex_init( &_mtx_access, NULL );
 
   _state = ItemState::CHOPSTICK_FREE;
+  _held = false;
 }
 
 Chopstick::~Chopstick() {
@@ -22,20 +23,20 @@ ItemState Chopstick::get_state() {
   return state;
 }
 
-void Chopstick::set_state(ItemState val) {
-  pthread_mutex_lock(&_mtx_access);
-  _state = val;
-  pthread_mutex_unlock(&_mtx_access);
-}
-
 void Chopstick::grab(bool left) {
   pthread_mutex_lock(&_mtx_held);
   
+  pthread_mutex_lock(&_mtx_access);
   if (left) {
-    set_state(ItemState::CHOPSTICK_LEFT);
+    _state = ItemState::CHOPSTICK_LEFT;
   } else {
-    set_state(ItemState::CHOPSTICK_RIGHT);
+    _state = ItemState::CHOPSTICK_RIGHT;
   }
+
+  _held = true;
+  _held_by = pthread_self();
+
+  pthread_mutex_unlock(&_mtx_access);
 }
 
 void Chopstick::release() {
@@ -43,5 +44,15 @@ void Chopstick::release() {
 
   pthread_mutex_lock(&_mtx_access);
   _state = ItemState::CHOPSTICK_FREE;
+  _held = false;
   pthread_mutex_unlock(&_mtx_access);
+}
+
+bool Chopstick::iHold() {
+  if (_held) {
+    return (bool) pthread_equal( _held_by, pthread_self());
+  } else {
+    // Not held by anyone.
+    return false;
+  }
 } 

@@ -49,11 +49,7 @@ void *TryWaitPhilosopher::run() {
       } 
 
       if (! (has_left && has_right) ) { 
-        // Disable thread cancellation while awaiting change because it's simpler to ensure we clean
-        // up all locks if this step is effectively atomic.
-        pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
         _controller->awaitChange();
-        pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
       }
     }
 

@@ -9,3 +9,6 @@ test
 .cproject
 .project
 .settings
+
+#Vi Swap Files
+*.swp

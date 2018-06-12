@@ -77,15 +77,6 @@ void TableState::startDinner() {
   }
 }
 
-bool TableState::isRunning() {
-  return _running;
-}
-
-bool TableState::stopRunning() {
-  _running = false;
-  return _running;
-}
-
 void TableState::awaitChange() {
   pthread_cond_wait(&_cond_changed, &_mtx_changed);
 }

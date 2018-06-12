@@ -23,9 +23,6 @@ public:
   Chopstick *leftOf(int seat);
   Chopstick *rightOf(int seat);
 
-  bool isRunning();
-  bool stopRunning();
-
   void startDinner();
 
   void lockTable();

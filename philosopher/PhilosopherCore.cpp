@@ -66,7 +66,7 @@ void PhilosopherCore::appInit() {
    if (success == false) {
       Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Failed to build shader program, missing shader\n");
 
-      _table->stopRunning();
+      appQuit();
       return;
    }
 
@@ -75,8 +75,8 @@ void PhilosopherCore::appInit() {
     if (success == false) {
         Logger::logprintf(Logger::LOG_ERROR, Logger::LOG_APPLICATION, "Unable to link rendering program: %s\n", gluErrorString(glerror));
 
-       _table->stopRunning();
-       return;
+        appQuit();
+        return;
     }
     
     glUseProgram(_shader.programID());

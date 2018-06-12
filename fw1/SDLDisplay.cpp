@@ -149,6 +149,9 @@ void SDLDisplay::processWindowEvent(SDL_WindowEvent &winEvent, FrameworkOneApp &
             _offsetX = winEvent.data1;
             _offsetY = winEvent.data2;
             break;
+	      case SDL_WINDOWEVENT_CLOSE:
+            app.appQuit();
+            break;
         //TODO: These events currently aren't processed
 	case SDL_WINDOWEVENT_SHOWN:
 	case SDL_WINDOWEVENT_HIDDEN:
@@ -160,7 +163,6 @@ void SDLDisplay::processWindowEvent(SDL_WindowEvent &winEvent, FrameworkOneApp &
 	case SDL_WINDOWEVENT_LEAVE:
 	case SDL_WINDOWEVENT_FOCUS_GAINED:
 	case SDL_WINDOWEVENT_FOCUS_LOST: 
-	case SDL_WINDOWEVENT_CLOSE:
             break;
     }
 }

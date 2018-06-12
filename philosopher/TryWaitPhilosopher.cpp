@@ -27,7 +27,13 @@ void *TryWaitPhilosopher::run() {
     has_left  = false;
     has_right = false;
 
+    // Lock the Table and setup cleanup. Use setcancelstate() to ensure both must complete to avoid
+    // possible wierdness and locking issues if somehow interrupted between these two calls.
+    pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
     _controller->lockTable();  
+    pthread_cleanup_push( unlockTable , this);
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+
     while (! (has_left && has_right)) {
 
       has_left  =  _left->tryGrab(true);
@@ -43,10 +49,19 @@ void *TryWaitPhilosopher::run() {
       } 
 
       if (! (has_left && has_right) ) { 
+        // Disable thread cancellation while awaiting change because it's simpler to ensure we clean
+        // up all locks if this step is effectively atomic.
+        pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
         _controller->awaitChange();
+        pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
       }
     }
+
+    //Unlock table and switch off the cleanup handler, again as an atomic op.
+    pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
     _controller->unlockTable();
+    pthread_cleanup_pop(false);
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
     setState(ItemState::PHILOSOPHER_EATING);
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is eating\n", _seat); 
@@ -60,4 +75,22 @@ void *TryWaitPhilosopher::run() {
 
     setState(ItemState::PHILOSOPHER_THINKING);
   }
+}
+
+void TryWaitPhilosopher::stop() {
+  pthread_cancel(_thread);
+  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Cancel Queued for philosopher %i\n", _seat); 
+
+  // Broadcast the table changed condition variable to force threads to resume.
+  // This is needed to shake free any threads currently waiting on this variable.
+  _controller->sendChange();
+
+  pthread_join(_thread, NULL);
+  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "Thread Ended for philosopher %i\n", _seat); 
+}
+
+void unlockTable(void *arg) {
+  TryWaitPhilosopher *p = (TryWaitPhilosopher *)arg;
+
+  p->_controller->unlockTable();
 }

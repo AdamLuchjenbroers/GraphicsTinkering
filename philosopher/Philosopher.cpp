@@ -18,6 +18,8 @@ Philosopher::Philosopher(TableState *controller, int seat, float min_wait, float
   _wait_range = (int) ((max_wait - min_wait) * 1000000);
 
   _ready = true; 
+
+  _last_change = clock();
 }
 
 Philosopher::~Philosopher() {
@@ -42,9 +44,16 @@ ItemState Philosopher::getState() {
 }
 
 void Philosopher::setState(ItemState val) {
+  clock_t now;
+  ItemState last = _state;
+
   pthread_mutex_lock(&_mtx_access);
   _state = val;
+  now = clock();
   pthread_mutex_unlock(&_mtx_access);
+
+  _controller->updateTally(last, now - _last_change);
+  _last_change = now;
 }
 
 void Philosopher::start() {

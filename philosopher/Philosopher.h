@@ -1,6 +1,7 @@
 #pragma once
 
 #include <pthread.h>
+#include <time.h>
 #include "constants.h"
 
 class TableState;
@@ -13,7 +14,7 @@ public:
   ItemState getState();
 
   virtual void start();
-  void stop();
+  virtual void stop();
   void *run();
 
   friend void releaseAllChopsticks(void *arg);
@@ -27,6 +28,8 @@ protected:
   ItemState _state;
 
   bool _ready;
+
+  clock_t _last_change;
 
   TableState *_controller;
   Chopstick *_left, *_right;

@@ -20,6 +20,9 @@ TableState::TableState(int diners)
 }
 
 TableState::~TableState() {
+  float sec_think, sec_wait, sec_eat, pct_think, pct_wait, pct_eat;
+  long total;
+
   for(int i = 0;i < _diners;i++) {   
      _philosophers[i].stop();
   }
@@ -28,10 +31,20 @@ TableState::~TableState() {
   pthread_mutex_destroy(&_mtx_changed);
 
   pthread_mutex_destroy(&_mtx_tally);
-  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "====== Final Activity Tally ======\n  Thinking:\t%i\n  Waiting:\t%i\n  Eating:\t%i\n"
-    , tally[ItemState::PHILOSOPHER_THINKING]
-    , tally[ItemState::PHILOSOPHER_WAITING]
-    , tally[ItemState::PHILOSOPHER_EATING]
+
+  total = tally[ItemState::PHILOSOPHER_THINKING] + tally[ItemState::PHILOSOPHER_WAITING] + tally[ItemState::PHILOSOPHER_THINKING];
+
+  sec_think = (double) tally[ItemState::PHILOSOPHER_THINKING] / CLOCKS_PER_SEC;
+  pct_think = ((double) tally[ItemState::PHILOSOPHER_THINKING] / total) * 100.0f;
+
+  sec_wait = (double) tally[ItemState::PHILOSOPHER_WAITING] / CLOCKS_PER_SEC;
+  pct_wait = ((double) tally[ItemState::PHILOSOPHER_WAITING] / total) * 100.0f;
+
+  sec_eat = (double) tally[ItemState::PHILOSOPHER_EATING] / CLOCKS_PER_SEC;
+  pct_eat = ((double) tally[ItemState::PHILOSOPHER_EATING] / total) * 100.0f;
+
+  Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "====== Final Activity Tally ======\n  Thinking:\t%0.2f\t(%0.2f%)\n  Waiting:\t%0.2f\t(%0.2f%)\n  Eating:\t%0.2f\t(%0.2f%)\n"
+    , sec_think, pct_think, sec_wait, pct_wait, sec_eat, pct_eat
   ); 
 
 }

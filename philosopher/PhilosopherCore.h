@@ -18,8 +18,8 @@ public:
    ~PhilosopherCore();
 
    bool appMain();
-
    void appInit();
+   virtual void appQuit();
 
    void resizeWindow(int newX, int newY); 
    void keyEvent(SDL_Keysym &key, bool press);

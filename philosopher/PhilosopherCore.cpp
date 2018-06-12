@@ -145,7 +145,17 @@ bool PhilosopherCore::appMain() {
     display->swapBuffers();
     display->mainLoop(*this);
 
-    return _table->isRunning();
+    return (_table != NULL);
+}
+
+
+void PhilosopherCore::appQuit() {
+    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "App Exit Received, terminating\n");
+
+    if ( _table ) {
+        delete _table;
+    }
+    _table = NULL;
 }
 
 bool PhilosopherCore::checkGLError(const char *errfmt, Logger::Level loglevel) {

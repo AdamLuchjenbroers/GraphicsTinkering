@@ -17,17 +17,17 @@ void *NaivePhilosopher::run() {
   while (1) {
     wait();
 
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is hungry\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is hungry\n", _seat); 
     setState(ItemState::PHILOSOPHER_WAITING);
 
     pthread_cleanup_push( releaseAllChopsticks , this);
     _left->grab(true);
     _right->grab(false);
     setState(ItemState::PHILOSOPHER_EATING);
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is eating\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is eating\n", _seat); 
  
    wait();
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is sated\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "NaivePhilosopher %i is sated\n", _seat); 
     _left->release();
     _right->release();
     pthread_cleanup_pop(false);

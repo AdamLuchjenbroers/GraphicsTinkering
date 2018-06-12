@@ -19,7 +19,7 @@ void *TryWaitPhilosopher::run() {
   while (1) {
     wait();
 
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is hungry\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is hungry\n", _seat); 
     setState(ItemState::PHILOSOPHER_WAITING);
 
     pthread_cleanup_push( releaseAllChopsticks , this);
@@ -60,10 +60,10 @@ void *TryWaitPhilosopher::run() {
     pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
     setState(ItemState::PHILOSOPHER_EATING);
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is eating\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is eating\n", _seat); 
  
      wait();
-    Logger::logprintf(Logger::LOG_INFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is sated\n", _seat); 
+    Logger::logprintf(Logger::LOG_VERBOSEINFO, Logger::LOG_APPLICATION, "TryWaitPhilosopher %i is sated\n", _seat); 
     _left->release();
     _right->release();
     _controller->sendChange();

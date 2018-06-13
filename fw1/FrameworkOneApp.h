@@ -5,6 +5,9 @@
 #include <string>
 #include <stdlib.h>
 
+/** FrameworkOneApp Husk Class - All Apps should extend this class to take advantage of existing framework and tools
+    @brief A husk class providing the scaffolding for a FrameworkOne app
+*/
 class FrameworkOneApp {
 public:
 	virtual ~FrameworkOneApp() {};

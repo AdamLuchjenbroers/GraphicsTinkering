@@ -47,7 +47,7 @@ bool STLMesh::loadSTL(const char *filename) {
     }
 
     stlFile.read((char *)&header,sizeof(header));
-    header.comment[80] = '\0';
+    header.comment[79] = '\0';
     Logger::logprintf(Logger::LOG_INFO, Logger::LOG_MESHES, "STL file %s - Header Comments %s\n", filename, header.comment);
 
     _triangles = header.triangles;

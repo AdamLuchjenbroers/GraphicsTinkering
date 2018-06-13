@@ -9,6 +9,7 @@
 #include <cstdio>
 
 /** Stores a 4x4 Matrix in memory.
+ @brief Stores a 4x4 Matrix in memory.
  */
 class Matrix4 {
 public:

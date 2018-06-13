@@ -59,7 +59,7 @@ Vector3H Vector3H::cross(const Vector3H &other) {
         (_vector[1] * other._vector[2]) - (_vector[2] * other._vector[1])
       , (_vector[2] * other._vector[0]) - (_vector[0] * other._vector[2])
       , (_vector[0] * other._vector[1]) - (_vector[1] * other._vector[0])
-      , _vector[4] //Don't change w.
+      , _vector[3] //Don't change w.
     );
 }
 
@@ -67,7 +67,7 @@ std::string Vector3H::printable() const {
     char buffer[64];
     const char *format = "[%1.10f %1.10f %1.10f %1.10f]";
 
-    snprintf(buffer, 512, format
+    snprintf(buffer, 64, format
            , _vector[0], _vector[1], _vector[2] , _vector[3]
     );
 

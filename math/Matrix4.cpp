@@ -76,7 +76,7 @@ Vector3H Matrix4::operator*(const Vector3H &mult) {
 }
 
 std::string Matrix4::printable() const {
-    char buffer[256];
+    char buffer[512];
     const char *format = {
           "| %1.4f %1.4f %1.4f %1.4f |"
         "\n| %1.4f %1.4f %1.4f %1.4f |"

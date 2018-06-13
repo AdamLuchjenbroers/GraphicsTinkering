@@ -12,6 +12,9 @@
 
 #include <SDL2/SDL.h>
 
+/** Base Application Framework for the Dining Philosophers apps.
+    @brief Base Application Framework for the Dining Philosophers apps.
+*/
 class PhilosopherCore : public FrameworkOneApp {
 public:
    PhilosopherCore();
